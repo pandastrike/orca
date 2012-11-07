@@ -1,0 +1,7 @@
+#!/usr/bin/env coffee
+
+Node = require "../node"
+node = new Node
+  test:
+    name: "foo"
+node.run()

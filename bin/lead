@@ -1,0 +1,12 @@
+#!/usr/bin/env coffee
+
+Lead = require "../lead"
+lead = new Lead
+  test:
+    name: "foo"
+    quorum: 2
+    repeat: 5
+    package: 
+      reference: "http://github.com/dyoder/orca-test/tarball/master"
+      name: "orca-test"
+lead.run()
