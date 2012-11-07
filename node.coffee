@@ -12,9 +12,8 @@ transport = require "./transport"
 
 class Node
   
-  constructor: (options) ->
-    {@test} = options
-    @channel = "orca:#{@test.name}"
+  constructor: (@options) ->
+    @channel = "orca:#{@options.test.name}"
     
     @inProgress = false
     
@@ -41,7 +40,7 @@ class Node
       
     @announcements.listen()
 
-    log "Orca node running, waiting for announcements"
+    log "Orca node running, waiting for announcements on '#{@channel}"
 
   announce: (message) ->
     @reply message, true
@@ -50,25 +49,66 @@ class Node
     log "Installing #{message.package.name} ..."
     try
       sh "npm install #{message.package.reference}"
-      @fn = require message.package.name
+      testClass = require message.package.name
+      @test = new testClass message.options
       @reply message, true
     catch error
       log error
       @reply message, false
       
   start: (message) ->
-    {repeat} = message
+    {repeat,concurrency} = message
     log "Starting test"
-    results = @benchmark repeat
-    log "Test results: #{results}"
-    @reply message, results
-    @announcements.end()
+    @benchmark message
     
-  benchmark: (times) ->
-    log "Running test #{times} times"
-    for i in [1..times]
-      start = Date.now()
-      @fn()
-      Date.now() - start
+  # TODO: this logic might be simpler with fibers
+  benchmark: (message) ->
+    {repeat,step,timeout} = message
+    log "Running test #{repeat} times"
+    results = []
+    for i in [1..repeat]
+      do =>
+        concurrency = step * i
+        timings = []
+        count = errors = timeouts = 0
+
+        log "Concurrency level: #{concurrency}"
+        for j in [1..concurrency]
+          do =>
+            
+            callback = (error,result) =>
+              
+              unless error? or expired
+                timings.push (Date.now() - start) 
+
+              clearTimeout tid unless expired
+
+              if error?
+                errors++
+                log error
+              
+              if ++count == concurrency
+                results.push
+                  concurrency: concurrency
+                  time: timings
+                  errors: errors
+                  timeouts: timeouts
+                
+                if results.length == repeat
+                  @reply message, results
+                  @announcements.end()
+              
+            expired = false
+            
+            expire = ->
+              expired = true
+              callback new Error "Request timed out"
+              
+            tid = setTimeout expire, timeout
+            
+            start = Date.now()
+            @test.run callback
+    return
+            
   
 module.exports = Node

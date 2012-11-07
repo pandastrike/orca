@@ -77,7 +77,11 @@ class Lead
         
   prepare: ->
     
-    id = @publish action: "prepare", package: @test.package
+    id = @publish 
+      action: "prepare"
+      package: @test.package
+      options: @test.options
+      
     log "Nodes are preparing for test #{@test.name}"
 
     count = 0
@@ -103,7 +107,11 @@ class Lead
     
     {inspect} = require "util"
     log "Starting test"
-    id = @publish action: "start", repeat: @test.repeat
+    id = @publish 
+      action: "start"
+      repeat: @test.repeat
+      step: @test.step
+      timeout: @test.timeout
     
     count = 0; results = []
     finished = (reply) =>

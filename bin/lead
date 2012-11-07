@@ -6,7 +6,13 @@ lead = new Lead
     name: "foo"
     quorum: 2
     repeat: 5
+    step: 5
+    timeout: 5000 # 5 seconds
     package: 
       reference: "http://github.com/dyoder/orca-test/tarball/master"
       name: "orca-test"
+    options:
+      service:
+        url: "http://api.linelinc.com"
+      
 lead.run()
