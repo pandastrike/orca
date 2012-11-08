@@ -7,7 +7,7 @@
     "cson": "~1.4.0",
     "fairmont": "~0.1.1",
     "node-system": "~0.0.1",
-    "pirate": "~0.2.1"
+    "pirate": "~0.3.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
