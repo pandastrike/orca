@@ -33,7 +33,9 @@ class Lead
     @announcements.on "#{@channel}.*.error", (error) =>
       log error
 
-    log "Orca leader running"
+    log "Orca leader running."
+    log "Scenario: #{@test.name}"
+    log "Description: #{@test.description}"
 
     @announce()
     
@@ -121,7 +123,9 @@ class Lead
           log "- #{reply.replyTo} returned result, waiting on #{need} more"
         else
           log "- #{reply.replyTo} returned result, test complete"
-          log JSON.stringify results
+          log JSON.stringify 
+            configuration: @test
+            results: results
           @remove id, finished
           @announcements.end()
           # TODO: figure out why we don't exit naturally at this point

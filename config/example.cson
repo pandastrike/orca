@@ -1,4 +1,5 @@
 name: "foo"
+description: "Running discovery against the demo API"
 quorum: 2
 repeat: 5
 step: 5

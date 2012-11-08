@@ -64,20 +64,29 @@ class Node
   # TODO: this logic might be simpler with fibers
   benchmark: (message) ->
     {repeat,step,timeout} = message
-    log "Running test #{repeat} times"
+    log "Running test #{repeat} times, stepping by #{step}"
     results = []
-    for i in [1..repeat]
-      do =>
+    runStep = (i) =>
         concurrency = step * i
         timings = []
         count = errors = timeouts = 0
 
         log "Concurrency level: #{concurrency}"
-        for j in [1..concurrency]
+
+        tests = for j in [1..concurrency]
+
           do =>
+            start = null
+            expired = false
+          
+            expire = ->
+              expired = true
+              callback new Error "Request timed out"
             
+            tid = setTimeout expire, timeout
+          
             callback = (error,result) =>
-              
+
               unless error? or expired
                 timings.push (Date.now() - start) 
 
@@ -86,29 +95,27 @@ class Node
               if error?
                 errors++
                 log error
-              
+
               if ++count == concurrency
                 results.push
                   concurrency: concurrency
                   time: timings
                   errors: errors
                   timeouts: timeouts
-                
+
                 if results.length == repeat
                   @reply message, results
                   @announcements.end()
-              
-            expired = false
-            
-            expire = ->
-              expired = true
-              callback new Error "Request timed out"
-              
-            tid = setTimeout expire, timeout
-            
-            start = Date.now()
-            @test.run callback
-    return
+                else
+                  runStep ++i
+
+            =>
+              start = Date.now()
+              @test.run callback
+
+        test() for test in tests
+    
+    runStep 1
             
   
 module.exports = Node
