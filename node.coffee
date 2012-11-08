@@ -40,7 +40,7 @@ class Node
       
     @announcements.listen()
 
-    log "Orca node running, waiting for announcements on '#{@channel}"
+    log "Orca node running, waiting for announcements on '#{@channel}'"
 
   announce: (message) ->
     @reply message, true
