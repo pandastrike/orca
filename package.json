@@ -7,14 +7,7 @@
     "cson": "~1.4.0",
     "fairmont": "~0.1.1",
     "node-system": "~0.0.1",
-    "orca-test": "~0.0.3",
     "pirate": "~0.2.1"
-  },
-  "devDependencies": {
-    "cson": "1.4.x",
-    "fairmont": "0.1.x",
-    "node-system": "0.0.x",
-    "pirate": "0.2.x"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
