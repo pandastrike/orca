@@ -1,7 +1,5 @@
 #!/usr/bin/env coffee
-
+[_,_,name] = process.argv
 Node = require "../node"
-node = new Node
-  test:
-    name: "foo"
+node = new Node name: name
 node.run()

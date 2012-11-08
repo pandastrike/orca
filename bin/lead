@@ -1,18 +1,15 @@
 #!/usr/bin/env coffee
+[_,_,path] = process.argv
+CSON = require "cson"
+parse = CSON.parseSync
+
+{read,log,abort} = require "fairmont"
 
 Lead = require "../lead"
-lead = new Lead
-  test:
-    name: "foo"
-    quorum: 2
-    repeat: 5
-    step: 5
-    timeout: 5000 # 5 seconds
-    package: 
-      reference: "http://github.com/dyoder/orca-test/tarball/master"
-      name: "orca-test"
-    options:
-      service:
-        url: "http://api.linelinc.com"
-      
+try
+  options = parse read path
+catch error
+  abort error
+
+lead = new Lead options
 lead.run()

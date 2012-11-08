@@ -7,8 +7,7 @@ transport = require "./transport"
 
 class Lead
   
-  constructor: (options) ->
-    {@test} = options
+  constructor: (@test) ->
     @channel = "orca:#{@test.name}"
     
     @announcements = new Publisher 

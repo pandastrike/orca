@@ -12,8 +12,8 @@ transport = require "./transport"
 
 class Node
   
-  constructor: (@options) ->
-    @channel = "orca:#{@options.test.name}"
+  constructor: (options) ->
+    @channel = "orca:#{options.name}"
     
     @inProgress = false
     
