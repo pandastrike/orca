@@ -1,5 +1,5 @@
-name: "foo"
-description: "Running discovery against the demo API"
+name: "si-events"
+description: "Logging an event against the SI Events API"
 quorum: 2
 repeat: 5
 step: 5

@@ -50,8 +50,13 @@ class Node
     try
       sh "npm install #{message.package.reference}"
       testClass = require message.package.name
-      @test = new testClass message.options
-      @reply message, true
+      @test = new testClass message.options, (error) =>
+        unless error?
+          @reply message, true
+        else
+          log error
+          @reply message, false
+          
     catch error
       log error
       @reply message, false
