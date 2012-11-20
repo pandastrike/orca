@@ -1,9 +1,9 @@
 #!/usr/bin/env coffee
-[_,_,path] = process.argv
+[_, _, path] = process.argv
 CSON = require "cson"
 parse = CSON.parseSync
 
-{read,log,abort} = require "fairmont"
+{read, log, abort} = require "fairmont"
 
 Lead = require "../lead"
 try

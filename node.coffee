@@ -17,7 +17,7 @@ class Node
     
     @inProgress = false
     
-    @announcements = new Subscriber 
+    @announcements = new Subscriber
       transport: transport
       name: @channel
 
@@ -62,7 +62,7 @@ class Node
       @reply message, false
       
   start: (message) ->
-    {repeat,concurrency} = message
+    #{repeat,concurrency} = message
     log "Starting test"
     @benchmark message
     

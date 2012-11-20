@@ -10,7 +10,7 @@ class Lead
   constructor: (@test) ->
     @channel = "orca:#{@test.name}"
     
-    @announcements = new Publisher 
+    @announcements = new Publisher
       transport: transport
       name: @channel
 
@@ -78,7 +78,7 @@ class Lead
         
   prepare: ->
     
-    id = @publish 
+    id = @publish
       action: "prepare"
       package: @test.package
       options: @test.options
@@ -108,7 +108,7 @@ class Lead
     
     {inspect} = require "util"
     log "Starting test"
-    id = @publish 
+    id = @publish
       action: "start"
       repeat: @test.repeat
       step: @test.step
@@ -123,7 +123,7 @@ class Lead
           log "- #{reply.replyTo} returned result, waiting on #{need} more"
         else
           log "- #{reply.replyTo} returned result, test complete"
-          log JSON.stringify 
+          log JSON.stringify
             configuration: @test
             results: results
           @remove id, finished
