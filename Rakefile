@@ -5,8 +5,6 @@ module TaskHelpers
   def self.fate
     configuration = {
       :commands => {
-        #"redis" => "redis-server",
-        #"mongo" => "mongod run --quiet --smallfiles --dbpath data/mongo",
         "nodes" => {
           "1" => "bin/node si_events",
           "2" => "bin/node si_events",
@@ -15,19 +13,12 @@ module TaskHelpers
     }
     @fate ||= Fate.new(
       configuration,
-      :output =>  {
-        "mongo" => File.new("/dev/null", "w"),
-        "redis" => File.new("/dev/null", "w"),
-      }
     )
   end
 end
 
-task "storage" => %w[ data/mongo ]
 
-directory "data/mongo"
-
-task "start" => "storage" do
+task "start" do
   TaskHelpers.fate.start
   at_exit do
     TaskHelpers.fate.stop
@@ -39,7 +30,7 @@ task "repl" => "start" do
 end
 
 task "test" => "start" do
-  sh "bin/lead local.cson"
+  sh "bin/lead config/test.cson"
 end
 
 
