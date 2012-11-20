@@ -7,9 +7,9 @@ parse = CSON.parseSync
 
 Lead = require "../lead"
 try
-  options = parse read path
+  test = parse read path
 catch error
   abort error
 
-lead = new Lead options
+lead = new Lead test
 lead.run()

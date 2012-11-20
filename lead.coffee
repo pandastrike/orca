@@ -1,5 +1,6 @@
 # Package Modules
 {log} = require "fairmont"
+{randomKey} = require "pirate/src/keys"
 
 Publisher = require "pirate/src/channels/composite/pubsub/publisher"
 
@@ -19,10 +20,10 @@ class Lead
   publish: (content) ->
     @announcements.publish content
 
-  reply: (id,handler) ->
+  on_reply: (id, handler) ->
     @announcements.on "#{@channel}.#{id}.reply", handler
 
-  remove: (id,handler) ->
+  remove: (id, handler) ->
     @announcements.bus.remove "#{@channel}.#{id}.reply", handler
 
   run: ->
@@ -68,7 +69,7 @@ class Lead
       return if @isQuorum()
       @remove id, join if id?
       id = @publish action: "announce"
-      @reply id, join
+      @on_reply id, join
       log "Test #{@test.name} announced, waiting for replies"
       # basically, keep re-broadcasting for late-comers until we get a quorum
       tid = setTimeout announce, 5000 # 5 seconds
@@ -102,13 +103,17 @@ class Lead
         log "- node #{reply.replyTo} opted out"
         process.exit -1
         
-    @reply id, ready
+    @on_reply id, ready
           
   start: ->
     
     {inspect} = require "util"
     log "Starting test"
+    timestamp = Math.round(Date.now() / 1000)
+    testId = randomKey(16)
     id = @publish
+      testId: testId
+      timestamp: timestamp
       action: "start"
       repeat: @test.repeat
       step: @test.step
@@ -124,13 +129,16 @@ class Lead
         else
           log "- #{reply.replyTo} returned result, test complete"
           log JSON.stringify
+            testId: testId
+            timestamp: timestamp
             configuration: @test
             results: results
+            null, 2
           @remove id, finished
           @announcements.end()
           # TODO: figure out why we don't exit naturally at this point
           process.nextTick -> process.exit 0
     
-    @reply id, finished
+    @on_reply id, finished
     
 module.exports = Lead

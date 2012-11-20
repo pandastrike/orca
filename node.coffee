@@ -1,6 +1,7 @@
 # Package Modules
-{log} = require "fairmont"
 _sh = require "node-system"
+
+{storage, transport} = require "./environment"
 
 sh = (command) ->
   log command
@@ -8,20 +9,18 @@ sh = (command) ->
 
 Subscriber = require "pirate/src/channels/composite/pubsub/subscriber"
 
-transport = require "./transport"
-
 class Node
   
   constructor: (options) ->
-    @channel = "orca:#{options.name}"
-    
+    {@name} = options
+    @channel = "orca:#{@name}"
     @inProgress = false
     
     @announcements = new Subscriber
       transport: transport
       name: @channel
 
-  reply: (message,content) ->
+  reply: (message, content) ->
     @announcements.event "#{@channel}.#{message.id}.reply", content
 
   run: ->
@@ -38,9 +37,11 @@ class Node
     @announcements.on "#{@channel}.*.error", (error) =>
       log error
       
-    @announcements.listen()
+    storage.collection @name, (error, result) =>
+      @collection = result
+      @announcements.listen()
+      log "Orca node running, waiting for announcements on '#{@channel}'"
 
-    log "Orca node running, waiting for announcements on '#{@channel}'"
 
   announce: (message) ->
     @reply message, true
@@ -62,13 +63,13 @@ class Node
       @reply message, false
       
   start: (message) ->
-    #{repeat,concurrency} = message
+    #{repeat, concurrency} = message
     log "Starting test"
     @benchmark message
     
   # TODO: this logic might be simpler with fibers
   benchmark: (message) ->
-    {repeat,step,timeout} = message
+    {testId, timestamp, repeat, step, timeout} = message
     log "Running test #{repeat} times, stepping by #{step}"
     results = []
     runStep = (i) =>
@@ -90,10 +91,10 @@ class Node
             
             tid = setTimeout expire, timeout
           
-            callback = (error,result) =>
+            callback = (error, result) =>
 
               unless error? or expired
-                timings.push (Date.now() - start) 
+                timings.push (Date.now() - start)
 
               clearTimeout tid unless expired
 
@@ -103,14 +104,21 @@ class Node
 
               if ++count == concurrency
                 results.push
+                  testId: testId
+                  timestamp: timestamp
                   concurrency: concurrency
                   time: timings
                   errors: errors
                   timeouts: timeouts
 
                 if results.length == repeat
-                  @reply message, results
-                  @announcements.end()
+                  @store_results results, (error, references) =>
+                    if error
+                      @reply message, false
+                    else
+                      @reply message, {references: references}
+                  ## shuts down transport and allows this node to exit
+                  #@announcements.end()
                 else
                   runStep ++i
 
@@ -122,5 +130,13 @@ class Node
     
     runStep 1
             
-  
+  store_results: (results, callback) ->
+    @collection.insert results, {safe: true}, (error, records) =>
+      if error
+        callback(error)
+      else
+        references = records.map (record) ->
+          record._id.toHexString()
+        callback(null, references)
+
 module.exports = Node
