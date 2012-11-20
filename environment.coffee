@@ -2,6 +2,8 @@
 Transport = require "pirate/src/transports/redis"
 
 
+# TODO: Use a configuration file for the transport and storage configs
+
 storage =
   database: (name) ->
     mongo = require "mongodb"

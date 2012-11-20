@@ -1,10 +1,9 @@
 # Package Modules
 {log} = require "fairmont"
 {randomKey} = require "pirate/src/keys"
+{storage, transport} = require "./environment"
 
 Publisher = require "pirate/src/channels/composite/pubsub/publisher"
-
-transport = require "./transport"
 
 class Lead
   
@@ -38,7 +37,9 @@ class Lead
     log "Scenario: #{@test.name}"
     log "Description: #{@test.description}"
 
-    @announce()
+    storage.collection @test.name, (error, collection) =>
+      @collection = collection
+      @announce()
     
   isQuorum: ->
     @nodes.length == @test.quorum
@@ -128,16 +129,23 @@ class Lead
           log "- #{reply.replyTo} returned result, waiting on #{need} more"
         else
           log "- #{reply.replyTo} returned result, test complete"
-          log JSON.stringify
+
+          result_record =
             testId: testId
             timestamp: timestamp
             configuration: @test
             results: results
-            null, 2
-          @remove id, finished
-          @announcements.end()
-          # TODO: figure out why we don't exit naturally at this point
-          process.nextTick -> process.exit 0
+          log JSON.stringify(result_record)
+          @collection.insert result_record, {safe: true}, (error, records) =>
+            if error
+              log error
+            else
+              log "Stored result in mongo"
+
+            @remove id, finished
+            @announcements.end()
+            # TODO: figure out why we don't exit naturally at this point
+            process.nextTick -> process.exit 0
     
     @on_reply id, finished
     

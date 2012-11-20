@@ -1,5 +1,6 @@
 # Package Modules
 _sh = require "node-system"
+{log} = require "fairmont"
 
 {storage, transport} = require "./environment"
 
@@ -37,10 +38,8 @@ class Node
     @announcements.on "#{@channel}.*.error", (error) =>
       log error
       
-    storage.collection @name, (error, result) =>
-      @collection = result
-      @announcements.listen()
-      log "Orca node running, waiting for announcements on '#{@channel}'"
+    @announcements.listen()
+    log "Orca node running, waiting for announcements on '#{@channel}'"
 
 
   announce: (message) ->
@@ -112,11 +111,7 @@ class Node
                   timeouts: timeouts
 
                 if results.length == repeat
-                  @store_results results, (error, references) =>
-                    if error
-                      @reply message, false
-                    else
-                      @reply message, {references: references}
+                  @reply message, results
                   ## shuts down transport and allows this node to exit
                   #@announcements.end()
                 else
