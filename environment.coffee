@@ -6,7 +6,7 @@ storage =
   database: (name) ->
     mongo = require "mongodb"
     storage.server ||= new mongo.Server("localhost", 27017)
-    new mongo.Db name, server, {safe: true}
+    new mongo.Db name, storage.server, {safe: true}
   collection: (name, callback) ->
     callback = optimistic callback
     storage.database("orca_results").open callbacks.fatalError (db) ->

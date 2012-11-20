@@ -1,6 +1,7 @@
 # Package Modules
 _sh = require "node-system"
 
+{log} = require "fairmont"
 {storage, transport} = require "./environment"
 
 sh = (command) ->
