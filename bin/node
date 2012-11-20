@@ -1,5 +1,34 @@
 #!/usr/bin/env coffee
 [_, _, name] = process.argv
+
+
+{read, log, abort} = require "fairmont"
+CSON = require "cson"
+parse = CSON.parseSync
+
+optimist = require("optimist")
+  .demand("environment")
+  .alias("environment", "e")
+  .describe("environment", "Path to CSON file describing environment")
+
+  .demand("name")
+  .alias("name", "n")
+  .describe("name", "channel name")
+
+  .alias("test", "t")
+  .describe("test", "Path to CSON file specifying the load test")
+
+argv = optimist.argv
+
+Environment = require "../environment"
+
+try
+  configuration = parse read argv.environment
+  environment = new Environment(configuration)
+catch error
+  abort error
+
+
 Node = require "../node"
-node = new Node name: name
+node = new Node(environment, name: argv.name)
 node.run()

@@ -1,24 +1,24 @@
 {optimistic, callbacks} = require "fairmont"
 Transport = require "pirate/src/transports/redis"
 
+module.exports = class Environment
 
-# TODO: Use a configuration file for the transport and storage configs
+  constructor: (@configuration) ->
 
-storage =
   database: (name) ->
+    options = @configuration.mongo
     mongo = require "mongodb"
-    storage.server ||= new mongo.Server("localhost", 27017)
-    new mongo.Db name, storage.server, {safe: true}
+    @server ||= new mongo.Server(options.host, options.port)
+    new mongo.Db name, @server, {safe: true}
+
   collection: (name, callback) ->
     callback = optimistic callback
-    storage.database("orca_results").open callbacks.fatalError (db) ->
+    @database("orca_results").open callbacks.fatalError (db) ->
       db.collection name, callbacks.fatalError (collection) ->
         callback collection
 
-transport = new Transport
-  host: "localhost"
-  port: 6379
+  transport: ->
+    new Transport
+      host: @configuration.redis.host
+      port: @configuration.redis.port
 
-module.exports =
-  storage: storage
-  transport: transport

@@ -1,17 +1,16 @@
 # Package Modules
 {log} = require "fairmont"
 {randomKey} = require "pirate/src/keys"
-{storage, transport} = require "./environment"
 
 Publisher = require "pirate/src/channels/composite/pubsub/publisher"
 
 class Lead
   
-  constructor: (@test) ->
+  constructor: (@environment, @test) ->
     @channel = "orca:#{@test.name}"
     
     @announcements = new Publisher
-      transport: transport
+      transport: @environment.transport()
       name: @channel
 
     @nodes = []
@@ -37,7 +36,7 @@ class Lead
     log "Scenario: #{@test.name}"
     log "Description: #{@test.description}"
 
-    storage.collection @test.name, (error, collection) =>
+    @environment.collection @test.name, (error, collection) =>
       @collection = collection
       @announce()
     

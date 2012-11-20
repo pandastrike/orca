@@ -2,7 +2,7 @@
 _sh = require "node-system"
 {log} = require "fairmont"
 
-{storage, transport} = require "./environment"
+#{storage, transport} = require "./environment"
 
 sh = (command) ->
   log command
@@ -12,13 +12,13 @@ Subscriber = require "pirate/src/channels/composite/pubsub/subscriber"
 
 class Node
   
-  constructor: (options) ->
+  constructor: (@environment, options) ->
     {@name} = options
     @channel = "orca:#{@name}"
     @inProgress = false
     
     @announcements = new Subscriber
-      transport: transport
+      transport: @environment.transport()
       name: @channel
 
   reply: (message, content) ->
@@ -48,7 +48,7 @@ class Node
   prepare: (message) ->
     log "Installing #{message.package.name} ..."
     try
-      sh "npm install #{message.package.reference}"
+      #sh "npm install #{message.package.reference}"
       testClass = require message.package.name
       @test = new testClass message.options, (error) =>
         unless error?
@@ -112,8 +112,8 @@ class Node
 
                 if results.length == repeat
                   @reply message, results
-                  ## shuts down transport and allows this node to exit
-                  #@announcements.end()
+                  # shuts down transport and allows this node to exit
+                  @announcements.end()
                 else
                   runStep ++i
 

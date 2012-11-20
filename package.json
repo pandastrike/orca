@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "cson": "1.4.x",
+    "optimist": "0.3.5",
     "fairmont": "0.1.x",
     "node-system": "0.0.x",
     "pirate": "0.3.x",
