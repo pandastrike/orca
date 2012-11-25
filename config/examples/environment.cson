@@ -1,3 +1,6 @@
+api:
+  service_url: "http://localhost:1339"
+  port: 1339
 mongo:
   host: "localhost"
   port: 27017

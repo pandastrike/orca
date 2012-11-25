@@ -6,13 +6,18 @@
   "dependencies": {
     "cson": "1.4.x",
     "optimist": "0.3.5",
+    "ax": "0.2.x",
+    "patchboard-server": "0.2.x",
+    "patchboard-client": "0.2.x",
+    "connect": "2.3.x",
     "fairmont": "0.1.x",
     "node-system": "0.0.x",
     "pirate": "0.3.x",
     "mongodb": "1.2.0"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "devDependencies": {
+    "testify": "0.1.x",
+    "coffee-script": "1.3.x"
   },
   "repository": {
     "type": "git",

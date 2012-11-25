@@ -1,3 +1,5 @@
+import "tasks/web.rb"
+
 require "fate"
 require "fate/repl"
 
@@ -5,6 +7,10 @@ module TaskHelpers
   def self.fate
     configuration = {
       :commands => {
+        "api" => "bin/api_server -e config/examples/environment.cson",
+        "workers" => {
+          "results" => "bin/results -e config/examples/environment.cson"
+        },
         "nodes" => {
           "1" => "bin/node -e config/examples/environment.cson -n si_events",
           "2" => "bin/node -e config/examples/environment.cson -n si_events",
@@ -33,14 +39,6 @@ task "repl" => "start" do
 end
 
 
-directory "build/web"
-
-task "build:web" => "build/web/js/application.js" do
-end
-
-file "build/web/js/application.js" => FileList["cs/web/**/*"] do
-  sh "ark package < web/manifest.json > build/web/js/application.js"
-end
 
 #rule ".json" => ".cson" do |t|
   #sh "node_modules/.bin/cson2json #{t.source} > #{t.name}"

@@ -1,6 +1,5 @@
 #!/usr/bin/env coffee
-[_, _, name] = process.argv
-
+[_, _, path] = process.argv
 
 {read, log, abort} = require "fairmont"
 CSON = require "cson"
@@ -10,11 +9,6 @@ optimist = require("optimist")
   .demand("environment")
   .alias("environment", "e")
   .describe("environment", "Path to CSON file describing environment")
-
-  .demand("name")
-  .alias("name", "n")
-  .describe("name", "channel name")
-
 argv = optimist.argv
 
 Environment = require "../environment"
@@ -25,7 +19,7 @@ try
 catch error
   abort error
 
+Server = require "../api/server"
+server = new Server(environment)
+server.run()
 
-Node = require "../node"
-node = new Node(environment, name: argv.name)
-node.run()

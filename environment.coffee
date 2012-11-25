@@ -13,7 +13,7 @@ module.exports = class Environment
 
   collection: (name, callback) ->
     callback = optimistic callback
-    @database("orca_results").open callbacks.fatalError (db) ->
+    @database("orca").open callbacks.fatalError (db) ->
       db.collection name, callbacks.fatalError (collection) ->
         callback collection
 

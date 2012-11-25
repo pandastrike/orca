@@ -36,7 +36,7 @@ class Lead
     log "Scenario: #{@test.name}"
     log "Description: #{@test.description}"
 
-    @environment.collection @test.name, (error, collection) =>
+    @environment.collection "results", (error, collection) =>
       @collection = collection
       @announce()
     
@@ -130,6 +130,7 @@ class Lead
           log "- #{reply.replyTo} returned result, test complete"
 
           result_record =
+            name: @test.name
             testId: testId
             timestamp: timestamp
             configuration: @test

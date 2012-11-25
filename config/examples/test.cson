@@ -1,8 +1,8 @@
 name: "si_events"
 description: "Logging an event against the SI Events API"
 quorum: 2
-repeat: 5
-step: 5
+repeat: 10
+step: 8
 timeout: 5000 # 5 seconds
 package:
   reference: "http://github.com/dyoder/orca-test/tarball/master"
