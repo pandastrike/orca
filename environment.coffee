@@ -4,6 +4,7 @@ Transport = require "pirate/src/transports/redis"
 module.exports = class Environment
 
   constructor: (@configuration) ->
+    @database_name = @configuration.mongo.database || "orca"
 
   database: (name) ->
     options = @configuration.mongo
@@ -13,7 +14,7 @@ module.exports = class Environment
 
   collection: (name, callback) ->
     callback = optimistic callback
-    @database("orca").open callbacks.fatalError (db) ->
+    @database(@database_name).open callbacks.fatalError (db) ->
       db.collection name, callbacks.fatalError (collection) ->
         callback collection
 

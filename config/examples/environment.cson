@@ -4,6 +4,7 @@ api:
 mongo:
   host: "localhost"
   port: 27017
+  database: "orca"
 redis:
   host: "localhost"
   port: 6379
