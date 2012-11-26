@@ -8,6 +8,7 @@ module TaskHelpers
     configuration = {
       :commands => {
         "api" => "bin/api_server -e config/examples/environment.cson",
+        "http_server" => "node_modules/.bin/nserver -d build/web/",
         "workers" => {
           "results" => "bin/results -e config/examples/environment.cson"
         },
