@@ -1,7 +1,7 @@
 name: "si_events"
 description: "Logging an event against the SI Events API"
 quorum: 2
-repeat: 10
+repeat: 3
 step: 16
 timeout: 5000 # 5 seconds
 package:

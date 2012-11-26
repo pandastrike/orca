@@ -105,18 +105,86 @@ class Lead
         
     @on_reply id, ready
           
+  generateTestId: ->
+    # modified Base64 for URLs
+    randomKey(16)
+      .replace(/\++/, "-")
+      .replace(/\//g, "_")
+      .replace(/\=+/g,"")
+
+  shutdown: ->
+    @announcements.end()
+    # TODO: figure out why we don't exit naturally at this point
+    process.nextTick -> process.exit 0
+  
   start: ->
-    
-    {inspect} = require "util"
-    log "Starting test"
+    testId = @generateTestId()
     timestamp = Math.round(Date.now() / 1000)
-    testId = randomKey(16)
+
+    log "Starting test #{testId}"
+
+    all_complete = (results) =>
+      result_record =
+        name: @test.name
+        testId: testId
+        timestamp: timestamp
+        configuration: @test
+        results: results
+
+      @collection.insert result_record, {safe: true}, (error, records) =>
+        if error
+          log error
+        else
+          log "Stored result in MongoDB: {testId: '#{records[0].testId}'}"
+        @shutdown()
+
+    node_results = {}
+    for replyTo in @nodes
+      node_results[replyTo] = []
+
+    step_runners = []
+    for i in [1..@test.repeat]
+      do (i) =>
+        concurrency = @test.step * i
+        step_runners.push =>
+          log "Starting step #{i}, concurrency #{concurrency}"
+          id = @publish
+            testId: testId
+            timestamp: timestamp
+            action: "start"
+            concurrency: concurrency
+            timeout: @test.timeout
+
+          count = 0
+          @on_reply id, stage_finished = (reply) =>
+            if reply.replyTo in @nodes
+              node_results[reply.replyTo].push reply.content
+              need = @nodes.length - (++count)
+              unless need is 0
+                log "- #{reply.replyTo} returned result, waiting on #{need} more"
+              else
+                log "- #{reply.replyTo} returned result, step #{i} complete"
+                @remove id, stage_finished
+                # This works because of the wonky combination of 0-based indexing
+                # and 1-based step numbers.
+                if next_runner = step_runners[i]
+                  log "pausing to let the target catch its breath"
+                  setTimeout (-> next_runner()), 1000
+                else
+                  all_complete(node_results)
+    step_runners[0]()
+
+
+  old: ->
+
+
     id = @publish
       testId: testId
       timestamp: timestamp
       action: "start"
-      repeat: @test.repeat
-      step: @test.step
+      concurrency: @test.repeat
+      #repeat: @test.repeat
+      #step: @test.step
       timeout: @test.timeout
     
     count = 0; results = []

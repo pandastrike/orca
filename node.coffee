@@ -62,76 +62,44 @@ class Node
       @reply message, false
       
   start: (message) ->
-    #{repeat, concurrency} = message
-    log "Starting test"
     @benchmark message
     
-  # TODO: this logic might be simpler with fibers
   benchmark: (message) ->
-    {testId, timestamp, repeat, step, timeout} = message
-    log "Running test #{repeat} times, stepping by #{step}"
-    results = []
-    runStep = (i) =>
-        concurrency = step * i
-        timings = []
-        count = errors = timeouts = 0
+    {testId, timestamp, concurrency, timeout} = message
+    log "Running test, concurrency: #{concurrency}"
+    timings = []
+    count = errors = timeouts = 0
 
-        log "Concurrency level: #{concurrency}"
+    tests = []
+    for j in [1..concurrency]
+      do (j) =>
+        start = null
+      
+        expire = ->
+          timeouts++
+          log "Request timed out."
+        
+        tid = setTimeout expire, timeout
+      
+        callback = (error, result) =>
+          clearTimeout tid
+          if error
+            errors++
+            log error
+          else
+            timings.push (Date.now() - start)
 
-        tests = for j in [1..concurrency]
+          if ++count == concurrency
+            result =
+              concurrency: concurrency
+              time: timings
+              errors: errors
+              timeouts: timeouts
+            @reply message, result
 
-          do =>
-            start = null
-            expired = false
-          
-            expire = ->
-              expired = true
-              callback new Error "Request timed out"
-            
-            tid = setTimeout expire, timeout
-          
-            callback = (error, result) =>
-
-              unless error? or expired
-                timings.push (Date.now() - start)
-
-              clearTimeout tid unless expired
-
-              if error?
-                errors++
-                log error
-
-              if ++count == concurrency
-                results.push
-                  testId: testId
-                  timestamp: timestamp
-                  concurrency: concurrency
-                  time: timings
-                  errors: errors
-                  timeouts: timeouts
-
-                if results.length == repeat
-                  @reply message, results
-                  # shuts down transport and allows this node to exit
-                  @announcements.end()
-                else
-                  runStep ++i
-
-            =>
-              start = Date.now()
-              @test.run callback
-
-        test() for test in tests
-    
-    runStep 1
-            
-  store_results: (results, callback) ->
-    @collection.insert results, {safe: true}, (error, records) =>
-      if error
-        callback(error)
-      else
-        references = records.map (record) ->
-          record._id.toHexString()
-        callback(null, references)
+        tests.push =>
+          start = Date.now()
+          @test.run callback
+    test() for test in tests
 
 module.exports = Node
