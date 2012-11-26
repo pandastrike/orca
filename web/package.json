@@ -1,0 +1,13 @@
+{
+  "name": "orca-web",
+  "version": "0.0.1",
+  "main": "application.coffee",
+  "dependencies": {
+    "nice": "0.1.x",
+    "fairmont": "0.1.x",
+    "patchboard-client": "0.2.x"
+  },
+  "devDependencies": {
+  }
+}
+
