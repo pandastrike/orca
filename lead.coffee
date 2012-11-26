@@ -168,8 +168,7 @@ class Lead
                 # This works because of the wonky combination of 0-based indexing
                 # and 1-based step numbers.
                 if next_runner = step_runners[i]
-                  log "pausing to let the target catch its breath"
-                  setTimeout (-> next_runner()), 1000
+                  next_runner()
                 else
                   all_complete(node_results)
     step_runners[0]()
