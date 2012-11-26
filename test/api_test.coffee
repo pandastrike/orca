@@ -1,7 +1,7 @@
 helpers = require("./helpers")
 Testify = require "testify"
 assert = require("assert")
-Ascribe = require("ascribe")
+#Ascribe = require("ascribe")
 
 helpers.discover_api (client) ->
 
@@ -30,7 +30,6 @@ helpers.discover_api (client) ->
           flattened = []
           for name, data of interleaved
             flattened = flattened.concat(data)
-          Ascribe.draw flattened
 
 
 

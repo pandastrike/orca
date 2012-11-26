@@ -16,6 +16,8 @@ class ResultsWorker extends Worker
         @collection = collection
         super
     
+  # task handlers
+
   last: (task) ->
     {id, content} = task
     criteria =
@@ -26,6 +28,7 @@ class ResultsWorker extends Worker
 
 
   # helpers
+
   transform: (data) ->
     {name, testId, configuration, results} = data
     flattened = []
