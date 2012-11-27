@@ -7,8 +7,6 @@ api =
   resources: require("./api/resources")
   paths: require("./api/paths")
 
-
-
 module.exports = class Environment
 
   constructor: (@configuration) ->

@@ -1,20 +1,13 @@
 connect = require("connect")
 Patchboard = require("patchboard-server")
 
-api =
-  schema: require("./schema")
-  resources: require("./resources")
-  paths: require("./paths")
-
-
 class Server
   
   constructor: (@environment) ->
     configuration = @environment.configuration
     {@port} = configuration.api
-    api.service_url = configuration.api.service_url
     
-    service = new Patchboard.Service(api)
+    @service = @environment.service
     
     # We pass in the service so that handlers can make use of
     # helpful functions the service can provide.
@@ -22,7 +15,7 @@ class Server
     
     # service.simple_dispatcher returns the http handler function
     # used by Connect or the stdlib http server.
-    dispatcher = service.simple_dispatcher(handlers)
+    dispatcher = @service.simple_dispatcher(handlers)
     
     @app = connect()
     @app.use(connect.compress())
