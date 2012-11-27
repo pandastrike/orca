@@ -1,6 +1,10 @@
 module.exports =
 
-  test_results:
-    path: "/test_results"
+  tests:
+    path: "/tests"
     publish: true
+
+  test:
+    path: "/tests/:testId"
+
 

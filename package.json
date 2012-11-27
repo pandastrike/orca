@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "cson": "1.4.x",
+    "gauss": "0.2.x",
     "optimist": "0.3.5",
     "ax": "0.2.x",
     "patchboard-server": "0.2.x",

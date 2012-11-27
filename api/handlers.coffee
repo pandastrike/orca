@@ -8,11 +8,9 @@ Dispatcher = require "pirate/src/channels/composite/worker/dispatcher"
 module.exports = (environment) ->
   transport = environment.transport()
 
-  # Hash of available dispatchers
-  dispatchers =
-    test_results: new Dispatcher
-      transport: transport
-      name: "test_results"
+  dispatchers = {}
+  get_dispatcher = (name) ->
+    dispatchers[name] ||= new Dispatcher(transport: transport, name: name)
 
   # allow dispatchers to gracefully exit
   process.on "exit", ->
@@ -28,55 +26,71 @@ module.exports = (environment) ->
     else
       logger.info "#{event}"
 
+  # TODO: generalize this kludge
+  decorate = (media_type, data) ->
+    if schema = environment.service.schema_manager.find(media_type: media_type)
+      name = schema.id?.split("#")[1]
+      if name == "test"
+        data.url = environment.service.generate_url("test", data.testId)
+      else if name == "test_list"
+        for item in data
+          item.url = environment.service.generate_url("test", item.testId)
+
+
   # by default, we attempt to construct a dispatcher request from the HTTP
   # request
-  defaultHandler = (context) ->
-    
-    # Basically, extract a bunch of stuff from the context to make the code below
-    # less verbose  
-    {request, match} = context
-    {body,query} = request
-    # What is the success status?
-    success = match.success_status or 200
-    # Do we need to respond or not?
-    respond = success != 202
-    # What's the resource name?
-    resource = match.resource_type
-    # What's the action we want the resource to take?
-    action = match.action_name
-    
-    # Set the CORS header
-    # TODO: Possibly restrict this for some operations?
-    context.set_cors_headers("*")
-    
+  taskHandler = (dispatcher_name) ->
+    dispatcher = get_dispatcher(dispatcher_name)
+    return (context) ->
+      
+      # Basically, extract a bunch of stuff from the context to make the code below
+      # less verbose  
+      {request, match} = context
+      {body, query} = request
+      {path} = match
+      # What is the success status?
+      success = match.success_status or 200
+      # Do we need to respond or not?
+      respond = success != 202
+      # What's the resource name?
+      resource = match.resource_type
+      # What's the action we want the resource to take?
+      action = match.action_name
+      
+      # Set the CORS header
+      # TODO: Possibly restrict this for some operations?
+      context.set_cors_headers("*")
+      
 
-    dispatcher = dispatchers[resource]
-    if dispatcher?
       # Dispatch the request and grab the ID so we can attach response handlers ...
-
       message_id = dispatcher.request
         action: action
         content:
+          identifier: path
           body: body
           query: query
 
       if respond?
         # blurg. not sure about *.result - seems like *.success would be more 
         # consistent
-        dispatcher.once "#{resource}.#{message_id}.result", (message) ->
-            # blurg. why not just message.content?
-            context.respond success, message.content
+        dispatcher.once "#{dispatcher_name}.#{message_id}.result", (message) ->
+          data = message.content
+          decorate(match.accept, data)
+          context.respond success, data
 
-      dispatcher.once "#{resource}.#{message_id}.error", (error) ->
+      dispatcher.once "#{dispatcher_name}.#{message_id}.error", (error) ->
         log error
         (context.error error) if respond?
-        
-    else
-      log new Error "No dispatcher for resource: #{match.resource_type}"
-    
+      
 
   # return the handlers
-  test_results:
+  defaultHandler = taskHandler("tests")
+  tests:
+    list: defaultHandler
     last: defaultHandler
+  test:
+    get: defaultHandler
+    summary: defaultHandler
+    results: defaultHandler
 
 

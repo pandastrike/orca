@@ -124,6 +124,7 @@ class Lead
     log "Starting test #{testId}"
 
     all_complete = (results) =>
+      # TODO create result summaries
       result_record =
         name: @test.name
         testId: testId

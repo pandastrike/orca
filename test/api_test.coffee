@@ -6,28 +6,20 @@ helpers.discover_api (client) ->
 
   Testify.test "orca test results", (context) ->
 
-    client.resources.test_results.last
+    client.resources.tests.last
       on:
         response: (response) ->
           context.fail "Unexpected response status: #{response.status}"
-        200: (response, data) ->
+        200: (response, test) ->
           context.test "200 response status", -> context.pass()
-          datasets = {}
-          for result in data.results
-            datasets[result.concurrency] ||= []
-            datasets[result.concurrency].push(result.time)
 
-          interleaved = {}
-          for concurrency, times of datasets
-            array = interleaved[concurrency] = []
-            l = times[0].length
-            for i in [0..l-1]
-              for time in times
-                array.push(time[i])
-
-          flattened = []
-          for name, data of interleaved
-            flattened = flattened.concat(data)
+          console.log test
+          test.summary
+            on:
+              response: (response) ->
+                console.log "UNEXPECTED", response
+              200: (response, data) ->
+                console.log JSON.stringify(data, null, 2)
 
 
 

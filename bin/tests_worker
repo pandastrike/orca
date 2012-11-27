@@ -21,7 +21,7 @@ catch error
   abort error
 
 
-ResultsWorker = require "../results_worker"
-worker = new ResultsWorker(environment)
+TestsWorker = require "../tests_worker"
+worker = new TestsWorker(environment)
 worker.run()
 

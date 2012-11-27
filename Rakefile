@@ -10,7 +10,7 @@ module TaskHelpers
         "api" => "bin/api_server -e config/examples/environment.cson",
         "http_server" => "node_modules/.bin/nserver -d build/web/",
         "workers" => {
-          "results" => "bin/results -e config/examples/environment.cson"
+          "tests" => "bin/tests_worker -e config/examples/environment.cson"
         },
         "nodes" => {
           "1" => "bin/node -e config/examples/environment.cson -n si_events",
@@ -19,7 +19,10 @@ module TaskHelpers
       }
     }
     @fate ||= Fate.new(
-      configuration,
+      configuration
+      #:output => {
+        #"mongo" => File.new("/dev/null", "w")
+      #}
     )
   end
 end
