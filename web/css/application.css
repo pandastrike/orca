@@ -48,10 +48,15 @@ h3 {
   float: left;
 }
 
+#tests ul {
+  list-style-type: none;
+  font-size: 1em;
+}
+
 #concurrency_chart {
   float: left;
-  width: 60%;
-  height: 500px;
+  width: 50%;
+  height: 400px;
 }
 
 #small_charts {

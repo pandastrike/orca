@@ -90,7 +90,10 @@ discover (client) ->
           for test in test_list
             do (test) =>
               li = $("<li/>")
-              a = $("<a>#{test.timestamp}</a>")
+              d = new Date(test.timestamp * 1000)
+              parts = d.toString().split(" ")
+              time = parts.slice(0,5).join(" ")
+              a = $("<a>#{time}</a>")
               a.click (event) =>
                 $("#test_identifier").text(test.timestamp)
                 event.preventDefault()

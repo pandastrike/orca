@@ -56,12 +56,13 @@ class Index
         @html.div id: "summary"
 
   content: ->
-    @html.div id: "content", =>
+    @b.row =>
+      @b.column width: 12, =>
 
-      @test_list()
-      @html.div id: "results", =>
-        @html.h3 "Most recent results", id: "test_identifier"
-        @charts()
+        @test_list()
+        @html.div id: "results", =>
+          @html.h3 "Most recent results", id: "test_identifier"
+          @charts()
 
     
     
