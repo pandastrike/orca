@@ -43,14 +43,25 @@ class Index
   header: ->
     @html.h1 "Orca"
 
+  test_list: ->
+    @html.div id: "tests", =>
+      @html.h3 "Tests"
+      @html.ul id: "test_list", =>
+
+  charts: ->
+    @html.div id: "charts", =>
+      @html.div id: "concurrency_chart"
+      @html.div id: "small_charts", =>
+        @html.div id: "error_chart"
+        @html.div id: "summary"
+
   content: ->
-    @html.h2 "Most recent test"
     @html.div id: "content", =>
-      @html.div id: "charts", =>
-        @html.div id: "concurrency_chart"
-        @html.div id: "small_charts", =>
-          @html.div id: "error_chart"
-          @html.div id: "summary"
+
+      @test_list()
+      @html.div id: "results", =>
+        @html.h3 "Most recent results", id: "test_identifier"
+        @charts()
 
     
     

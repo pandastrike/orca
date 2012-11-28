@@ -1,3 +1,13 @@
+body {
+  background: #ddd;
+}
+
+h3 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 1em;
+}
+
 .tags {
   overflow:auto;
   padding-left: 8px;
@@ -26,20 +36,27 @@
   line-height: 20px;
 }
 
-#charts {
+#content {
+  margin-top: 1em;
 }
 
-#charts div {
+#charts {
+  /*width: 900px;*/
 }
+
+#tests {
+  float: left;
+}
+
 #concurrency_chart {
   float: left;
-  width: 70%;
+  width: 60%;
   height: 500px;
 }
 
 #small_charts {
   float: left;
-  width: 30%;
+  width: 25%;
   height: 400px;
 }
 
