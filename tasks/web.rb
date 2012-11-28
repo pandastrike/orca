@@ -13,13 +13,14 @@ task "build:web:js" => "build/web/js"
 
 task "build:web:application" => "build/web/js"
 task "build:web:application" => "build/web/js/application.js"
-task "build:web:application" => "web/configuration.json"
+task "build:web" => "web/configuration.json"
 
 file "web/configuration.json" do
+  puts "Build failed!"
   puts "You must create a configuration.json file within web/"
   puts "Example:"
   puts File.read("config/examples/web_configuration.json")
-  exit
+  exit 1
 end
 
 task "build:web" => %w[
