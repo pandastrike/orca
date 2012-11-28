@@ -1,34 +1,68 @@
-directory "build/web/js"
-task "build:web:application" => "build/web/js"
+task "clean" do
+  rm_rf "build/web"
+end
 
-directory "build/web"
+task "build" => "build:web"
+
+directory "build/web/js"
+directory "build/web/css"
+
 task "build:web:pages" => "build/web"
+task "build:web:css" => "build/web/css"
+task "build:web:js" => "build/web/js"
+
+task "build:web:application" => "build/web/js"
+task "build:web:application" => "build/web/js/application.js"
+
 
 task "build:web" => %w[
+  build:web:js
+  build:web:css
   build:web:application
-  build:jqplot
   build:web:pages
 ]
 
-task "build:web:application" => %w[
-  build/web/js/application.js
-]
+task "build:web:js" => "build/web/js/jqplot.plugins.js"
+
+js_files = %w[
+  web/js/bootstrap.min.js
+  web/js/jquery.jqplot.min.js
+  ].map do |source|
+  name = File.basename(source)
+  destination = "build/web/js/#{name}"
+  file destination => source do
+    cp source, destination
+  end
+  destination
+end
+
+task "build:web:js" => js_files
+
+css_files = FileList["web/css/*.css"].map do |source|
+  name = File.basename(source)
+  destination = "build/web/css/#{name}"
+  file destination => source do
+    cp source, destination
+  end
+  destination
+end
+
+task "build:web:css" => css_files
 
 file "build/web/js/application.js" => FileList["web/**/*"] do
   sh "ark package < web/manifest.json > build/web/js/application.js"
 end
 
-
-task "build:jqplot" do
-  plugins = %w[
-    jqplot.barRenderer.min.js
-    jqplot.categoryAxisRenderer.min.js
-    jqplot.pieRenderer.min.js
-  ]
+plugins = %w[
+  web/js/jqplot_plugins/jqplot.barRenderer.min.js
+  web/js/jqplot_plugins/jqplot.categoryAxisRenderer.min.js
+  web/js/jqplot_plugins/jqplot.pieRenderer.min.js
+]
+file "build/web/js/jqplot.plugins.js" => plugins do
   puts "Writing build/web/js/jqplot.plugins.js"
   File.open("build/web/js/jqplot.plugins.js", "w") do |destination|
     plugins.each do |file|
-      string = File.read("build/web/js/jqplot_plugins/#{file}")
+      string = File.read(file)
       destination.puts string
     end
   end
@@ -44,7 +78,6 @@ htmls = FileList["web/html/*.coffee"].map do |source|
   end
   destination
 end
-
 
 task "build:web:pages" => htmls
 
