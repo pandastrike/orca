@@ -86,7 +86,9 @@ class TestsWorker extends Worker
 
   summarize: (step) ->
     vector = step.times.toVector()
+    count = step.times.length
     delete step.times
+    step.count = count
     step.mean = vector.mean()
     step.median = vector.median()
     step.stdev = vector.stdev()

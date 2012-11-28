@@ -47,11 +47,12 @@ module.exports =
         concurrency: {type: "integer"}
         errors: {type: "integer"}
         timeouts: {type: "integer"}
+        count: {type: "integer"}
         mean: {type: "number"}
-        #stdDev: {type: "number"}
-        #median: {type: "number"}
-        #max: {type: "number"}
-        #min: {type: "number"}
+        stdev: {type: "number"}
+        median: {type: "number"}
+        max: {type: "number"}
+        min: {type: "number"}
 
     test_result:
       mediaType: media_type("test_result")
