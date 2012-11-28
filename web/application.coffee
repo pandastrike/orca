@@ -17,6 +17,21 @@ discover = (callback) ->
       throw "Received unexpected response status to API discovery: #{response.status}"
 
 
+draw_pie = (step) ->
+  data = [
+    ["Successful", step.count],
+    ["Errors", step.errors],
+    ["Timeouts", step.timeouts]
+  ]
+  pie = $.jqplot "error_chart", [data],
+    title: "Error rates for concurrency: #{step.concurrency}"
+    seriesDefaults:
+      renderer: $.jqplot.PieRenderer
+      rendererOptions:
+        showDataLabels: true
+        dataLabelNudge: 8
+    legend: {show: true, location: "e"}
+
 discover (client) ->
   $(document).ready ->
 
@@ -32,21 +47,6 @@ discover (client) ->
               response: (response) ->
                 console.log "UNEXPECTED", response
               200: (response, data) ->
-                draw_pie = (step) ->
-                  pdata = [
-                    ["Successful", step.count],
-                    ["Errors", step.errors],
-                    ["Timeouts", step.timeouts]
-                  ]
-                  pie = $.jqplot "error_chart", [pdata],
-                    title: "Error rates for concurrency: #{step.concurrency}"
-                    seriesDefaults:
-                      renderer: $.jqplot.PieRenderer
-                      rendererOptions:
-                        showDataLabels: true
-                        dataLabelNudge: 8
-                    legend: {show: true, location: "n"}
-
                 draw_pie data.steps[data.steps.length-1]
 
                 ticks = []
