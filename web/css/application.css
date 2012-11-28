@@ -36,40 +36,34 @@ h3 {
   line-height: 20px;
 }
 
-#content {
-  margin-top: 1em;
-}
-
-#charts {
-  /*width: 900px;*/
-}
-
-#tests {
-  float: left;
-}
-
 #tests ul {
   list-style-type: none;
-  font-size: 1em;
+  /*font-size: 1em;*/
 }
 
 #concurrency_chart {
-  float: left;
-  width: 50%;
   height: 400px;
 }
 
-#small_charts {
-  float: left;
-  width: 25%;
-  height: 400px;
+#tests ul {
+  font-family: monospace;
 }
+
+/*#small_charts {*/
+  /*float: left;*/
+  /*width: 25%;*/
+  /*height: 400px;*/
+/*}*/
 
 #error_chart {
   height: 200px;
 }
 
+#error_chart {
+  font-size: 0.9em;
+}
+
 #summary pre {
-  font-size: 0.8em;
+  font-size: 0.7em;
 }
 

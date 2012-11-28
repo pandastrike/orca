@@ -31,7 +31,7 @@ draw_pie = (step) ->
       renderer: $.jqplot.PieRenderer
       rendererOptions:
         showDataLabels: true
-        dataLabelNudge: 5
+        dataLabelNudge: 3
     legend: {show: true, location: "e"}
 
 
@@ -95,7 +95,7 @@ discover (client) ->
               time = parts.slice(0,5).join(" ")
               a = $("<a>#{time}</a>")
               a.click (event) =>
-                $("#test_identifier").text(test.timestamp)
+                $("#test_identifier").text(time)
                 event.preventDefault()
                 test.summary(summarizer)
               li.append(a)

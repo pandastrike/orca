@@ -43,27 +43,42 @@ class Index
   header: ->
     @html.h1 "Orca"
 
+  content: ->
+    @b.row =>
+      @b.column width: 3, =>
+        @html.div id: "tests", =>
+          @html.h3 "Tests"
+          @html.ul id: "test_list", =>
+      @b.column width: 9, =>
+        @html.h3 "Most recent results", id: "test_identifier"
+        @b.row =>
+          @b.column width: 6, =>
+            @charts()
+          @b.column width: 3, =>
+            @html.div id: "small_charts", =>
+              @b.row =>
+                @html.div id: "error_chart"
+              @b.row =>
+                @html.div id: "summary"
+
+
+  #content: ->
+    #@b.row =>
+      #@b.column width: 12, =>
+
+        #@test_list()
+        #@html.div id: "results", =>
+          #@html.h3 "Most recent results", id: "test_identifier"
+          #@charts()
+
+    
   test_list: ->
     @html.div id: "tests", =>
       @html.h3 "Tests"
       @html.ul id: "test_list", =>
 
   charts: ->
-    @html.div id: "charts", =>
-      @html.div id: "concurrency_chart"
-      @html.div id: "small_charts", =>
-        @html.div id: "error_chart"
-        @html.div id: "summary"
+    @html.div id: "concurrency_chart"
 
-  content: ->
-    @b.row =>
-      @b.column width: 12, =>
-
-        @test_list()
-        @html.div id: "results", =>
-          @html.h3 "Most recent results", id: "test_identifier"
-          @charts()
-
-    
     
 
