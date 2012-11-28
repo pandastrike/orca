@@ -17,7 +17,7 @@ task "build:web" => "web/configuration.json"
 
 file "web/configuration.json" do
   puts "Build failed!"
-  puts "You must create a configuration.json file within web/"
+  puts "You must create web/configuration.json"
   puts "Example:"
   puts File.read("config/examples/web_configuration.json")
   exit 1
