@@ -32,6 +32,28 @@ draw_pie = (step) ->
         dataLabelNudge: 8
     legend: {show: true, location: "e"}
 
+
+draw_bar = (id, steps) ->
+  ticks = []
+  series = []
+  for step in steps
+    ticks.push step.count
+    series.push step.mean
+
+  plot = $.jqplot id, [series],
+    title: "Mean response times"
+    seriesDefaults:
+      renderer: $.jqplot.BarRenderer
+      rendererOptions: {fillToZero: true}
+    axes:
+      xaxis:
+        label: "Concurrent requests"
+        renderer: $.jqplot.CategoryAxisRenderer
+        ticks: ticks
+      yaxis:
+        label: "ms"
+
+
 discover (client) ->
   $(document).ready ->
 
@@ -40,36 +62,22 @@ discover (client) ->
         response: (response) ->
           console.log "UNEXPECTED", response
         200: (response, test) ->
-          console.log "name", test.name
-          console.log "timestamp", test.timestamp
           test.summary
             on:
               response: (response) ->
                 console.log "UNEXPECTED", response
               200: (response, data) ->
                 draw_pie data.steps[data.steps.length-1]
-
-                ticks = []
-                series = []
-                for step in data.steps
-                  ticks.push step.concurrency
-                  series.push step.mean
-
-                plot = $.jqplot "concurrency_chart", [series],
-                  title: "Mean response times"
-                  seriesDefaults:
-                    renderer: $.jqplot.BarRenderer
-                    rendererOptions: {fillToZero: true}
-                  axes:
-                    xaxis:
-                      label: "Concurrent requests"
-                      renderer: $.jqplot.CategoryAxisRenderer
-                      ticks: ticks
-                    yaxis:
-                      label: "ms"
+                plot = draw_bar "concurrency_chart", data.steps
                 $("#concurrency_chart").bind "jqplotDataClick", (event, series, point, _data) ->
+                  step = data.steps[point]
                   $("#error_chart").html ""
-                  draw_pie data.steps[point]
+                  $("#summary").html ""
+                  draw_pie step
+                  $("#summary").append """
+                  <pre>#{JSON.stringify(step, null, 2)}</pre>
+                  """
+                  
 
 
 

@@ -30,15 +30,24 @@
 }
 
 #charts div {
-  float: left;
 }
 #concurrency_chart {
+  float: left;
   width: 70%;
+  height: 500px;
+}
+
+#small_charts {
+  float: left;
+  width: 30%;
   height: 400px;
 }
 
 #error_chart {
   height: 200px;
-  width: 30%;
+}
+
+#summary pre {
+  font-size: 0.8em;
 }
 

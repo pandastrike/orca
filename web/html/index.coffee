@@ -48,7 +48,9 @@ class Index
     @html.div id: "content", =>
       @html.div id: "charts", =>
         @html.div id: "concurrency_chart"
-        @html.div id: "error_chart"
+        @html.div id: "small_charts", =>
+          @html.div id: "error_chart"
+          @html.div id: "summary"
 
     
     
