@@ -1,5 +1,5 @@
 {
-  "source": "/Users/mking/projects/oss/orca/web",
+  "source": "./web",
   "files": [
     "application.coffee",
     "configuration.json",
