@@ -48,7 +48,7 @@ class Node
   prepare: (message) ->
     log "Installing #{message.package.name} ..."
     try
-      #sh "npm install #{message.package.reference}"
+      sh "npm install #{message.package.reference}"
       testClass = require message.package.name
       @test = new testClass message.options, (error) =>
         unless error?
