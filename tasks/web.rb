@@ -59,7 +59,7 @@ end
 task "build:web:css" => css_files
 
 file "build/web/js/application.js" => FileList["web/**/*"] do
-  sh "ark package < web/manifest.json > build/web/js/application.js"
+  sh "node_modules/.bin/ark package < web/manifest.json > build/web/js/application.js"
 end
 
 plugins = %w[
