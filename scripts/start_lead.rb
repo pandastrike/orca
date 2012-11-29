@@ -2,8 +2,6 @@
 
 banks = %w[ lead1 ]
 
-# daemonize -e /var/log/orca/orca_lead_stderr.log -o /var/log/orca/orca_lead_stdout.log /usr/local/orca/bin/lead -e /etc/orca/environment.cson -t /etc/orca/test.cson
-
 commands = [ 
 "ps -o args -C node",
 "pkill -f /usr/local/orca/bin/lead",
