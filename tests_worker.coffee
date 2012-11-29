@@ -23,7 +23,7 @@ class TestsWorker extends Worker
     {id, content} = task
     criteria = {}
     fields = {name:1, testId:1, timestamp:1, configuration:1}
-    @collection.findOne criteria, fields, {sort: {$natural: -1}}, (error, data) =>
+    @collection.findOne criteria, fields, {sort: {timestamp: -1}}, (error, data) =>
       if error
         log error
         @event "#{@name}.#{id}.error", error
