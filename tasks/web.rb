@@ -10,6 +10,7 @@ directory "build/web/css"
 task "build:web:pages" => "build/web"
 task "build:web:css" => "build/web/css"
 task "build:web:js" => "build/web/js"
+task "build:web" => "web:dependencies"
 
 task "build:web:application" => "build/web/js"
 task "build:web:application" => "build/web/js/application.js"
