@@ -1,6 +1,6 @@
 {
   "name": "orca",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Distributed load testing for node.js using pirate.",
   "main": "index.js",
   "files": [
