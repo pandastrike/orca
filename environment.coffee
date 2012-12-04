@@ -1,19 +1,29 @@
 {optimistic, callbacks} = require "fairmont"
 Transport = require "pirate/src/transports/redis"
-Patchboard = require("patchboard-server")
-
-api =
-  schema: require("./api/schema")
-  resources: require("./api/resources")
-  paths: require("./api/paths")
 
 module.exports = class Environment
 
   constructor: (@configuration) ->
-    api.service_url = @configuration.api.service_url
-    @service = new Patchboard.Service(api)
-    @schema = @service.schema_manager
     @database_name = @configuration.mongo.database || "orca"
+
+  service: ->
+    if @_service
+      @_service
+    else
+      Patchboard = require("patchboard-server")
+      api = @api()
+      api.service_url = @configuration.api.service_url
+      @_service = new Patchboard.Service(api)
+
+  api: ->
+    @_api ||=
+      schema: require("./api/schema")
+      resources: require("./api/resources")
+      paths: require("./api/paths")
+
+  schema: ->
+    @service().schema_manager
+
 
   database: (name) ->
     options = @configuration.mongo

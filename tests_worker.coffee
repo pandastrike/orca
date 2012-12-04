@@ -33,7 +33,7 @@ class TestsWorker extends Worker
   marshal: (name, data) ->
     # FIXME: this only works for top level schema props.
     output = {}
-    schema = @environment.schema.find(name)
+    schema = @environment.schema().find(name)
     for name, def of schema.properties
       output[name] = data[name] || null
     output

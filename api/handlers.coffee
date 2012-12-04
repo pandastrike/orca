@@ -28,13 +28,13 @@ module.exports = (environment) ->
 
   # TODO: generalize this kludge
   decorate = (media_type, data) ->
-    if schema = environment.service.schema_manager.find(media_type: media_type)
+    if schema = environment.schema().find(media_type: media_type)
       name = schema.id?.split("#")[1]
       if name == "test"
-        data.url = environment.service.generate_url("test", data.testId)
+        data.url = environment.service().generate_url("test", data.testId)
       else if name == "test_list"
         for item in data
-          item.url = environment.service.generate_url("test", item.testId)
+          item.url = environment.service().generate_url("test", item.testId)
 
 
   # by default, we attempt to construct a dispatcher request from the HTTP

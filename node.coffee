@@ -2,7 +2,6 @@
 _sh = require "node-system"
 {log} = require "fairmont"
 
-#{storage, transport} = require "./environment"
 
 sh = (command) ->
   log command

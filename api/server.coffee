@@ -7,7 +7,7 @@ class Server
     configuration = @environment.configuration
     {@port} = configuration.api
     
-    @service = @environment.service
+    @service = @environment.service()
     
     # We pass in the service so that handlers can make use of
     # helpful functions the service can provide.

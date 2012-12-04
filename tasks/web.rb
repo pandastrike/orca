@@ -1,6 +1,8 @@
-task "clean" do
-  rm_rf "build/web"
-end
+require_relative "tasks"
+
+
+desc "Build the Orca web application"
+task "build:web"
 
 task "build" => "build:web"
 
