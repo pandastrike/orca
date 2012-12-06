@@ -1,12 +1,12 @@
-require "fate"
-require "fate/repl"
-
 module Orca
 
   module Tasks
     extend Rake::DSL
 
     def self.fate
+      require "fate"
+      require "fate/repl"
+
       configuration = {
         :commands => {
           "api" => "bin/api_server -e config/examples/environment.cson",

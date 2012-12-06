@@ -2,7 +2,7 @@
 
 Orca provides tools and a simple protocol for running distributed load tests of any kind of service.  You supply an NPM-installable package that implements the load test, and Orca arranges for its performance across the desired number of test clients.
 
-Orca also provides a REST API service for inspecting results, as well as a rich web application for visualizing them.
+Orca also provides a REST API service for inspecting results and a web application for visualizing them.
 
 ## Test packages
 
@@ -10,7 +10,7 @@ An Orca test package is simply a Node.js module which exports a test class. The 
 
 ## Orca in action
 
-Orca's load testing is managed by two kinds of components
+Load testing is managed by two kinds of components
 
 * Leader: orchestrates the distributed load test and stores the results.
 * Nodes: perform the actual load testing.
@@ -34,7 +34,7 @@ When all steps have been completed, the leader stores the combined results in Mo
 
 ## System software dependencies
 
-* node.js
+* node.js 0.8.x
 * ruby 1.9.x: Rake is used for development, testing, and build tasks
 * redis: message transport between components
 * mongodb: test result storage
@@ -42,12 +42,7 @@ When all steps have been completed, the leader stores the combined results in Mo
 
 ## Usage
 
-### Distributed Nodes
-
-    bin/node -e path/to/config.cson -n test_name
-
-The agents that actually run the load tests.  The test_name flag determines which pubsub channel will be used for communicating with the leader.
-
+Run `npm install` in the project's top level directory to install the required dependencies.
 
 ### Leader
 
@@ -55,6 +50,12 @@ The agents that actually run the load tests.  The test_name flag determines whic
 
 A command line tool which orchestrates the performance of the distributed load testing.  The `name` field of the test specification determines which pubsub channel will be used to communicate with the clients.
 
+
+### Distributed Nodes
+
+    bin/node -e path/to/config.cson -n test_name
+
+The agents that actually run the load tests.  The test_name flag determines which pubsub channel will be used for communicating with the leader.
 
 
 ### API Server
@@ -68,11 +69,11 @@ Runs an HTTP service which dispatches requests as tasks in message queues.  Work
 
     bin/tests_worker -e path/to/config.cson
 
-Retrieves test results from MongoDB and formats them as needed.
+Retrieves test results from MongoDB and formats them as needed. This may include aggregation and analysis.
 
 ### Orca Web
 
-    rake build:web
+    rake build:web # output to build/web
 
 A rich web application for displaying test results, consisting of HTML/CSS/JS only, and can be served by any web server (e.g. Apache, nginx).  The application communicates with the Orca reporting API, which means it needs to know where you are running the API server. This is accomplished by providing a configuration file at build time.
 
