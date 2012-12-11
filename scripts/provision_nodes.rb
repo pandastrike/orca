@@ -18,7 +18,7 @@ end
 
 banks.each do |bank|
   scripts.each do |script|
-    config = localpath("../../configurations/orca/befog")
+    config = localpath("befog")
     command = "befog run #{bank} -p #{config} --shell #{script}"
     puts(command)
     system(command)

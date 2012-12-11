@@ -17,8 +17,7 @@ def localpath(path)
 end
 
 scripts.each do |script|
-  config = localpath("../../configurations/orca/befog")
-  # script = localpath(script)
+  config = localpath("befog")
   command = "befog run #{scope} -p #{config} --#{task} #{script}"
   puts(command)
   system(command)
