@@ -1,5 +1,8 @@
 require_relative "tasks"
 
+task "clean" do
+  rm "build/web"
+end
 
 desc "Build the Orca web application"
 task "build:web"
