@@ -11,6 +11,9 @@
     "node.coffee",
     "worker.coffee",
     "tests_worker.coffee",
+    "web",
+    "Rakefile",
+    "tasks",
     "README.md"
   ],
   "dependencies": {
