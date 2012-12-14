@@ -1,13 +1,12 @@
 name: "si_events"
 description: "Logging an event against the SI Events API"
-quorum: 2
+quorum: 1
 repeat: 3
 step: 16
 timeout: 5000 # 5 seconds
 package:
-  reference: "http://github.com/dyoder/orca-test/tarball/master"
-  name: "orca-test"
+  reference: "examples/simple"
+  name: "simple_test"
 options:
-  service:
-    url: "http://localhost:1337"
+  url: "http://localhost:1337/"
 
