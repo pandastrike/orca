@@ -13,6 +13,8 @@ class Test
       else if response.statusCode != 200
         callback new Error "Unexpected status: #{response.statusCode}"
       else
+        console.log "Content-Length", response.headers["content-length"]
         callback null
 
 module.exports = Test
+
