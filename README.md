@@ -46,28 +46,28 @@ Run `npm install` in the project's top level directory to install the required d
 
 ### Leader
 
-    bin/lead -e path/to/config.cson -t path/to/test_spec.cson
+    bin/lead -c path/to/config.cson -t path/to/test_spec.cson
 
 A command line tool which orchestrates the performance of the distributed load testing.  The `name` field of the test specification determines which pubsub channel will be used to communicate with the clients.
 
 
 ### Distributed Nodes
 
-    bin/node -e path/to/config.cson -n test_name
+    bin/node -c path/to/config.cson -n test_name
 
 The agents that actually run the load tests.  The test_name flag determines which pubsub channel will be used for communicating with the leader.
 
 
 ### API Server
 
-    bin/api_server -e path/to/config.cson
+    bin/api_server -c path/to/config.cson
 
 Runs an HTTP service which dispatches requests as tasks in message queues.  Workers take the tasks, process them, and return results to the API Server, which uses the results to craft HTTP responses.
 
 
 ### API Worker
 
-    bin/tests_worker -e path/to/config.cson
+    bin/tests_worker -c path/to/config.cson
 
 Retrieves test results from MongoDB and formats them as needed. This may include aggregation and analysis.
 
