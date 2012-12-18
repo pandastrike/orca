@@ -7,8 +7,8 @@ commands = [
 "pkill -f /usr/local/orca/bin/api_server",
 "pkill -f /usr/local/orca/bin/tests_worker",
 "mkdir -p /var/log/orca/",
-"daemonize -e /var/log/orca/orca_dispatcher_stderr.log -o /var/log/orca/orca_dispatcher_stdout.log /usr/local/orca/bin/api_server -e /etc/orca/environment.cson; sleep 5",
-"daemonize -e /var/log/orca/orca_worker.log -o /var/log/orca/orca_worker.log /usr/local/orca/bin/tests_worker -e /etc/orca/environment.cson; sleep 5",
+"daemonize -e /var/log/orca/orca_dispatcher_stderr.log -o /var/log/orca/orca_dispatcher_stdout.log /usr/local/orca/bin/api_server -c /etc/orca/environment.cson; sleep 5",
+"daemonize -e /var/log/orca/orca_worker.log -o /var/log/orca/orca_worker.log /usr/local/orca/bin/tests_worker -c /etc/orca/environment.cson; sleep 5",
 "ps -o args -C node"
 ]
 

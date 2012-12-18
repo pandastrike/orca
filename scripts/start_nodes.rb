@@ -6,7 +6,7 @@ commands = [
 "ps -o args -C node",
 "pkill -f /usr/local/orca/bin/node",
 "mkdir -p /var/log/orca/",
-"daemonize -e /var/log/orca/orca_node_stderr.log -o /var/log/orca/orca_node_stdout.log /usr/local/orca/bin/node -e /etc/orca/environment.cson -n si_events; sleep 5",
+"daemonize -e /var/log/orca/orca_node_stderr.log -o /var/log/orca/orca_node_stdout.log /usr/local/orca/bin/node -c /etc/orca/environment.cson -n si_events; sleep 5",
 "ps -o args -C node"
 ]
 
