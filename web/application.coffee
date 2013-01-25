@@ -101,8 +101,11 @@ discover (client) ->
               li.append(a)
               tests_div.append li
 
-          test = test_list[0]
-          test.summary(summarizer)
+          if (test = test_list[0])
+            test.summary(summarizer)
+          else
+            $("#test_list").html("No results found")
+
                   
 
 
