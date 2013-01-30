@@ -12,6 +12,9 @@ module.exports =
         method: "GET"
         response_schema: "test_list"
         status: 200
+        query:
+          optional:
+            limit: {type: "string"}
         # TODO query options
 
   test:

@@ -82,6 +82,8 @@ discover (client) ->
   $(document).ready ->
 
     client.resources.tests.list
+      query:
+        limit: 16
       on:
         response: (response) ->
           console.log "UNEXPECTED", response

@@ -40,9 +40,11 @@ class TestsWorker extends Worker
 
   list: (task) ->
     {id, content} = task
+    limit = content.query?.limit || 8
+
     criteria = {}
     fields = {name:1, testId:1, timestamp:1, configuration:1}
-    options = {sort: {$natural: -1}, limit: 8}
+    options = {sort: {$natural: -1}, limit: limit}
     @collection.find criteria, fields, options, (error, data) =>
       if error
         log error
