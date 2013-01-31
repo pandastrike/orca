@@ -38,22 +38,23 @@ h3 {
 
 #tests ul {
   list-style-type: none;
-  /*font-size: 1em;*/
+  font-family: monospace;
 }
+
+#tests ul > li:first-child {
+  /*font-size: 0.9em;*/
+  margin-bottom: 1em;
+}
+
 
 #concurrency_chart {
   height: 400px;
 }
 
-#tests ul {
-  font-family: monospace;
+.details {
+  display: none;
 }
 
-/*#small_charts {*/
-  /*float: left;*/
-  /*width: 25%;*/
-  /*height: 400px;*/
-/*}*/
 
 #error_chart {
   height: 200px;

@@ -91,17 +91,32 @@ discover (client) ->
           tests_div = $("#test_list")
           for test in test_list
             do (test) =>
+              config = test.configuration
+
               li = $("<li/>")
               d = new Date(test.timestamp * 1000)
               parts = d.toString().split(" ")
-              time = parts.slice(0,5).join(" ")
+              time = parts.slice(1,5).join(" ")
               a = $("<a>#{time}</a>")
               a.click (event) =>
                 $("#test_identifier").text(time)
+                $("#details-#{test.testId}").slideToggle(100)
                 event.preventDefault()
                 test.summary(summarizer)
-              li.append(a)
-              tests_div.append li
+
+              name = $("<p>name: #{test.name}</p>")
+              console.log Object.keys(config)
+              details = $("""
+                <ul class="details" id="details-#{test.testId}">
+                  <li><b>Description</b>: #{config.description}</li>
+                  <li><b>Test clients</b>: #{config.quorum}</li>
+                  <li><b>Repeat</b>: #{config.repeat}</li>
+                  <li><b>Step</b>: #{config.step}</li>
+                </ul>
+              """)
+
+              li.append(a, name, details)
+              tests_div.append(li)
 
           if (test = test_list[0])
             test.summary(summarizer)
