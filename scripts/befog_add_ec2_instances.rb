@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
-# banks = %w[ lead1 ]
-banks = %w[ ]
+banks = %w[ lead1 ]
 
 def localpath(path)
   File.expand_path( File.join( File.dirname( __FILE__ ), path ) ) 
