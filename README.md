@@ -71,18 +71,35 @@ Runs an HTTP service which dispatches requests as tasks in message queues.  Work
 
 Retrieves test results from MongoDB and formats them as needed. This may include aggregation and analysis.
 
+
 ### Orca Web
+A rich web application for displaying test results, consisting of HTML/CSS/JS only, and can be served by any web server (e.g. Apache, nginx). The application communicates with the Orca reporting API, which means it needs to know where you are running the API server. This is accomplished by providing a configuration file at build time.
 
-    rake build:web # output to build/web
+#### Orca Web configuration file
+In the root of the Orca project create a new file inside the orca/web/ directory called ``web/configuration.json``
 
-A rich web application for displaying test results, consisting of HTML/CSS/JS only, and can be served by any web server (e.g. Apache, nginx).  The application communicates with the Orca reporting API, which means it needs to know where you are running the API server. This is accomplished by providing a configuration file at build time.
+```
+{
+   "service":{
+      "url":"http://localhost:8000"
+   }
+}
+```
+
+#### Building the Orca Web files
+In the root of the Orca project run ```rake build:web``` which will output the website files to orca/build/web
+
+Configure your web server appropriately to serve the orca/build/web files
+
+
+
 
 
 ## Configuration files
 
 Orca uses configuration files in CSON format, which is like JSON, but with CoffeeScript syntax. No more brace or comma woes, and comments are allowed.
 
-### Environment:
+### Environment configuration file `config.cson`:
 
     redis:
       host: "localhost"
@@ -95,7 +112,7 @@ Orca uses configuration files in CSON format, which is like JSON, but with Coffe
       port: 8000
       service_url: "http://localhost:8000"
 
-### Test specification:
+### Test specification configuration file `test_spec.cson`:
 
     name: "example_test"
     description: "A trivial HTTP request"
