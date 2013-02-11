@@ -99,7 +99,7 @@ Configure your web server appropriately to serve the orca/build/web files
 
 Orca uses configuration files in CSON format, which is like JSON, but with CoffeeScript syntax. No more brace or comma woes, and comments are allowed.
 
-### Environment configuration file `config.cson`:
+### Environment configuration file ```config.cson```:
 
     redis:
       host: "localhost"
@@ -112,7 +112,7 @@ Orca uses configuration files in CSON format, which is like JSON, but with Coffe
       port: 8000
       service_url: "http://localhost:8000"
 
-### Test specification configuration file `test_spec.cson`:
+### Test specification configuration file ```test_spec.cson```:
 
     name: "example_test"
     description: "A trivial HTTP request"
