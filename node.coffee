@@ -1,6 +1,6 @@
 # Package Modules
 _sh = require "node-system"
-{log} = require "fairmont"
+{log,readdir} = require "fairmont"
 
 
 sh = (command) ->

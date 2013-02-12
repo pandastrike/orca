@@ -22,6 +22,7 @@ try
   configuration = parse read argv.configuration
   environment = new Environment(configuration)
   test = parse read argv.test
+  console.log test
 catch error
   abort error
 

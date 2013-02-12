@@ -4,7 +4,7 @@ Transport = require "pirate/src/transports/redis"
 module.exports = class Environment
 
   constructor: (@configuration) ->
-    @database_name = @configuration.mongo.database || "orca"
+    @database_name = @configuration?.mongo?.database || "orca"
 
   service: ->
     if @_service
