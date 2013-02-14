@@ -22,7 +22,7 @@ chdir = (dir,fn) ->
 orca = (resolve (dirname __filename), "..")
 
 # Copy the configuration into the Orca Web directory
-console.log  sh "#{orca}/node_modules/cson/bin/cson2json #{configuration} > #{orca}/web/configuration.json"
+sh "#{orca}/node_modules/cson/bin/cson2json #{configuration} > #{orca}/build/web/configuration.json"
 
 # Run the build task
 chdir orca, -> "rake build:web"

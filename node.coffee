@@ -45,6 +45,7 @@ class Node
     @reply message, true
     
   prepare: (message) ->
+    log "Preparing #{@announcements.replyTo} for test #{message.package.name}"
     log "Installing #{message.package.name} ..."
     try
       sh "npm install #{message.package.reference}"
