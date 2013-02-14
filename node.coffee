@@ -54,10 +54,12 @@ class Node
         unless error?
           @reply message, true
         else
+          log "Opting out due to error creating test object"
           log error
           @reply message, false
           
     catch error
+      log "Opting out due to error installing or leading NPM"
       log error
       @reply message, false
       
