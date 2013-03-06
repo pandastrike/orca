@@ -1,6 +1,6 @@
 {
   "name": "orca",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Distributed load testing for node.js using pirate.",
   "main": "index.js",
   "files": [
@@ -17,11 +17,11 @@
     "README.md"
   ],
   "dependencies": {
-    "ark": "0.2.x",
+    "ark": "0.3.x",
     "ax": "0.2.x",
     "connect": "2.3.x",
     "cson": "git://github.com/dyoder/cson.git#0.1.0",
-    "fairmont": "0.1.x",
+    "fairmont": "0.2.x",
     "gauss": "0.2.x",
     "mkdirp": "0.3.x",
     "mongodb": "1.2.0",
@@ -29,12 +29,12 @@
     "optimist": "0.3.5",
     "patchboard-client": "0.2.x",
     "patchboard-server": "0.2.x",
-    "pirate": "0.3.x",
+    "pirate": "0.3.x"
   },
   "devDependencies": {
     "coffee-script": "1.5.x",
     "testify": "0.1.x",
-    "simple-http-server": "0.1.8",
+    "simple-http-server": "0.1.8"
   },
   "repository": {
     "type": "git",
