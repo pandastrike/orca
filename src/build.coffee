@@ -34,7 +34,7 @@ build = (configuration,destination) ->
   # install the node_modules in preparation of running ark
   nodeModules = resolve staging, "node_modules"
   mkdirp nodeModules
-  chdir staging, -> "npm install"
+  chdir staging, -> sh "npm install"
   
   # Begin building the actual Web app
   mkdirp webapp
