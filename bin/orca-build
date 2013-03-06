@@ -1,31 +1,12 @@
 #!/usr/bin/env coffee
 
-# TODO: KLUDGE ALERT! this should avoid copying the config into the orca
-# directory or really using the orca directory at all.
-
-
-{resolve,dirname} = require "path"
-sh = require "node-system"
-
 [_, _, configuration,destination] = process.argv
+build = require "../src/build"
 
-unless configuration? and destination? 
-  throw new Error "Usage: build <configuration-file> <destination-directory>"
+if configuration? and destination? 
+  build configuration, destination
+else
+  process.stderr.write "Usage: orca-build <configuration-file> <destination-directory>\n"
+  process.exit -1
 
-chdir = (dir,fn) ->
-  cwd = process.cwd()
-  process.chdir dir
-  fn()
-  process.chdir cwd
-  
-# Get the Orca directory 
-orca = (resolve (dirname __filename), "..")
 
-# Copy the configuration into the Orca Web directory
-sh "#{orca}/node_modules/cson/bin/cson2json #{configuration} > #{orca}/build/web/configuration.json"
-
-# Run the build task
-chdir orca, -> "rake build:web"
-
-# Copy the result into the destination directory
-sh "cp -R #{orca}/build/web #{destination}"

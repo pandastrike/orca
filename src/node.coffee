@@ -59,7 +59,7 @@ class Node
           @reply message, false
           
     catch error
-      log "Opting out due to error installing or leading NPM"
+      log "Opting out due to error installing or loading NPM"
       log error
       @reply message, false
       

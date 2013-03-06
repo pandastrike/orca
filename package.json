@@ -17,7 +17,9 @@
     "README.md"
   ],
   "dependencies": {
-    "cson": "1.4.x",
+    "cson": "git://github.com/dyoder/cson.git#0.1.0",
+    "mkdirp": "0.3.x",
+    "ark": "0.2.x",
     "gauss": "0.2.x",
     "optimist": "0.3.5",
     "ax": "0.2.x",
