@@ -1,16 +1,11 @@
 {
   "name": "orcastrike",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Distributed load testing for node.js using pirate.",
-  "main": "index.js",
   "files": [
     "bin",
     "api",
-    "lead.coffee",
-    "environment.coffee",
-    "node.coffee",
-    "worker.coffee",
-    "tests_worker.coffee",
+    "src",
     "web",
     "Rakefile",
     "tasks",
