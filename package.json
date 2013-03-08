@@ -1,6 +1,6 @@
 {
   "name": "orcastrike",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Distributed load testing for node.js using pirate.",
   "files": [
     "bin",
