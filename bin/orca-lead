@@ -16,7 +16,7 @@ optimist = require("optimist")
 
 argv = optimist.argv
 
-Environment = require "../environment"
+Environment = require "../src/environment"
 
 try
   configuration = parse read argv.configuration
@@ -26,6 +26,6 @@ try
 catch error
   abort error
 
-Lead = require "../lead"
+Lead = require "../src/lead"
 lead = new Lead(environment, test)
 lead.run()

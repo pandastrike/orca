@@ -12,7 +12,7 @@ optimist = require("optimist")
 
 argv = optimist.argv
 
-Environment = require "../environment"
+Environment = require "../src/environment"
 
 try
   configuration = parse read argv.configuration
@@ -21,7 +21,7 @@ catch error
   abort error
 
 
-TestsWorker = require "../tests_worker"
+TestsWorker = require "../src/tests_worker"
 worker = new TestsWorker(environment)
 worker.run()
 
