@@ -25,17 +25,32 @@ draw_pie = (step) ->
     ["Timeouts", step.timeouts]
   ]
   pie = $.jqplot "error_chart", [data],
-    title: "Errors for concurrency: #{step.count}"
+    title: "Errors for concurrency level: #{step.count}"
     seriesColors: ["#396", "#c66", "#ff9"]
     seriesDefaults:
       renderer: $.jqplot.PieRenderer
       rendererOptions:
+        #diameter: 50
         showDataLabels: true
         dataLabelNudge: 3
-    legend: {show: true, location: "e"}
+    legend:
+      show: true
+      location: "n"
 
 
-draw_bar = (id, steps) ->
+sample_data = (steps) ->
+  if steps.size < 10
+    steps
+  else
+    out = []
+    interval = Math.ceil(steps.length / 20)
+    for step, i in steps
+      if i % interval == 0
+        out.push(step)
+    out
+
+
+draw_bars = (id, steps) ->
   $("##{id}").html("")
   ticks = []
   series = []
@@ -58,6 +73,83 @@ draw_bar = (id, steps) ->
       yaxis:
         label: "ms"
 
+draw_lines = (id, steps) ->
+  $("##{id}").html("")
+
+  if steps.length >= 10
+    means = []
+    mins = []
+    maxes = []
+    errors = []
+    timeouts = []
+
+    for step in steps
+      means.push [step.count, step.mean]
+      mins.push [step.count, step.min]
+      maxes.push [step.count, step.max]
+      errors.push [step.count, step.errors]
+      timeouts.push [step.count, step.timeouts]
+
+    $.jqplot id, [maxes, means, errors, timeouts],
+      title: "Mean response times"
+      legend:
+        show: true
+        location: "nw"
+      series: [
+        {
+          color: "#609"
+          showLine: true
+          label: "max"
+          markerOptions:
+            show: true
+            style: "circle"
+            size: 7
+        },
+        {
+          color: "#396"
+          showLine: true
+          label: "mean"
+          markerOptions:
+            show: true
+            style: "circle"
+            size: 7
+        },
+        {
+          color: "#c66"
+          showLine: true
+          label: "errors"
+          markerOptions:
+            show: true
+            style: "circle"
+            size: 7
+        },
+        {
+          color: "#ff9"
+          showLine: true
+          label: "timeouts"
+          markerOptions:
+            show: true
+            style: "circle"
+            size: 7
+        },
+      ]
+      axes:
+        xaxis:
+          label: "Concurrent requests"
+          min: steps[0].count
+          max: steps[steps.length-1].count
+          tickOptions:
+            formatString: "%i"
+        yaxis:
+          label: "ms"
+          min: 0
+
+draw_series = (id, steps) ->
+  if steps.length >= 10
+    draw_lines(id, steps)
+  else
+    draw_bars(id, steps)
+
 summarizer =
   on:
     response: (response) ->
@@ -66,13 +158,21 @@ summarizer =
       $("#summary").html("")
       for step in data.steps
         delete step.concurrency
-      draw_pie data.steps[data.steps.length-1]
-      plot = draw_bar "concurrency_chart", data.steps
+      steps = sample_data(data.steps)
+      if data.steps.length < 10
+        draw_pie steps[steps.length-1]
+      else
+        $("#error_chart").html ""
+      plot = draw_series "concurrency_chart", steps
 
       $("#concurrency_chart").bind "jqplotDataClick", (event, series, point, _data) ->
-        step = data.steps[point]
+        step = steps[point]
         $("#summary").html ""
-        draw_pie step
+        if data.steps.length < 10
+          draw_pie step
+        else
+          $("#error_chart").html ""
+          
         $("#summary").append """
         <pre>#{JSON.stringify(step, null, 2)}</pre>
         """
@@ -105,7 +205,6 @@ discover (client) ->
                 test.summary(summarizer)
 
               name = $("<p>name: #{test.name}</p>")
-              console.log Object.keys(config)
               details = $("""
                 <ul class="details" id="details-#{test.testId}">
                   <li><b>Description</b>: #{config.description}</li>

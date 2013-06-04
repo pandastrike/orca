@@ -57,7 +57,7 @@ h3 {
 
 
 #error_chart {
-  height: 200px;
+  height: 300px;
 }
 
 #error_chart {
@@ -67,4 +67,5 @@ h3 {
 #summary pre {
   font-size: 0.7em;
 }
+
 

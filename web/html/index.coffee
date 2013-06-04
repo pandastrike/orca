@@ -52,9 +52,9 @@ class Index
       @b.column width: 9, =>
         @html.h3 "Most recent results", id: "test_identifier"
         @b.row =>
-          @b.column width: 6, =>
+          @b.column width: 7, =>
             @charts()
-          @b.column width: 3, =>
+          @b.column width: 2, =>
             @html.div id: "small_charts", =>
               @b.row =>
                 @html.div id: "error_chart"
