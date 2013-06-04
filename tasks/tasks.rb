@@ -20,11 +20,11 @@ module Orca
         }
       }
       @fate ||= Fate.new(
-        configuration
+        configuration, {}
         #:output => {
           #"mongo" => File.new("/dev/null", "w")
         #}
-      )
+      ).control
     end
 
   end
