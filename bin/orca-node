@@ -2,9 +2,8 @@
 [_, _, name] = process.argv
 
 
-{read, log, abort} = require "fairmont"
-CSON = require "cson"
-parse = CSON.parseSync
+{read, log} = require "fairmont"
+{parse} = require "cson"
 
 optimist = require("optimist")
   .demand("configuration")
@@ -17,15 +16,17 @@ optimist = require("optimist")
 
 argv = optimist.argv
 
-Environment = require "../environment"
+Environment = require "../src/environment"
 
 try
   configuration = parse read argv.configuration
   environment = new Environment(configuration)
 catch error
-  abort error
+  log "Error processing configuration file"
+  log error
+  process.exit -1
 
 
-Node = require "../node"
+Node = require "../src/node"
 node = new Node(environment, name: argv.name)
 node.run()

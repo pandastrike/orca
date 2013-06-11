@@ -1,25 +1,28 @@
 #!/usr/bin/env coffee
-[_, _, path] = process.argv
+[_, _, name] = process.argv
 
-{read, log, abort} = require "fairmont"
-CSON = require "cson"
-parse = CSON.parseSync
+{read, log} = require "fairmont"
+{parse} = require "cson"
 
 optimist = require("optimist")
   .demand("configuration")
   .alias("configuration", "c")
   .describe("configuration", "Path to CSON configuration file")
+
 argv = optimist.argv
 
-Environment = require "../environment"
+Environment = require "../src/environment"
 
 try
   configuration = parse read argv.configuration
   environment = new Environment(configuration)
 catch error
-  abort error
+  log "Error processing configuration file"
+  log error
+  process.exit -1
 
-Server = require "../api/server"
-server = new Server(environment)
-server.run()
+
+TestsWorker = require "../src/tests_worker"
+worker = new TestsWorker(environment)
+worker.run()
 

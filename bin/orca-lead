@@ -1,9 +1,8 @@
 #!/usr/bin/env coffee
 [_, _, path] = process.argv
 
-{read, log, abort} = require "fairmont"
-CSON = require "cson"
-parse = CSON.parseSync
+{read, log} = require "fairmont"
+{parse} = require "cson"
 
 optimist = require("optimist")
   .demand("configuration")
@@ -16,15 +15,19 @@ optimist = require("optimist")
 
 argv = optimist.argv
 
-Environment = require "../environment"
+Environment = require "../src/environment"
 
 try
   configuration = parse read argv.configuration
   environment = new Environment(configuration)
   test = parse read argv.test
+  log test
 catch error
-  abort error
+  log "Error processing configuration file"
+  log error
+  process.exit -1
 
-Lead = require "../lead"
+
+Lead = require "../src/lead"
 lead = new Lead(environment, test)
 lead.run()

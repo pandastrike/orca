@@ -1,15 +1,14 @@
 {HTML, Bootstrap, Pages} = require "nice"
 {include} = require "fairmont"
 
-process.on "exit", ->
-  page = new Index()
-  html = HTML.beautify(page.main())
-  console.log html
-
 cdn = (library) ->
   "http://cdnjs.cloudflare.com/ajax/libs/#{library}"
 
 class Index
+  
+  @generate: -> 
+    page = new Index()
+    HTML.beautify(page.main())
   
   constructor: ->
     @html = new HTML
@@ -22,7 +21,9 @@ class Index
           jquery: cdn "jquery/1.7.2/jquery.min.js"
           jqueryUI: cdn "jqueryui/1.9.1/jquery-ui.min.js"
           jqplot: "js/jquery.jqplot.min.js"
-          jqplot_plugins: "js/jqplot.plugins.js"
+          barChart: "js/jqplot_plugins/jqplot.barRenderer.min.js"
+          categoryLabel: "js/jqplot_plugins/jqplot.categoryAxisRenderer.min.js"
+          pieChart: "js/jqplot_plugins/jqplot.pieRenderer.min.js"
           bootstrap: "js/bootstrap.min.js"
           application: "js/application.js"
         css:
@@ -34,7 +35,7 @@ class Index
   main: ->
     @page
       title: "Orca"
-      javascript: "json2 jquery jqplot jqplot_plugins bootstrap application"
+      javascript: "json2 jquery jqplot barChart pieChart categoryLabel bootstrap application"
       css: "bootstrap jqueryUI jqplot application"
       body: =>
         @b.container =>
@@ -80,5 +81,5 @@ class Index
   charts: ->
     @html.div id: "concurrency_chart"
 
-    
+module.exports = Index  
 

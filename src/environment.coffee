@@ -1,10 +1,10 @@
 {optimistic, callbacks} = require "fairmont"
 Transport = require "pirate/src/transports/redis"
 
-module.exports = class Environment
+class Environment
 
   constructor: (@configuration) ->
-    @database_name = @configuration.mongo.database || "orca"
+    @database_name = @configuration?.mongo?.database || "orca"
 
   service: ->
     if @_service
@@ -42,3 +42,5 @@ module.exports = class Environment
       host: @configuration.redis.host
       port: @configuration.redis.port
 
+
+module.exports = Environment

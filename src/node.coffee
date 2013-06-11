@@ -1,6 +1,6 @@
 # Package Modules
 _sh = require "node-system"
-{log} = require "fairmont"
+{log,readdir} = require "fairmont"
 
 
 sh = (command) ->
@@ -45,6 +45,7 @@ class Node
     @reply message, true
     
   prepare: (message) ->
+    log "Preparing #{@announcements.replyTo} for test #{message.package.name}"
     log "Installing #{message.package.name} ..."
     try
       sh "npm install #{message.package.reference}"
@@ -53,10 +54,12 @@ class Node
         unless error?
           @reply message, true
         else
+          log "Opting out due to error creating test object"
           log error
           @reply message, false
           
     catch error
+      log "Opting out due to error installing or loading NPM"
       log error
       @reply message, false
       
