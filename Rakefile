@@ -1,7 +1,5 @@
 require_relative "tasks/tasks.rb"
 
-import "tasks/web.rb"
-
 task "test" => "start" do
   sh "bin/lead -c examples/environment.cson -t examples/test.cson"
 end
