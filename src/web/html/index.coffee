@@ -53,14 +53,12 @@ class Index
       @b.column width: 9, =>
         @html.h3 "Most recent results", id: "test_identifier"
         @b.row =>
-          @b.column width: 7, =>
-            @charts()
-          @b.column width: 2, =>
-            @html.div id: "small_charts", =>
-              @b.row =>
-                @html.div id: "error_chart"
-              @b.row =>
-                @html.div id: "summary"
+          @charts()
+        @b.row =>
+          @b.column width: 4, =>
+            @html.div id: "error_chart"
+          @b.column width: 5, =>
+            @html.div id: "summary"
 
 
   #content: ->

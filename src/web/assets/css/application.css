@@ -15,43 +15,25 @@ h3 {
 
 /* based on Bootstrap .alert */
 
-.tag {
-  float: left;
-  padding: 6px 14px 0px 14px;
-  margin-bottom: 20px;
-  margin-right: 4px;
-  color: #3a87ad;
-  background-color: #d9edf7;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-  border: 1px solid #bce8f1;
-  -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
-}
-
-.tag .close {
-  position: relative;
-  top: -2px;
-  right: -7px;
-  line-height: 20px;
-}
-
 #tests ul {
   list-style-type: none;
   font-family: monospace;
 }
 
-#tests ul > li:first-child {
-  /*font-size: 0.9em;*/
-  margin-bottom: 1em;
+#tests ul > li {
+  font-size: 1em;
+  /*margin-bottom: 1em;*/
 }
 
+#test_list {
+}
 
 #concurrency_chart {
   height: 400px;
 }
 
 .details {
+  margin-left: 0;
   display: none;
 }
 

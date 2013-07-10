@@ -204,13 +204,14 @@ discover (client) ->
                 event.preventDefault()
                 test.summary(summarizer)
 
-              name = $("<p>name: #{test.name}</p>")
+              #name = $("<p>name: #{test.name}</p>")
               details = $("""
                 <ul class="details" id="details-#{test.testId}">
-                  <li><b>Description</b>: #{config.description}</li>
-                  <li><b>Test clients</b>: #{config.quorum}</li>
+                  <li><b>Name</b>: #{test.name}</li>
+                  <li><b>Clients</b>: #{config.quorum}</li>
                   <li><b>Repeat</b>: #{config.repeat}</li>
                   <li><b>Step</b>: #{config.step}</li>
+                  <li><b>Description</b>: #{config.description}</li>
                 </ul>
               """)
 

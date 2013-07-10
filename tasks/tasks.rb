@@ -9,13 +9,13 @@ module Orca
 
       configuration = {
         :commands => {
-          "api" => "bin/api_server -c examples/environment.cson",
+          "api" => "bin/orca-server -c examples/environment.cson",
           "http_server" => "node_modules/.bin/nserver -d build/web/",
           "workers" => {
-            "tests" => "bin/tests_worker -c examples/environment.cson"
+            "tests" => "bin/orca-worker -c examples/environment.cson"
           },
           "nodes" => {
-            "1" => "bin/node -c examples/environment.cson -n si_events",
+            "1" => "bin/orca-node -c examples/environment.cson -n si_events",
           }
         }
       }
