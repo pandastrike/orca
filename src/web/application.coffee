@@ -78,6 +78,7 @@ draw_lines = (id, steps) ->
 
   if steps.length >= 10
     means = []
+    medians = []
     mins = []
     maxes = []
     errors = []
@@ -86,12 +87,13 @@ draw_lines = (id, steps) ->
     for step in steps
       means.push [step.count, step.mean]
       mins.push [step.count, step.min]
+      medians.push [step.count, step.median]
       maxes.push [step.count, step.max]
       errors.push [step.count, step.errors]
       timeouts.push [step.count, step.timeouts]
 
-    $.jqplot id, [maxes, means, errors, timeouts],
-      title: "Mean response times"
+    $.jqplot id, [maxes, medians, mins, errors, timeouts],
+      title: "Response times"
       legend:
         show: true
         location: "nw"
@@ -108,7 +110,16 @@ draw_lines = (id, steps) ->
         {
           color: "#396"
           showLine: true
-          label: "mean"
+          label: "median"
+          markerOptions:
+            show: true
+            style: "circle"
+            size: 7
+        },
+        {
+          color: "#369"
+          showLine: true
+          label: "min"
           markerOptions:
             show: true
             style: "circle"
