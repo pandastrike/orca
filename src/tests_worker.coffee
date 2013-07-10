@@ -1,5 +1,6 @@
-gauss = require "gauss"
 {log, abort, reader, callbacks} = require "fairmont"
+
+{compute_steps} = require "./results"
 
 Worker = require "./worker"
 
@@ -29,14 +30,6 @@ class TestsWorker extends Worker
         @event "#{@name}.#{id}.error", error
       else
         @event "#{@name}.#{id}.result", @marshal("test", data)
-
-  marshal: (name, data) ->
-    # FIXME: this only works for top level schema props.
-    output = {}
-    schema = @environment.schema().find(name)
-    for name, def of schema.properties
-      output[name] = data[name] || null
-    output
 
   list: (task) ->
     {id, content} = task
@@ -73,56 +66,33 @@ class TestsWorker extends Worker
   summary: (task) ->
     {id, content} = task
     criteria = {testId: content.identifier.testId}
-    fields = {results:1}
+    fields = {results: 1, steps: 1}
     @collection.findOne criteria, fields, {sort: {$natural: -1}}, (error, data) =>
       if error
         log error
         @event "#{@name}.#{id}.error", error
       else
-        steps = @transform(data.results)
-        steps = for step in steps
-          @summarize(step)
+        if !data.steps
+          steps = compute_steps(data.results)
+          @collection.update criteria, {$set: {steps: steps}}, (error, result) =>
+            if error
+              console.error error
+            else
+              console.log "Saved computed steps to test:", content.identifier.testId
+        else
+          steps = data.steps
         @event "#{@name}.#{id}.result", {steps: steps}
 
   # helpers
 
-  summarize: (step) ->
-    vector = step.times.toVector()
-    count = step.times.length
-    delete step.times
-    step.count = count
-    step.mean = vector.mean()
-    step.median = vector.median()
-    step.stdev = vector.stdev()
-    step.min = vector.min()
-    step.max = vector.max()
-    step
+  marshal: (name, data) ->
+    # FIXME: this only works for top level schema props.
+    output = {}
+    schema = @environment.schema().find(name)
+    for name, def of schema.properties
+      output[name] = data[name] || null
+    output
 
-  transform: (results) ->
-    data = {}
-    for node, steps of results
-      for result in steps
-        array = (data[result.concurrency] ||= [])
-        array.push(result)
-
-    merged = {}
-    for concurrency, result_list of data
-      step = merged[concurrency] = {concurrency: concurrency}
-      step.errors = step.timeouts = 0
-      step.times = []
-      for result in result_list
-        step.errors = step.errors + result.errors
-        step.timeouts = step.timeouts + result.timeouts
-
-      num_times = result_list[0].time.length
-      for i in [0..num_times-1]
-        for result in result_list
-          step.times.push result.time[i]
-
-    concurrencies = Object.keys(merged).sort (a, b) ->
-      parseInt(a) - parseInt(b)
-    out = for key in concurrencies
-      merged[key]
 
 
 
