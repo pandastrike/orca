@@ -8,7 +8,7 @@ exports.compute_steps = (results) ->
 
 summarize = (step) ->
   vector = step.times.toVector()
-  count = step.times.length
+  count = step.times.length + step.errors + step.timeouts
   delete step.times
   step.count = count
   step.mean = vector.mean()
