@@ -66,22 +66,21 @@ class TestsWorker extends Worker
   summary: (task) ->
     {id, content} = task
     criteria = {testId: content.identifier.testId}
-    fields = {results: 1, steps: 1}
+    fields = {results: 1, steps: 1, timestamp: 1}
+    fields = {}
     @collection.findOne criteria, fields, {sort: {$natural: -1}}, (error, data) =>
       if error
         log error
         @event "#{@name}.#{id}.error", error
       else
         if !data.steps
-          steps = compute_steps(data.results)
+          data.steps = compute_steps(data.results)
           @collection.update criteria, {$set: {steps: steps}}, (error, result) =>
             if error
               console.error error
             else
               console.log "Saved computed steps to test:", content.identifier.testId
-        else
-          steps = data.steps
-        @event "#{@name}.#{id}.result", {steps: steps}
+        @event "#{@name}.#{id}.result", @marshal("test_summary", data)
 
   # helpers
 

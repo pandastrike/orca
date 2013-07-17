@@ -44,20 +44,24 @@ class Index
   header: ->
     @html.h1 "Orca"
 
+
   content: ->
     @b.row =>
-      @b.column width: 3, =>
+      @html.h4 "Test Run", id: "test_identifier"
+      @html.div id: "test_details"
+    @b.row =>
+      @html.div id: "concurrency_chart"
+
+    @b.row =>
+      @b.column width: 8, =>
         @html.div id: "tests", =>
-          @html.h3 "Tests"
+          @html.h4 "Test runs"
           @html.ul id: "test_list", =>
-      @b.column width: 9, =>
-        @html.h3 "Most recent results", id: "test_identifier"
+      @b.column width: 4, =>
         @b.row =>
-          @charts()
-        @b.row =>
+          #@b.column width: 3, =>
+            #@html.div id: "error_chart"
           @b.column width: 4, =>
-            @html.div id: "error_chart"
-          @b.column width: 5, =>
             @html.div id: "summary"
 
 
@@ -67,8 +71,6 @@ class Index
       @html.h3 "Tests"
       @html.ul id: "test_list", =>
 
-  charts: ->
-    @html.div id: "concurrency_chart"
 
 module.exports = Index  
 

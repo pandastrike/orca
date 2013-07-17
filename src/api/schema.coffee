@@ -86,6 +86,10 @@ module.exports =
       extends: {$ref: "#resource"}
       mediaType: media_type("test_summary")
       properties:
+        name: {type: "string"}
+        testId: {type: "string"}
+        timestamp: {type: "integer"}
+        configuration: {$ref: "#test_configuration"}
         steps:
           type: "array"
           #items: {$ref: "#step_summary"}
