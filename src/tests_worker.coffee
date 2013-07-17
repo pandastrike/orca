@@ -75,7 +75,7 @@ class TestsWorker extends Worker
       else
         if !data.steps
           data.steps = compute_steps(data.results)
-          @collection.update criteria, {$set: {steps: steps}}, (error, result) =>
+          @collection.update criteria, {$set: {steps: data.steps}}, (error, result) =>
             if error
               console.error error
             else
