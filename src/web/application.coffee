@@ -229,6 +229,7 @@ discover (client) ->
               a.click (event) =>
                 event.preventDefault()
                 test.summary(summarizer)
+                window.scrollTo(0, 0)
               description = $("<span>#{config.description}</span>")
 
               li.append(a, description)
