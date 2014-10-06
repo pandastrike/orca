@@ -1,8 +1,6 @@
-build/
 log/
 data/
 *.log
 node_modules/
 .DS_Store
 .rdb
-packages/

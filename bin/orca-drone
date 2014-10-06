@@ -1,0 +1,4 @@
+#!/usr/bin/env coffee --nodejs --harmony
+
+drone = require "../src/drone"
+drone()
