@@ -4,9 +4,33 @@ Orca provides tools and a simple protocol for running distributed load tests of 
 
 Orca also provides a REST API service for inspecting results and a web application for visualizing them.
 
+
+> From Lance's overview
+
+### Overview
+
+ Orca provides tools and a simple protocol for running distributed load tests of any kind of service.  You supply an NPM-installable package that implements the load test, and Orca arranges for its performance across the desired number of test clients. When all steps have been completed, the leader stores the combined results in MongoDB and prints to stdout a BSON query sufficient to locate the results.
+
+Orca also provides a REST API service for inspecting results and a [web application](http://orca.pandastrike.com/) for visualizing them.
+
+### Components
+
+Load testing is managed by two kinds of components, a single leader and many nodes. The leader orchestrates the distributed load test and stores the results.  The nodes perform the actual load testing. 
+
+### Test packages
+
+An Orca test package is simply a Node.js module which exports a test class. The test class must implement a `run` method, in which the load testing work is performed.  Orca test clients install the package at runtime.
+
+### Configuration
+
+Orca uses two configuration files, an environment configuration file which specifies where components can find Redis, Mongo, and the Orca API, and a test specification configuration file which specifies the test to be run, test parameters, etc.
+
 ## Test packages
 
 An Orca test package is simply a Node.js module which exports a test class. The test class must implement a `run` method, in which the load testing work is performed.  Orca test clients install the package at runtime, using a reference provided by the test orchestrator.  Any package reference supported by NPM will work.
+
+
+> End of Lance's overview
 
 ## Orca in action
 

@@ -92,6 +92,7 @@ class TestsWorker extends Worker
     delete step.times
     step.count = count
     step.mean = vector.mean()
+    step.rps = Math.floor((1000/step.mean) * step.count)
     step.median = vector.median()
     step.stdev = vector.stdev()
     step.min = vector.min()
