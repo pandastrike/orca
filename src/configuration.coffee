@@ -15,6 +15,7 @@ if environment?
   try
     cson = (readFileSync path).toString()
     module.exports = parse cson
+    module.exports.path = root
   catch error
     abort error
 else

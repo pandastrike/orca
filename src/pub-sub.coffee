@@ -6,19 +6,22 @@ make_client = ->
   promise (resolve, reject) ->
     client = redis.createClient port, host, options
     .on "connect", -> resolve client
-    .on "error", -> reject error
+    .on "error", (error) -> reject error
 
 publish = async (channel, message) ->
   client = yield make_client()
   _publish = lift client.publish.bind(client)
   yield _publish channel, (JSON.stringify message)
+  client.quit()
 
 subscribe = async (channel) ->
   client = yield make_client()
   messages = []
   promised = null
+  # TODO: I'm actually not entirely certain we need to
+  # use bind here...
   _subscribe = lift client.subscribe.bind(client)
-  _unsubscribe = lift client.unsubscribe
+  _unsubscribe = lift client.unsubscribe.bind(client)
 
   yield _subscribe channel
 
