@@ -41,6 +41,7 @@ build = (configuration,destination) ->
   
   # copy the assets to the webapp
   copy (resolve staging, "assets/*"), webapp
+  copy (resolve staging, "favicon.ico"), webapp
   
   # add the application javascript ot the Web app
   manifest = (JSON.parse (read (resolve staging, "manifest.json")))

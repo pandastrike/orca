@@ -79,6 +79,7 @@ class Node
       
         expire = ->
           timeouts++
+          count++
           log "Request timed out."
         
         tid = setTimeout expire, timeout

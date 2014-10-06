@@ -8,32 +8,20 @@ h3 {
   margin-bottom: 1em;
 }
 
+code {
+  color: #333;
+  background: inherit;
+}
+
 .tags {
   overflow:auto;
   padding-left: 8px;
 }
 
-/* based on Bootstrap .alert */
 
-.tag {
-  float: left;
-  padding: 6px 14px 0px 14px;
-  margin-bottom: 20px;
-  margin-right: 4px;
-  color: #3a87ad;
-  background-color: #d9edf7;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-  border: 1px solid #bce8f1;
-  -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
-}
-
-.tag .close {
-  position: relative;
-  top: -2px;
-  right: -7px;
-  line-height: 20px;
+#tests {
+  /*height: 100px;*/
+  /*overflow: scroll;*/
 }
 
 #tests ul {
@@ -41,23 +29,34 @@ h3 {
   font-family: monospace;
 }
 
-#tests ul > li:first-child {
-  /*font-size: 0.9em;*/
+#tests ul > li {
+  font-size: 1em;
+  /*margin-bottom: 1em;*/
+}
+
+#test_details {
   margin-bottom: 1em;
 }
 
+#test_details span {
+  margin-right: 1em;
+}
 
 #concurrency_chart {
   height: 400px;
+  background-color: white;
 }
 
-.details {
-  display: none;
+#test_list {
+  margin-left: 0;
 }
 
+#test_list li a {
+  margin-right: 1em;
+}
 
 #error_chart {
-  height: 200px;
+  height: 300px;
 }
 
 #error_chart {
@@ -67,4 +66,5 @@ h3 {
 #summary pre {
   font-size: 0.7em;
 }
+
 

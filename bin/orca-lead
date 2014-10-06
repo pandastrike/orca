@@ -1,7 +1,7 @@
 #!/usr/bin/env coffee
 [_, _, path] = process.argv
 
-{read, log} = require "fairmont"
+{read} = require "fairmont"
 {parse} = require "cson"
 
 optimist = require("optimist")
@@ -21,10 +21,9 @@ try
   configuration = parse read argv.configuration
   environment = new Environment(configuration)
   test = parse read argv.test
-  log test
+  console.log test
 catch error
-  log "Error processing configuration file"
-  log error
+  console.log "Error processing configuration file:", error
   process.exit -1
 
 

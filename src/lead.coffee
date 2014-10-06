@@ -1,8 +1,8 @@
 # Package Modules
-{log} = require "fairmont"
 {randomKey} = require "pirate/src/keys"
-
 Publisher = require "pirate/src/channels/composite/pubsub/publisher"
+
+{compute_steps} = require "./results"
 
 class Lead
   
@@ -30,11 +30,11 @@ class Lead
       @announcements.end()
 
     @announcements.on "#{@channel}.*.error", (error) =>
-      log error
+      console.log error
 
-    log "Orca leader running."
-    log "Scenario: #{@test.name}"
-    log "Description: #{@test.description}"
+    console.log "Orca leader running."
+    console.log "Scenario: #{@test.name}"
+    console.log "Description: #{@test.description}"
 
     @environment.collection "results", (error, collection) =>
       @collection = collection
@@ -58,9 +58,9 @@ class Lead
       @nodes.push reply.replyTo
       unless @isQuorum()
         need = @test.quorum - @nodes.length
-        log "- #{reply.replyTo} joining, #{@nodes.length} nodes participating, need #{need} more"
+        console.log "- #{reply.replyTo} joining, #{@nodes.length} nodes participating, need #{need} more"
       else
-        log "- #{reply.replyTo} joining, #{@nodes.length} nodes participating, quorum reached"
+        console.log "- #{reply.replyTo} joining, #{@nodes.length} nodes participating, quorum reached"
         @remove id, join
         clearTimeout tid
         @prepare()
@@ -70,7 +70,7 @@ class Lead
       @remove id, join if id?
       id = @publish action: "announce"
       @on_reply id, join
-      log "Test #{@test.name} announced, waiting for replies"
+      console.log "Test #{@test.name} announced, waiting for replies"
       # basically, keep re-broadcasting for late-comers until we get a quorum
       tid = setTimeout announce, 5000 # 5 seconds
 
@@ -84,7 +84,7 @@ class Lead
       package: @test.package
       options: @test.options
       
-    log "Nodes are preparing for test #{@test.name}"
+    console.log "Nodes are preparing for test #{@test.name}"
 
     count = 0
     ready = (reply) =>
@@ -92,15 +92,15 @@ class Lead
         if reply.replyTo in @nodes
           need = @nodes.length - (++count)
           unless need is 0
-            log "- #{reply.replyTo} ready, waiting on #{need} more"
+            console.log "- #{reply.replyTo} ready, waiting on #{need} more"
           else
-            log "- #{reply.replyTo} ready, all nodes are ready"
+            console.log "- #{reply.replyTo} ready, all nodes are ready"
             @remove id, ready
             @start()
         else
-          log "- stray node replied: #{reply.replyTo}"
+          console.log "- stray node replied: #{reply.replyTo}"
       else
-        log "- node #{reply.replyTo} opted out"
+        console.log "- node #{reply.replyTo} opted out"
         process.exit -1
         
     @on_reply id, ready
@@ -121,22 +121,24 @@ class Lead
     testId = @generateTestId()
     timestamp = Math.round(Date.now() / 1000)
 
-    log "Starting test #{testId}"
+    console.log "Starting test #{testId}"
 
     all_complete = (results) =>
-      # TODO create result summaries
+      console.log "Computing summaries for each step"
+      steps = compute_steps(results)
       result_record =
         name: @test.name
         testId: testId
         timestamp: timestamp
         configuration: @test
         results: results
+        steps: compute_steps(results)
 
       @collection.insert result_record, {safe: true}, (error, records) =>
         if error
-          log error
+          console.log error
         else
-          log "Stored result in MongoDB: {testId: '#{records[0].testId}'}"
+          console.log "Stored result in MongoDB: {testId: '#{records[0].testId}'}"
         @shutdown()
 
     node_results = {}
@@ -148,7 +150,7 @@ class Lead
       do (i) =>
         concurrency = @test.step * i
         step_runners.push =>
-          log "Starting step #{i}, concurrency #{concurrency}"
+          console.log "Starting step #{i}, concurrency #{concurrency}"
           id = @publish
             testId: testId
             timestamp: timestamp
@@ -162,9 +164,9 @@ class Lead
               node_results[reply.replyTo].push reply.content
               need = @nodes.length - (++count)
               unless need is 0
-                log "- #{reply.replyTo} returned result, waiting on #{need} more"
+                console.log "- #{reply.replyTo} returned result, waiting on #{need} more"
               else
-                log "- #{reply.replyTo} returned result, step #{i} complete"
+                console.log "- #{reply.replyTo} returned result, step #{i} complete"
                 @remove id, stage_finished
                 # This works because of the wonky combination of 0-based indexing
                 # and 1-based step numbers.
@@ -175,46 +177,4 @@ class Lead
     step_runners[0]()
 
 
-  old: ->
-
-
-    id = @publish
-      testId: testId
-      timestamp: timestamp
-      action: "start"
-      concurrency: @test.repeat
-      #repeat: @test.repeat
-      #step: @test.step
-      timeout: @test.timeout
-    
-    count = 0; results = []
-    finished = (reply) =>
-      if reply.replyTo in @nodes
-        results.push reply.content
-        need = @nodes.length - (++count)
-        unless need is 0
-          log "- #{reply.replyTo} returned result, waiting on #{need} more"
-        else
-          log "- #{reply.replyTo} returned result, test complete"
-
-          result_record =
-            name: @test.name
-            testId: testId
-            timestamp: timestamp
-            configuration: @test
-            results: results
-          log JSON.stringify(result_record)
-          @collection.insert result_record, {safe: true}, (error, records) =>
-            if error
-              log error
-            else
-              log "Stored result in mongo"
-
-            @remove id, finished
-            @announcements.end()
-            # TODO: figure out why we don't exit naturally at this point
-            process.nextTick -> process.exit 0
-    
-    @on_reply id, finished
-    
 module.exports = Lead
