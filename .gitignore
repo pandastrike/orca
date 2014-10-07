@@ -2,5 +2,6 @@ log/
 data/
 *.log
 node_modules/
+env/
 .DS_Store
 .rdb
