@@ -1,0 +1,27 @@
+#!/bin/bash
+# This script starts up Orca and the requisite tech to make that happen.
+echo " "
+echo "================================================="
+echo "Welcome to Orca.  Spinning up requisite services."
+echo "================================================="
+echo " "
+
+echo "Starting Elasticsearch:"
+nohup src/elasticsearch-1.4.0.Beta1/bin/elasticsearch > elasticsearch.log &
+echo "Elasticsearch is running under PID $!"
+echo " "
+
+echo "Starting Kibana:"
+nohup src/kibana-4.0.0-BETA1/bin/kibana > kibana.log &
+echo "Kibana is running under PID $!"
+echo " "
+
+echo "================================================="
+echo "Launching Orca Leader. (Not currently active.)"
+echo "================================================="
+echo " "
+
+echo "================================================="
+echo "Launching Orca Workers. (Not currently active.)"
+echo "================================================="
+echo " "
