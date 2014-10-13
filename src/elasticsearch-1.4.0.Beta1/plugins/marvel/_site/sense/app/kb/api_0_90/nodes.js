@@ -1,0 +1,1 @@
+define([],function(){return function(n){n.addEndpointDescription("_nodes/hot_threads",{methods:["GET"],patterns:["_nodes/hot_threads","_nodes/{nodes}/hot_threads"]})}});

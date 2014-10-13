@@ -1,0 +1,112 @@
+[2014-10-08 10:27:42,086][INFO ][node                     ] [Dirtnap] version[1.4.0.Beta1], pid[41738], build[1f25669/2014-10-01T14:58:15Z]
+[2014-10-08 10:27:42,086][INFO ][node                     ] [Dirtnap] initializing ...
+[2014-10-08 10:27:42,090][INFO ][plugins                  ] [Dirtnap] loaded [], sites []
+[2014-10-08 10:27:44,142][INFO ][node                     ] [Dirtnap] initialized
+[2014-10-08 10:27:44,142][INFO ][node                     ] [Dirtnap] starting ...
+[2014-10-08 10:27:44,286][INFO ][transport                ] [Dirtnap] bound_address {inet[/0:0:0:0:0:0:0:0:9300]}, publish_address {inet[/192.168.0.11:9300]}
+[2014-10-08 10:27:44,313][INFO ][discovery                ] [Dirtnap] elasticsearch/j5zB6rpQQTu0Vx9vpLpjXw
+[2014-10-08 10:27:47,352][INFO ][cluster.service          ] [Dirtnap] new_master [Dirtnap][j5zB6rpQQTu0Vx9vpLpjXw][David.local][inet[/192.168.0.11:9300]], reason: zen-disco-join (elected_as_master)
+[2014-10-08 10:27:47,366][INFO ][http                     ] [Dirtnap] bound_address {inet[/0:0:0:0:0:0:0:0:9200]}, publish_address {inet[/192.168.0.11:9200]}
+[2014-10-08 10:27:47,366][INFO ][node                     ] [Dirtnap] started
+[2014-10-08 10:27:47,385][INFO ][gateway                  ] [Dirtnap] recovered [0] indices into cluster_state
+[2014-10-08 10:32:24,227][INFO ][node                     ] [Dirtnap] stopping ...
+[2014-10-08 10:32:24,241][INFO ][node                     ] [Dirtnap] stopped
+[2014-10-08 10:32:24,241][INFO ][node                     ] [Dirtnap] closing ...
+[2014-10-08 10:32:24,247][INFO ][node                     ] [Dirtnap] closed
+[2014-10-08 14:45:03,630][INFO ][node                     ] [Water Wizard] version[1.4.0.Beta1], pid[42276], build[1f25669/2014-10-01T14:58:15Z]
+[2014-10-08 14:45:03,631][INFO ][node                     ] [Water Wizard] initializing ...
+[2014-10-08 14:45:03,639][INFO ][plugins                  ] [Water Wizard] loaded [marvel], sites [marvel]
+[2014-10-08 14:45:06,259][INFO ][marvel.agent             ] [Water Wizard] collecting disabled by settings
+[2014-10-08 14:45:06,336][INFO ][node                     ] [Water Wizard] initialized
+[2014-10-08 14:45:06,336][INFO ][node                     ] [Water Wizard] starting ...
+[2014-10-08 14:45:06,483][INFO ][transport                ] [Water Wizard] bound_address {inet[/0:0:0:0:0:0:0:0:9300]}, publish_address {inet[/192.168.0.11:9300]}
+[2014-10-08 14:45:06,509][INFO ][discovery                ] [Water Wizard] elasticsearch/qavE8tJoQZOUYNY6_653MQ
+[2014-10-08 14:45:09,548][INFO ][cluster.service          ] [Water Wizard] new_master [Water Wizard][qavE8tJoQZOUYNY6_653MQ][David.local][inet[/192.168.0.11:9300]], reason: zen-disco-join (elected_as_master)
+[2014-10-08 14:45:09,570][INFO ][http                     ] [Water Wizard] bound_address {inet[/0:0:0:0:0:0:0:0:9200]}, publish_address {inet[/192.168.0.11:9200]}
+[2014-10-08 14:45:09,571][INFO ][node                     ] [Water Wizard] started
+[2014-10-08 14:45:09,575][INFO ][gateway                  ] [Water Wizard] recovered [0] indices into cluster_state
+[2014-10-08 15:18:18,785][INFO ][cluster.metadata         ] [Water Wizard] [megacorp] creating index, cause [auto(index api)], shards [5]/[1], mappings []
+[2014-10-08 15:18:19,065][DEBUG][action.index             ] [Water Wizard] [megacorp][2], node[qavE8tJoQZOUYNY6_653MQ], [P], s[STARTED]: Failed to execute [index {[megacorp][employee][1], source[_na_]}]
+org.elasticsearch.index.mapper.MapperParsingException: failed to parse, document is empty
+	at org.elasticsearch.index.mapper.DocumentMapper.parse(DocumentMapper.java:559)
+	at org.elasticsearch.index.mapper.DocumentMapper.parse(DocumentMapper.java:490)
+	at org.elasticsearch.index.shard.service.InternalIndexShard.prepareIndex(InternalIndexShard.java:413)
+	at org.elasticsearch.action.index.TransportIndexAction.shardOperationOnPrimary(TransportIndexAction.java:184)
+	at org.elasticsearch.action.support.replication.TransportShardReplicationOperationAction$AsyncShardOperationAction.performOnPrimary(TransportShardReplicationOperationAction.java:549)
+	at org.elasticsearch.action.support.replication.TransportShardReplicationOperationAction$AsyncShardOperationAction$1.run(TransportShardReplicationOperationAction.java:448)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+[2014-10-08 15:18:40,847][DEBUG][action.index             ] [Water Wizard] [megacorp][2], node[qavE8tJoQZOUYNY6_653MQ], [P], s[STARTED]: Failed to execute [index {[megacorp][employee][1], source[_na_]}]
+org.elasticsearch.index.mapper.MapperParsingException: failed to parse, document is empty
+	at org.elasticsearch.index.mapper.DocumentMapper.parse(DocumentMapper.java:559)
+	at org.elasticsearch.index.mapper.DocumentMapper.parse(DocumentMapper.java:490)
+	at org.elasticsearch.index.shard.service.InternalIndexShard.prepareIndex(InternalIndexShard.java:413)
+	at org.elasticsearch.action.index.TransportIndexAction.shardOperationOnPrimary(TransportIndexAction.java:184)
+	at org.elasticsearch.action.support.replication.TransportShardReplicationOperationAction$AsyncShardOperationAction.performOnPrimary(TransportShardReplicationOperationAction.java:549)
+	at org.elasticsearch.action.support.replication.TransportShardReplicationOperationAction$AsyncShardOperationAction$1.run(TransportShardReplicationOperationAction.java:448)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+[2014-10-08 16:31:35,876][DEBUG][action.index             ] [Water Wizard] [megacorp][2], node[qavE8tJoQZOUYNY6_653MQ], [P], s[STARTED]: Failed to execute [index {[megacorp][employee][1], source[_na_]}]
+org.elasticsearch.index.mapper.MapperParsingException: failed to parse, document is empty
+	at org.elasticsearch.index.mapper.DocumentMapper.parse(DocumentMapper.java:559)
+	at org.elasticsearch.index.mapper.DocumentMapper.parse(DocumentMapper.java:490)
+	at org.elasticsearch.index.shard.service.InternalIndexShard.prepareIndex(InternalIndexShard.java:413)
+	at org.elasticsearch.action.index.TransportIndexAction.shardOperationOnPrimary(TransportIndexAction.java:184)
+	at org.elasticsearch.action.support.replication.TransportShardReplicationOperationAction$AsyncShardOperationAction.performOnPrimary(TransportShardReplicationOperationAction.java:549)
+	at org.elasticsearch.action.support.replication.TransportShardReplicationOperationAction$AsyncShardOperationAction$1.run(TransportShardReplicationOperationAction.java:448)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+[2014-10-08 16:32:28,863][DEBUG][action.index             ] [Water Wizard] [megacorp][2], node[qavE8tJoQZOUYNY6_653MQ], [P], s[STARTED]: Failed to execute [index {[megacorp][employee][1], source[_na_]}]
+org.elasticsearch.index.mapper.MapperParsingException: failed to parse, document is empty
+	at org.elasticsearch.index.mapper.DocumentMapper.parse(DocumentMapper.java:559)
+	at org.elasticsearch.index.mapper.DocumentMapper.parse(DocumentMapper.java:490)
+	at org.elasticsearch.index.shard.service.InternalIndexShard.prepareIndex(InternalIndexShard.java:413)
+	at org.elasticsearch.action.index.TransportIndexAction.shardOperationOnPrimary(TransportIndexAction.java:184)
+	at org.elasticsearch.action.support.replication.TransportShardReplicationOperationAction$AsyncShardOperationAction.performOnPrimary(TransportShardReplicationOperationAction.java:549)
+	at org.elasticsearch.action.support.replication.TransportShardReplicationOperationAction$AsyncShardOperationAction$1.run(TransportShardReplicationOperationAction.java:448)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+[2014-10-08 16:33:02,404][DEBUG][action.index             ] [Water Wizard] [megacorp][2], node[qavE8tJoQZOUYNY6_653MQ], [P], s[STARTED]: Failed to execute [index {[megacorp][employee][1], source[_na_]}]
+org.elasticsearch.index.mapper.MapperParsingException: failed to parse, document is empty
+	at org.elasticsearch.index.mapper.DocumentMapper.parse(DocumentMapper.java:559)
+	at org.elasticsearch.index.mapper.DocumentMapper.parse(DocumentMapper.java:490)
+	at org.elasticsearch.index.shard.service.InternalIndexShard.prepareIndex(InternalIndexShard.java:413)
+	at org.elasticsearch.action.index.TransportIndexAction.shardOperationOnPrimary(TransportIndexAction.java:184)
+	at org.elasticsearch.action.support.replication.TransportShardReplicationOperationAction$AsyncShardOperationAction.performOnPrimary(TransportShardReplicationOperationAction.java:549)
+	at org.elasticsearch.action.support.replication.TransportShardReplicationOperationAction$AsyncShardOperationAction$1.run(TransportShardReplicationOperationAction.java:448)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+[2014-10-08 16:33:29,231][DEBUG][action.index             ] [Water Wizard] [megacorp][2], node[qavE8tJoQZOUYNY6_653MQ], [P], s[STARTED]: Failed to execute [index {[megacorp][employee][1], source[_na_]}]
+org.elasticsearch.index.mapper.MapperParsingException: failed to parse, document is empty
+	at org.elasticsearch.index.mapper.DocumentMapper.parse(DocumentMapper.java:559)
+	at org.elasticsearch.index.mapper.DocumentMapper.parse(DocumentMapper.java:490)
+	at org.elasticsearch.index.shard.service.InternalIndexShard.prepareIndex(InternalIndexShard.java:413)
+	at org.elasticsearch.action.index.TransportIndexAction.shardOperationOnPrimary(TransportIndexAction.java:184)
+	at org.elasticsearch.action.support.replication.TransportShardReplicationOperationAction$AsyncShardOperationAction.performOnPrimary(TransportShardReplicationOperationAction.java:549)
+	at org.elasticsearch.action.support.replication.TransportShardReplicationOperationAction$AsyncShardOperationAction$1.run(TransportShardReplicationOperationAction.java:448)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+[2014-10-08 16:44:30,873][INFO ][cluster.metadata         ] [Water Wizard] [megacorp] update_mapping [employee] (dynamic)
+[2014-10-08 17:01:34,640][INFO ][node                     ] [Water Wizard] stopping ...
+[2014-10-08 17:01:34,665][INFO ][node                     ] [Water Wizard] stopped
+[2014-10-08 17:01:34,666][INFO ][node                     ] [Water Wizard] closing ...
+[2014-10-08 17:01:34,672][INFO ][node                     ] [Water Wizard] closed
+[2014-10-08 17:01:37,572][INFO ][node                     ] [Frank Castle] version[1.4.0.Beta1], pid[42615], build[1f25669/2014-10-01T14:58:15Z]
+[2014-10-08 17:01:37,572][INFO ][node                     ] [Frank Castle] initializing ...
+[2014-10-08 17:01:37,581][INFO ][plugins                  ] [Frank Castle] loaded [marvel], sites [marvel]
+[2014-10-08 17:01:39,592][INFO ][marvel.agent             ] [Frank Castle] collecting disabled by settings
+[2014-10-08 17:01:39,689][INFO ][node                     ] [Frank Castle] initialized
+[2014-10-08 17:01:39,692][INFO ][node                     ] [Frank Castle] starting ...
+[2014-10-08 17:01:39,801][INFO ][transport                ] [Frank Castle] bound_address {inet[/0:0:0:0:0:0:0:0:9300]}, publish_address {inet[/192.168.0.11:9300]}
+[2014-10-08 17:01:39,817][INFO ][discovery                ] [Frank Castle] elasticsearch/F2xkvgJMTYepwTfSKxLiuw
+[2014-10-08 17:01:42,840][INFO ][cluster.service          ] [Frank Castle] new_master [Frank Castle][F2xkvgJMTYepwTfSKxLiuw][David.local][inet[/192.168.0.11:9300]], reason: zen-disco-join (elected_as_master)
+[2014-10-08 17:01:42,862][INFO ][http                     ] [Frank Castle] bound_address {inet[/0:0:0:0:0:0:0:0:9200]}, publish_address {inet[/192.168.0.11:9200]}
+[2014-10-08 17:01:42,862][INFO ][node                     ] [Frank Castle] started
+[2014-10-08 17:01:43,230][DEBUG][action.search.type       ] [Frank Castle] All shards failed for phase: [query]
+[2014-10-08 17:01:43,428][INFO ][gateway                  ] [Frank Castle] recovered [1] indices into cluster_state
