@@ -12,4 +12,5 @@ RUN cd orca && git checkout develop
 
 # Install dependencies.
 RUN apt-get -y update && apt-get -y install npm
+RUN npm config set registry https://registry.npmjs.org/
 RUN cd orca && npm install
