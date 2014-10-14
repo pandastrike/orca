@@ -1,0 +1,80 @@
+[2014-10-13 14:42:53,476][INFO ][node                     ] [Buzzard] version[1.4.0.Beta1], pid[49519], build[1f25669/2014-10-01T14:58:15Z]
+[2014-10-13 14:42:53,477][INFO ][node                     ] [Buzzard] initializing ...
+[2014-10-13 14:42:53,489][INFO ][plugins                  ] [Buzzard] loaded [marvel], sites [marvel]
+[2014-10-13 14:42:56,570][INFO ][marvel.agent             ] [Buzzard] collecting disabled by settings
+[2014-10-13 14:42:56,755][INFO ][node                     ] [Buzzard] initialized
+[2014-10-13 14:42:56,756][INFO ][node                     ] [Buzzard] starting ...
+[2014-10-13 14:42:56,946][INFO ][transport                ] [Buzzard] bound_address {inet[/0:0:0:0:0:0:0:0:9300]}, publish_address {inet[/192.168.0.11:9300]}
+[2014-10-13 14:42:56,974][INFO ][discovery                ] [Buzzard] elasticsearch/YRct8iRaS2mO13elE50P6w
+[2014-10-13 14:43:00,001][INFO ][cluster.service          ] [Buzzard] new_master [Buzzard][YRct8iRaS2mO13elE50P6w][David.local][inet[/192.168.0.11:9300]], reason: zen-disco-join (elected_as_master)
+[2014-10-13 14:43:00,023][INFO ][http                     ] [Buzzard] bound_address {inet[/0:0:0:0:0:0:0:0:9200]}, publish_address {inet[/192.168.0.11:9200]}
+[2014-10-13 14:43:00,023][INFO ][node                     ] [Buzzard] started
+[2014-10-13 14:43:00,716][INFO ][gateway                  ] [Buzzard] recovered [2] indices into cluster_state
+[2014-10-13 14:49:50,701][INFO ][node                     ] [Buzzard] stopping ...
+[2014-10-13 14:49:50,733][INFO ][node                     ] [Buzzard] stopped
+[2014-10-13 14:49:50,733][INFO ][node                     ] [Buzzard] closing ...
+[2014-10-13 14:49:50,737][INFO ][node                     ] [Buzzard] closed
+[2014-10-13 15:36:10,836][INFO ][node                     ] [Sagittarius] version[1.4.0.Beta1], pid[49623], build[1f25669/2014-10-01T14:58:15Z]
+[2014-10-13 15:36:10,844][INFO ][node                     ] [Sagittarius] initializing ...
+[2014-10-13 15:36:10,856][INFO ][plugins                  ] [Sagittarius] loaded [marvel], sites [marvel]
+[2014-10-13 15:36:13,820][INFO ][marvel.agent             ] [Sagittarius] collecting disabled by settings
+[2014-10-13 15:36:13,950][INFO ][node                     ] [Sagittarius] initialized
+[2014-10-13 15:36:13,951][INFO ][node                     ] [Sagittarius] starting ...
+[2014-10-13 15:36:14,118][INFO ][transport                ] [Sagittarius] bound_address {inet[/0:0:0:0:0:0:0:0:9300]}, publish_address {inet[/192.168.0.11:9300]}
+[2014-10-13 15:36:14,151][INFO ][discovery                ] [Sagittarius] elasticsearch/t9C8eb8vQPGDT5KnADkx6Q
+[2014-10-13 15:36:17,180][INFO ][cluster.service          ] [Sagittarius] new_master [Sagittarius][t9C8eb8vQPGDT5KnADkx6Q][David.local][inet[/192.168.0.11:9300]], reason: zen-disco-join (elected_as_master)
+[2014-10-13 15:36:17,213][INFO ][http                     ] [Sagittarius] bound_address {inet[/0:0:0:0:0:0:0:0:9200]}, publish_address {inet[/192.168.0.11:9200]}
+[2014-10-13 15:36:17,213][INFO ][node                     ] [Sagittarius] started
+[2014-10-13 15:36:17,929][INFO ][gateway                  ] [Sagittarius] recovered [2] indices into cluster_state
+[2014-10-13 15:36:48,014][INFO ][node                     ] [Sagittarius] stopping ...
+[2014-10-13 15:36:48,053][INFO ][node                     ] [Sagittarius] stopped
+[2014-10-13 15:36:48,053][INFO ][node                     ] [Sagittarius] closing ...
+[2014-10-13 15:36:48,056][INFO ][node                     ] [Sagittarius] closed
+[2014-10-13 15:38:20,291][INFO ][node                     ] [Masque] version[1.4.0.Beta1], pid[49636], build[1f25669/2014-10-01T14:58:15Z]
+[2014-10-13 15:38:20,292][INFO ][node                     ] [Masque] initializing ...
+[2014-10-13 15:38:20,306][INFO ][plugins                  ] [Masque] loaded [marvel], sites [marvel]
+[2014-10-13 15:38:23,320][INFO ][marvel.agent             ] [Masque] collecting disabled by settings
+[2014-10-13 15:38:23,502][INFO ][node                     ] [Masque] initialized
+[2014-10-13 15:38:23,502][INFO ][node                     ] [Masque] starting ...
+[2014-10-13 15:38:23,645][INFO ][transport                ] [Masque] bound_address {inet[/0:0:0:0:0:0:0:0:9300]}, publish_address {inet[/192.168.0.11:9300]}
+[2014-10-13 15:38:23,675][INFO ][discovery                ] [Masque] elasticsearch/V5ZneC2iQvyliqXsA41_mg
+[2014-10-13 15:38:26,701][INFO ][cluster.service          ] [Masque] new_master [Masque][V5ZneC2iQvyliqXsA41_mg][David.local][inet[/192.168.0.11:9300]], reason: zen-disco-join (elected_as_master)
+[2014-10-13 15:38:26,726][INFO ][http                     ] [Masque] bound_address {inet[/0:0:0:0:0:0:0:0:9200]}, publish_address {inet[/192.168.0.11:9200]}
+[2014-10-13 15:38:26,726][INFO ][node                     ] [Masque] started
+[2014-10-13 15:38:27,413][INFO ][gateway                  ] [Masque] recovered [2] indices into cluster_state
+[2014-10-13 15:39:49,723][INFO ][node                     ] [Masque] stopping ...
+[2014-10-13 15:39:49,760][INFO ][node                     ] [Masque] stopped
+[2014-10-13 15:39:49,760][INFO ][node                     ] [Masque] closing ...
+[2014-10-13 15:39:49,764][INFO ][node                     ] [Masque] closed
+[2014-10-13 15:43:56,762][INFO ][node                     ] [Nocturne] version[1.4.0.Beta1], pid[49659], build[1f25669/2014-10-01T14:58:15Z]
+[2014-10-13 15:43:56,763][INFO ][node                     ] [Nocturne] initializing ...
+[2014-10-13 15:43:56,776][INFO ][plugins                  ] [Nocturne] loaded [marvel], sites [marvel]
+[2014-10-13 15:43:59,769][INFO ][marvel.agent             ] [Nocturne] collecting disabled by settings
+[2014-10-13 15:43:59,942][INFO ][node                     ] [Nocturne] initialized
+[2014-10-13 15:43:59,943][INFO ][node                     ] [Nocturne] starting ...
+[2014-10-13 15:44:00,122][INFO ][transport                ] [Nocturne] bound_address {inet[/0:0:0:0:0:0:0:0:9300]}, publish_address {inet[/192.168.0.11:9300]}
+[2014-10-13 15:44:00,163][INFO ][discovery                ] [Nocturne] elasticsearch/37iK7zUGTwKcZcVSNbceAg
+[2014-10-13 15:44:03,189][INFO ][cluster.service          ] [Nocturne] new_master [Nocturne][37iK7zUGTwKcZcVSNbceAg][David.local][inet[/192.168.0.11:9300]], reason: zen-disco-join (elected_as_master)
+[2014-10-13 15:44:03,211][INFO ][http                     ] [Nocturne] bound_address {inet[/0:0:0:0:0:0:0:0:9200]}, publish_address {inet[/192.168.0.11:9200]}
+[2014-10-13 15:44:03,211][INFO ][node                     ] [Nocturne] started
+[2014-10-13 15:44:03,895][INFO ][gateway                  ] [Nocturne] recovered [2] indices into cluster_state
+[2014-10-13 15:44:34,908][INFO ][node                     ] [Nocturne] stopping ...
+[2014-10-13 15:44:34,947][INFO ][node                     ] [Nocturne] stopped
+[2014-10-13 15:44:34,947][INFO ][node                     ] [Nocturne] closing ...
+[2014-10-13 15:44:34,951][INFO ][node                     ] [Nocturne] closed
+[2014-10-13 22:35:21,872][INFO ][node                     ] [Sputnik] version[1.4.0.Beta1], pid[56017], build[1f25669/2014-10-01T14:58:15Z]
+[2014-10-13 22:35:21,873][INFO ][node                     ] [Sputnik] initializing ...
+[2014-10-13 22:35:21,884][INFO ][plugins                  ] [Sputnik] loaded [marvel], sites [marvel]
+[2014-10-13 22:35:25,089][INFO ][marvel.agent             ] [Sputnik] collecting disabled by settings
+[2014-10-13 22:35:25,236][INFO ][node                     ] [Sputnik] initialized
+[2014-10-13 22:35:25,236][INFO ][node                     ] [Sputnik] starting ...
+[2014-10-13 22:35:25,441][INFO ][transport                ] [Sputnik] bound_address {inet[/0:0:0:0:0:0:0:0:9300]}, publish_address {inet[/192.168.0.11:9300]}
+[2014-10-13 22:35:25,474][INFO ][discovery                ] [Sputnik] elasticsearch/Y32McVzfTnSNW0jCdchhvQ
+[2014-10-13 22:35:28,503][INFO ][cluster.service          ] [Sputnik] new_master [Sputnik][Y32McVzfTnSNW0jCdchhvQ][David.local][inet[/192.168.0.11:9300]], reason: zen-disco-join (elected_as_master)
+[2014-10-13 22:35:28,531][INFO ][http                     ] [Sputnik] bound_address {inet[/0:0:0:0:0:0:0:0:9200]}, publish_address {inet[/192.168.0.11:9200]}
+[2014-10-13 22:35:28,532][INFO ][node                     ] [Sputnik] started
+[2014-10-13 22:35:29,217][INFO ][gateway                  ] [Sputnik] recovered [2] indices into cluster_state
+[2014-10-13 22:37:57,761][INFO ][node                     ] [Sputnik] stopping ...
+[2014-10-13 22:37:57,805][INFO ][node                     ] [Sputnik] stopped
+[2014-10-13 22:37:57,805][INFO ][node                     ] [Sputnik] closing ...
+[2014-10-13 22:37:57,810][INFO ][node                     ] [Sputnik] closed

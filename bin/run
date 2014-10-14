@@ -16,6 +16,11 @@ nohup src/kibana-4.0.0-BETA1/bin/kibana > kibana.log &
 echo "Kibana is running under PID $!"
 echo " "
 
+echo "Starting Redis:"
+nohup src/redis-2.8.17/src/redis-server > redis.log &
+echo "Redis is running under PID $!"
+echo " "
+
 echo "================================================="
 echo "Launching Orca Leader. (Not currently active.)"
 echo "================================================="
