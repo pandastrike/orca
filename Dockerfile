@@ -12,7 +12,7 @@ RUN pacman -Syu --noconfirm git
 RUN git clone https://github.com/pandastrike/orca.git
 
 # NOTE: Switching to this branch is only needed until we merge into Master.
-RUN cd orca && git checkout develop
+RUN cd orca && git checkout feature/dockerized
 
 # Install dependencies, starting with Node technology.  Be careful with the node sub-version.
 RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.17.2/install.sh | bash
