@@ -16,7 +16,7 @@
     "redis": "^0.12.1",
     "shred": "^1.0.0-alpha-01",
     "when": "^3.5.0",
-    "coffee-script": "https://github.com/jashkenas/coffeescript.git"
+    "coffee-script": "git+https://github.com/jashkenas/coffeescript.git"
   },
   "devDependencies": {
     "amen": "0.0.1"
