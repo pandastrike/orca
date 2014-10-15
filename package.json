@@ -15,8 +15,7 @@
     "log4js": "^0.6.21",
     "redis": "^0.12.1",
     "shred": "^1.0.0-alpha-01",
-    "when": "^3.5.0",
-    "coffee-script": "git@github.com:jashkenas/coffeescript.git"
+    "when": "^3.5.0"
   },
   "devDependencies": {
     "amen": "0.0.1"
