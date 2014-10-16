@@ -1,0 +1,11 @@
+[Unit]
+Description=Spin Up Worker
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStart=/usr/bin/docker run --name worker pandapup/orca-worker
+
+[Install]
+WantedBy=multi-user.target
