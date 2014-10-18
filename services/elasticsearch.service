@@ -1,6 +1,6 @@
 [Unit]
 Description=Spin Up Elasticsearch
-After=docker.service
+After=skydns.service
 Requires=docker.service
 
 [Service]

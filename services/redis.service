@@ -1,6 +1,6 @@
 [Unit]
 Description=Spin Up Redis
-After=docker.service
+After=skydns.service
 Requires=docker.service
 
 [Service]

@@ -1,6 +1,6 @@
 [Unit]
 Description=Spin Up Worker
-After=docker.service
+After=elasticsearch.service
 Requires=docker.service
 
 [Service]

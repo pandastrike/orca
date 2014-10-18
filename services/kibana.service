@@ -1,6 +1,6 @@
 [Unit]
 Description=Spin Up Kibana 4
-After=docker.service
+After=elasticsearch.service
 Requires=docker.service
 
 [Service]
