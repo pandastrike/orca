@@ -1,5 +1,5 @@
 [Unit]
-Description=Spin Up Worker
+Description=Spin Up Orca Drone
 After=elasticsearch.service
 Requires=docker.service
 

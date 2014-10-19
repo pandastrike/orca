@@ -1,3 +1,7 @@
+#=============================================================================================
+# Elasticsearch is used to store results from the cluster's load test for end-user analysis.
+#=============================================================================================
+
 [Unit]
 Description=Spin Up Elasticsearch
 After=skydns.service
@@ -5,7 +9,13 @@ Requires=docker.service
 
 [Service]
 TimeoutStartSec=0
-ExecStart=/usr/bin/docker run --name elasticsearch dockerfile/elasticsearch
+ExecStart=/usr/bin/docker run --name -p 9200:9200 elasticsearch dockerfile/elasticsearch
+
+#=========================================
+# Register Elasticsearch with Orca's DNS.
+#=========================================
+ExecStart=dns=$(etcdctl get /dns) ; port=$(etcdctl get /dns/port) ; \
+    etcdctl set $dns:$port -d value='{"host":"elasticsearch","port":9200}'
 
 [Install]
 WantedBy=multi-user.target

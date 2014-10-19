@@ -1,3 +1,8 @@
+#=============================================================================================
+# Kibana is used to plot and analyze data collected from the cluster's load test.  Kibana
+# cannot be spun up until Elasticsearch is running.
+#=============================================================================================
+
 [Unit]
 Description=Spin Up Kibana 4
 After=elasticsearch.service
@@ -5,7 +10,13 @@ Requires=docker.service
 
 [Service]
 TimeoutStartSec=0
-ExecStart=/usr/bin/docker run --name kibana pandapup/kibana4
+ExecStart=/usr/bin/docker run --name kibana -p 5601:5601 pandapup/kibana4
+
+#=========================================
+# Register Elasticsearch with Orca's DNS.
+#=========================================
+ExecStart=dns=$(etcdctl get /dns) ; port=$(etcdctl get /dns/port) ; \
+    etcdctl set $dns:$port -d value='{"host":"kibana","port":5601}'
 
 [Install]
 WantedBy=multi-user.target
