@@ -30,3 +30,4 @@ echo '# The default application to laad.' >> kibana.yml
 echo 'defaultAppId: "discover"' >> kibana.yml
 
 echo "Configuration Complete.  Kibana is pointed at \"http://$1:9200\""
+head kibana.yml
