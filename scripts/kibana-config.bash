@@ -28,3 +28,5 @@ echo '  - { id: "settings", name: "Settings" }' >> kibana.yml
 
 echo '# The default application to laad.' >> kibana.yml
 echo 'defaultAppId: "discover"' >> kibana.yml
+
+echo "Configuration Complete."
