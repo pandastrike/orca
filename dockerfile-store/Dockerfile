@@ -1,27 +1,25 @@
-FROM base/archlinux
-# This is the Dockerfile for service SkyDNS, used to coordinate the many moving
-# pieces of Orca. Start with the Arch Linux image as the base.
+FROM dockerfile/java
+# This is the Dockerfile for the Kibana 4 visualization tool.
+# Kibana requires Java.  Start with the offical Java image, built on an Ubuntu base.
+MAINTAINER Dan Yoder (dan@pandastrike.com)
 
 #============================================
 # INSTALLATION
 #============================================
 
-# SkyDNS is powered by Google's Go.  Install Go.
-RUN pacman -Syu --noconfirm go
-RUN mkdir go
+# Pull the Kibana 4 from the Web.
+RUN curl https://download.elasticsearch.org/kibana/kibana/kibana-4.0.0-BETA1.1.zip > kibana-4.0.0-BETA1.1.zip
+RUN unzip kibana-4.0.0-BETA1.1.zip -d kibana
+RUN rm kibana-4.0.0-BETA1.1.zip
 
-# Go will also need git and Mercurial to get things done.  Install these.
-RUN pacman -Syu --noconfirm git
-RUN pacman -Syu --noconfirm mercurial
-
-# Now install SkyDNS.
-RUN export GOPATH=/go && go get github.com/skynetservices/skydns
-RUN cd go/src/github.com/skynetservices/skydns && \
-    export GOPATH=/go && go build -v
-
+# Now, install the script needed to configure Kibana.  We want to point Kibana at the
+# IP address of the Elasticsearch service.  The only way to tell it where that is
+# is to edit a .yml file.
+RUN wget --no-check-certificate https://raw.githubusercontent.com/pandastrike/orca/feature/dockerized/scripts/kibana-config.bash
+RUN chmod +x kibana-config.bash 
 
 #============================================
 # START
 #============================================
-CMD cd go/src/github.com/skynetservices/skydns && \
-    ./skydns
+
+CMD ./kibana/kibana-4.0.0-BETA1.1/bin/kibana
