@@ -2,27 +2,29 @@
 # This script writes a config file for Kibana that points it to the IP address of
 # the machine that is running Elasticsearch.
 
-cat '# Kibana is served by a backend server. This controls which port to use.' > /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
-cat 'port: 5601' >> /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
-cat ' ' >> /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
+cd /data/kibana/kibana-4.0.0-BETA1.1/config
 
-cat '# The Elasticsearch instance to use for all your queries' >> /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
-cat "elasticsearch: \"http://$1:9200\"" >> /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
-cat ' ' >> /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
+echo '# Kibana is served by a backend server. This controls which port to use.' > kibana.yml
+echo 'port: 5601' >> kibana.yml
+echo ' ' >> kibana.yml
 
-cat '# Kibana uses an index in Elasticsearch to store saved searches, visualizations' >> /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
-cat "# and dashboards. It will create an new index if it doesn't already exist." >> /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
-cat 'kibanaIndex: "kibana-int"'  >> /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
-cat ' ' >> /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
+echo '# The Elasticsearch instance to use for all your queries' >> kibana.yml
+echo "elasticsearch: \"http://$1:9200\"" >> kibana.yml
+echo ' ' >> kibana.yml
 
-cat '# Applications loaded and included into Kibana. Use the settings below to' >> /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
-cat '# customize the applications and thier names.' >> /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
-cat 'apps:' >> /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
-cat '  - { id: "discover", name: "Discover" }' >> /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
-cat '  - { id: "visualize", name: "Visualize" }' >> /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
-cat '  - { id: "dashboard", name: "Dashboard" }' >> /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
-cat '  - { id: "settings", name: "Settings" }' >> /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
-cat ' ' >> /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
+echo '# Kibana uses an index in Elasticsearch to store saved searches, visualizations' >> kibana.yml
+echo "# and dashboards. It will create an new index if it doesn't already exist." >> kibana.yml
+echo 'kibanaIndex: "kibana-int"'  >> kibana.yml
+echo ' ' >> kibana.yml
 
-cat '# The default application to laad.' >> /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
-cat 'defaultAppId: "discover"' >> /data/kibana/kibana-4.0.0-BETA1.1/config/kibana.yml
+echo '# Applications loaded and included into Kibana. Use the settings below to' >> kibana.yml
+echo '# customize the applications and thier names.' >> kibana.yml
+echo 'apps:' >> kibana.yml
+
+echo '  - { id: "discover", name: "Discover" }' >> kibana.yml
+echo '  - { id: "visualize", name: "Visualize" }' >> kibana.yml
+echo '  - { id: "dashboard", name: "Dashboard" }' >> kibana.yml
+echo '  - { id: "settings", name: "Settings" }' >> kibana.yml
+
+echo '# The default application to laad.' >> kibana.yml
+echo 'defaultAppId: "discover"' >> kibana.yml
