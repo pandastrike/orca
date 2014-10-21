@@ -16,7 +16,6 @@ TimeoutStartSec=45
 ExecStartPre=/usr/bin/etcdctl set /skydns/orca/kibana '{\"host\":\"%H\",\"port\":5601}'
 
 # Pull Orca's Kibana Docker Container
-ExecStartPre=-/usr/bin/docker rm kibana
 ExecStartPre=/usr/bin/docker pull pandapup/kibana4
 
 # Deploy Kibana
@@ -24,6 +23,7 @@ ExecStart=address=$(/usr/bin/etcdctl get /skydns/orca/elasticsearch) ; \
     /usr/bin/docker run --name kibana -p 5601:5601 pandapup/kibana4 $address
 
 
+ExecStopPost=/usr/bin/docker rm kibana
 
 [Install]
 WantedBy=multi-user.target

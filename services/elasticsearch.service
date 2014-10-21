@@ -14,12 +14,13 @@ TimeoutStartSec=0
 ExecStartPre=/usr/bin/etcdctl set /skydns/orca/elasticsearch '{\"host\":\"%H\",\"port\":9200}'
 
 # Pull Elasticsearch's Official Docker Container
-ExecStartPre=-/usr/bin/docker rm elasticsearch
 ExecStartPre=/usr/bin/docker pull dockerfile/elasticsearch
 
 # Deploy Elasticsearch
 ExecStart=/usr/bin/docker run --name elasticsearch -p 9200:9200 dockerfile/elasticsearch
 
+
+ExecStopPost=/usr/bin/docker rm elasticsearch
 
 [Install]
 WantedBy=multi-user.target

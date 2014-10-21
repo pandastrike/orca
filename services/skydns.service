@@ -17,11 +17,12 @@ TimeoutStartSec=0
 # ExecStartPre=/usr/bin/etcdctl set /dns/port 53
 
 # Pull Orca's SkyDNS Docker Container
-ExecStartPre=-/usr/bin/docker rm skydns
 ExecStartPre=/usr/bin/docker pull pandapup/skydns
 
 # Deploy SkyDNS
 ExecStart=/usr/bin/docker run --name skydns -p 53:53 pandapup/skydns
+
+ExecStopPost=/usr/bin/docker rm skydns
 
 
 [Install]
