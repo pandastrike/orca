@@ -8,14 +8,18 @@ After=skydns.service
 Requires=docker.service
 
 [Service]
-TimeoutStartSec=0
-ExecStart=/usr/bin/docker run --name -p 9200:9200 elasticsearch dockerfile/elasticsearch
+# Wait 30 seconds after SkyDNS starts to make sure it's fully online.
+TimeoutStartSec=30
 
-#=========================================
 # Register Elasticsearch with Orca's DNS.
-#=========================================
-ExecStart=dns=$(etcdctl get /dns) ; port=$(etcdctl get /dns/port) ; \
-    etcdctl set $dns:$port -d value='{"host":"elasticsearch","port":9200}'
+ExecStartPre=/usr/bin/etcdctl set /skydns/orca/elasticsearch -d value='{"host":"elasticsearch","port":9200}'
+
+# Pull Elasticsearch's Official Docker Container
+ExecStartPre=/usr/bin/docker pull dockerfile/elasticsearch
+
+# Deploy Elasticsearch
+ExecStart=/usr/bin/docker run -p 9200:9200 dockerfile/elasticsearch
+
 
 [Install]
 WantedBy=multi-user.target

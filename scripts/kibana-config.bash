@@ -9,7 +9,7 @@ echo 'port: 5601' >> kibana.yml
 echo ' ' >> kibana.yml
 
 echo '# The Elasticsearch instance to use for all your queries' >> kibana.yml
-echo "elasticsearch: \"http://$1:9200\"" >> kibana.yml
+echo "elasticsearch: \"http://$1\"" >> kibana.yml
 echo ' ' >> kibana.yml
 
 echo '# Kibana uses an index in Elasticsearch to store saved searches, visualizations' >> kibana.yml

@@ -10,9 +10,18 @@ Requires=docker.service
 
 [Service]
 TimeoutStartSec=0
-ExecStart=/usr/bin/docker run --name -p 53:53 skydns pandapup/skydns
-ExecStart=etcdctl set /dns %H
-ExecStart=etcdctl set /dns/port 53
+
+# Store DNS Address in etcd
+# ExecStartPre=/usr/bin/etcdctl setdir /dns
+# ExecStartPre=/usr/bin/etcdctl set /dns/address %H
+# ExecStartPre=/usr/bin/etcdctl set /dns/port 53
+
+# Pull Orca's SkyDNS Docker Container
+ExecStartPre=/usr/bin/docker pull pandapup/skydns
+
+# Deploy SkyDNS
+ExecStart=/usr/bin/docker run -p 53:53 pandapup/skydns
+
 
 [Install]
 WantedBy=multi-user.target
