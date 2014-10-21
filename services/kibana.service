@@ -13,13 +13,15 @@ Requires=docker.service
 TimeoutStartSec=45
 
 # Register Kibana with Orca's DNS.
-ExecStartPre=/usr/bin/etcdctl set /skydns/orca/kibana -d value='{"host":"kibana","port":5601}'
+ExecStartPre=/usr/bin/etcdctl set /skydns/orca/kibana '{\"host\":\"%H\",\"port\":5601}'
 
 # Pull Orca's Kibana Docker Container
+ExecStartPre=-/usr/bin/docker rm kibana
 ExecStartPre=/usr/bin/docker pull pandapup/kibana4
 
 # Deploy Kibana
-ExecStart=/usr/bin/docker run -p 5601:5601 pandapup/kibana4 $(/usr/bin/etcdctl get /skydns/orca/elasticsearch)
+ExecStart=address=$(/usr/bin/etcdctl get /skydns/orca/elasticsearch) ; \
+    /usr/bin/docker run --name kibana -p 5601:5601 pandapup/kibana4 $address
 
 
 
