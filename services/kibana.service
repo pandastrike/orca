@@ -21,13 +21,9 @@ ExecStartPre=-/usr/bin/docker kill kibana
 ExecStartPre=-/usr/bin/docker rm kibana
 ExecStartPre=/usr/bin/docker pull pandapup/kibana4
 
-# Find etcd endpoint so calls may be made from within the Docker container.
-ETCD_ENDPOINT="$(ifconfig docker0 | grep 'inet ' | awk '{ print $2}'):4001"
-ExecStartPre=/usr/bin/echo ${ETCD_ENDPOINT}
 
 # Deploy Kibana
-ExecStart=/usr/bin/docker run --name kibana -p 5601:5601 pandapup/kibana4 \
-      ./kibana-config.bash $KIBANA_HOST:$KIBANA_PORT
+ExecStart=/usr/bin/docker run --name kibana -p 5601:5601 pandapup/kibana4 
 
 [Install]
 WantedBy=multi-user.target

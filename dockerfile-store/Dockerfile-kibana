@@ -12,7 +12,7 @@ RUN curl https://download.elasticsearch.org/kibana/kibana/kibana-4.0.0-BETA1.1.z
 RUN unzip kibana-4.0.0-BETA1.1.zip -d kibana
 RUN rm kibana-4.0.0-BETA1.1.zip
 
-# Install Command Line JSON Parser to pull data out of etcd.
+# Install a Command Line JSON Parser to pull data out of etcd.
 RUN apt-get update && apt-get install -y jq
 
 
@@ -21,3 +21,9 @@ RUN apt-get update && apt-get install -y jq
 # is to edit a .yml file.  Note:  This will need to be adjusted when we merge into Master.
 RUN wget --no-check-certificate https://raw.githubusercontent.com/pandastrike/orca/feature/dockerized/scripts/kibana-config.bash
 RUN chmod +x kibana-config.bash
+
+#============================================
+# DEPLOY
+#============================================
+# This script configures and launches Kibana
+CMD ./kibana-config.bash
