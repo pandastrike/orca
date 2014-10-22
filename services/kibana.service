@@ -9,21 +9,28 @@ After=elasticsearch.service
 Requires=docker.service
 
 [Service]
-# Wait 45 seconds after the Elasticsearch service starts to make sure it's fully online.
-TimeoutStartSec=45
+TimeoutStartSec=0
 
 # Register Kibana with Orca's DNS.
-ExecStartPre=/usr/bin/etcdctl set /skydns/orca/kibana '{\"host\":\"%H\",\"port\":5601}'
+EnvironmentFile=/etc/environment
+ExecStartPre=/usr/bin/etcdctl set /dns/kibana/host ${COREOS_PUBLIC_IPV4}
+ExecStartPre=/usr/bin/etcdctl set /dns/kibana/port 5601
 
 # Pull Orca's Kibana Docker Container
+ExecStartPre=-/usr/bin/docker kill kibana
+ExecStartPre=-/usr/bin/docker rm kibana
 ExecStartPre=/usr/bin/docker pull pandapup/kibana4
 
+# Find Elasticsearch so we can point Kibana in the right direction.
+ExecStartPre=host=$(etcdctl get /dns/elasticsearch/host)
+ExecStartPre=port=$(etcdctl get /dns/elasticsearch/port)
+ExecStartPre=address=$host:$port
+ExecStartPre=echo $address
+
+
+
 # Deploy Kibana
-ExecStart=address=$(/usr/bin/etcdctl get /skydns/orca/elasticsearch) ; \
-    /usr/bin/docker run --name kibana -p 5601:5601 pandapup/kibana4 $address
-
-
-ExecStopPost=/usr/bin/docker rm kibana
+ExecStart=/usr/bin/docker run --name kibana -p 5601:5601 pandapup/kibana4 $address
 
 [Install]
 WantedBy=multi-user.target

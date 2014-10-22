@@ -11,16 +11,18 @@ Requires=docker.service
 TimeoutStartSec=0
 
 # Register Elasticsearch with Orca's DNS.
-ExecStartPre=/usr/bin/etcdctl set /skydns/orca/elasticsearch '{\"host\":\"%H\",\"port\":9200}'
+EnvironmentFile=/etc/environment
+ExecStartPre=/usr/bin/etcdctl set /dns/elasticsearch/host ${COREOS_PUBLIC_IPV4}
+ExecStartPre=/usr/bin/etcdctl set /dns/elasticsearch/port 9200
 
 # Pull Elasticsearch's Official Docker Container
+ExecStartPre=-/usr/bin/docker kill elasticsearch
+ExecStartPre=-/usr/bin/docker rm elasticsearch
 ExecStartPre=/usr/bin/docker pull dockerfile/elasticsearch
 
 # Deploy Elasticsearch
 ExecStart=/usr/bin/docker run --name elasticsearch -p 9200:9200 dockerfile/elasticsearch
 
-
-ExecStopPost=/usr/bin/docker rm elasticsearch
 
 [Install]
 WantedBy=multi-user.target
