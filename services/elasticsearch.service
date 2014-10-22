@@ -18,10 +18,10 @@ ExecStartPre=/usr/bin/etcdctl set /dns/elasticsearch/port 9200
 # Pull Elasticsearch's Official Docker Container
 ExecStartPre=-/usr/bin/docker kill elasticsearch
 ExecStartPre=-/usr/bin/docker rm elasticsearch
-ExecStartPre=/usr/bin/docker pull dockerfile/elasticsearch
+ExecStartPre=/usr/bin/docker pull pandapup/elasticsearch-beta
 
 # Deploy Elasticsearch
-ExecStart=/usr/bin/docker run --name elasticsearch -p 9200:9200 dockerfile/elasticsearch
+ExecStart=/usr/bin/docker run --name elasticsearch -p 9200:9200 pandapup/elasticsearch-beta
 
 
 [Install]
