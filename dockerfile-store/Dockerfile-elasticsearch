@@ -2,7 +2,7 @@ FROM dockerfile/java
 # This is the Dockerfile for Elasticsearch, a searchable storage solution used by Orca.
 # We are using the (as of this writing) the 1.4 beta version of Elasticsearch, so there
 # is no official Docker container.  Elasticsearch needs Java, so start with the
-# official Java Image.
+# official Java Image.  Note that this is based on the Ubuntu image.
 MAINTAINER Dan Yoder (dan@pandastrike.com)
 
 #============================================

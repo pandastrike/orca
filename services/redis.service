@@ -1,0 +1,23 @@
+[Unit]
+Description=Spin Up Redis
+After=skydns.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+
+# Register Redis with Orca's DNS.
+EnvironmentFile=/etc/environment
+ExecStartPre=/usr/bin/etcdctl set /dns/redis/host ${COREOS_PUBLIC_IPV4}
+ExecStartPre=/usr/bin/etcdctl set /dns/redis/port 6379
+
+# Pull Official Redis Docker Container
+ExecStartPre=-/usr/bin/docker kill redis
+ExecStartPre=-/usr/bin/docker rm redis
+ExecStartPre=/usr/bin/docker pull dockerfile/redis
+
+# Deploy Redis
+ExecStart=/usr/bin/docker run --name redis -p 6379:6379 dockerfile/redis
+
+[Install]
+WantedBy=multi-user.target
