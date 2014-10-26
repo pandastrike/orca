@@ -9,12 +9,15 @@
     "web",
     "README.md"
   ],
+  "bin": {
+    "orca-drone": "./bin/orca-drone",
+    "orca-leader": "./bin/orca-leader"
+  },
   "dependencies": {
     "c50n": "^0.7.1",
     "key-forge": "^0.1.3",
     "log4js": "^0.6.21",
     "redis": "^0.12.1",
-    "shred": "^1.0.0-alpha-01",
     "when": "^3.5.0"
   },
   "devDependencies": {

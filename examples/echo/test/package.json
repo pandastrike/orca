@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "Example Orca test package",
   "main": "index.coffee",
-  "scripts": {},
-  "license": "NA"
+  "license": "NA",
+  "dependencies": {
+    "when": "^3.5.1"
+  }
 }

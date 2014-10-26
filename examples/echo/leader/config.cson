@@ -5,6 +5,8 @@ redis:
 
 test:
   name: "test"
-  package: "test"
+  package:
+    name: "test"
+    ref: "./test"
 
 quorum: 1

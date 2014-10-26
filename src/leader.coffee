@@ -41,7 +41,7 @@ module.exports = async ->
 
   # Now we just wait for results
   until quorum == results.length
-    {result} = yield next()
+    result = yield next()
     if result?
       results.push result
       logger.debug "#{results.length} results in..."
