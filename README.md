@@ -12,7 +12,7 @@ A new version of Orca is in the works. This will be ES6-based and use Docker and
 
 ## Getting Started
 
-You can try Orca on your local machine. We'll use an example application.
+You can try Orca on your local machine. We'll use the example application, echo.
 
 1. Since this version is still under development, you'll need to clone the Orca repo and install it from source.
 
@@ -39,13 +39,13 @@ You can try Orca on your local machine. We'll use an example application.
 4. In a new shell, start the leader.
 
   ```
-  (cd echo/leader && orca-leader .)
+  (cd echo/leader && /path/to/orca-leader .)
   ```
 
-5. In a separate shell, start a drone. We also have to set the `NODE_PATH` variable, so that Node will look for locally installed modules.
+5. In a separate shell, start a drone. The drone places a `node_modules/` directory with the configuration file.  We need to add the path to this directory to the `NODE_PATH` variable. We do this because Node will look for modules that have been installed locally on the drone for testing. `NODE_PATH` is a series of colon-delimited paths.
 
   ```
-  (cd echo/drone && NODE_PATH=$NODE_PATH:./node_modules orca-drone .)
+  (cd echo/drone && NODE_PATH=$NODE_PATH:./node_modules /path/to/orca-drone .)
   ```
 
 The leader will wait for the drone to install the test package (which is in `test`) and then run a simple test, verifying that the echo server is working.
