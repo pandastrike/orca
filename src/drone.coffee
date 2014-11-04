@@ -18,7 +18,7 @@ module.exports = async ->
   logger.debug "Awaiting test announcement..."
   {announce, channels} = yield next()
   if announce? && channels?
-    logger.debug "Test #{announce.name} announced..."
+    logger.debug "Test \"#{announce.name}\" announced..."
   yield unsubscribe()
 
   {next, unsubscribe} = yield subscribe channels.leader
@@ -44,6 +44,6 @@ module.exports = async ->
   catch error
     logger.debug "Test failed to run, sending error result"
     logger.debug error
-    yield logger.publish channels.drones, {error}
+    yield publish channels.drones, {error}
 
   yield unsubscribe()
