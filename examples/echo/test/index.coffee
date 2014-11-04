@@ -9,7 +9,7 @@ module.exports =
     @logger.debug "Running test..."
 
     promise (resolve, reject) =>
-      to = "hello";  from = ""
+      to = "Pandas Are Awesome.";  from = ""
 
       client = ((require "net").createConnection 1337)
 

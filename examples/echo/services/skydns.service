@@ -1,0 +1,37 @@
+#===============================================================================
+# Orca - SkyDNS
+#===============================================================================
+# This unit is part of the Orca project. It spins up a server running skyDNS, a
+# DNS service we use to find services in our CoreOS cluster.  It's great
+# because it keeps track of all the moving parts that power Orca. This service
+# is started first so all other services can find each other.
+
+[Unit]
+Description=Spin Up SkyDNS
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+
+ExecStartPre=/usr/bin/echo "========================"
+ExecStartPre=/usr/bin/echo "  New Service Starting"
+ExecStartPre=/usr/bin/echo "========================"
+
+# Display this service's public IP address.
+EnvironmentFile=/etc/environment
+ExecStartPre=/usr/bin/echo "Public IP Address: ${COREOS_PUBLIC_IPV4}"
+
+# Pull Orca's SkyDNS Docker Container.
+ExecStartPre=/usr/bin/docker pull pandapup/skydns
+
+# Configure SkyDNS via its etcd interface.  It accepts a JSON string.
+#ExecStartPre=/usr/bin/etcdctl set skydns/config \
+    #'{"dns_addr":"${COREOS_PUBLIC_IPV4}:53", "domain":"orca", "nameservers": ["8.8.8.8:53"]}'
+
+# Deploy SkyDNS
+ExecStart=/usr/bin/docker run --name skydns -p 53:53 pandapup/skydns
+
+
+[Install]
+WantedBy=multi-user.target
