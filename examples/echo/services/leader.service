@@ -1,5 +1,5 @@
 #===============================================================================
-# Orca - SkyDNS
+# Orca - Leader -> Echo Demo
 #===============================================================================
 # This unit is part of the Orca project. It spins up a server running skyDNS, a
 # DNS service we use to find services in our CoreOS cluster.  It's great
@@ -7,9 +7,7 @@
 # is started first so all other services can find each other.
 
 [Unit]
-Description=Spin Up SkyDNS
-After=docker.service
-Before=redis.service
+Description=Spin Up Leader
 
 [Service]
 TimeoutStartSec=0
@@ -24,18 +22,17 @@ ExecStartPre=/usr/bin/echo "Public IP Address: ${COREOS_PUBLIC_IPV4}"
 ExecStartPre=/usr/bin/echo "Private IP Address: ${COREOS_PRIVATE_IPV4}"
 
 
-# Pull Orca's SkyDNS Docker Container.
-ExecStartPre=-/usr/bin/docker kill skydns
-ExecStartPre=-/usr/bin/docker rm skydns
-ExecStartPre=/usr/bin/docker pull pandapup/skydns
+# Pull Orca's Leader Docker Container.
+ExecStartPre=-/usr/bin/docker kill leader
+ExecStartPre=-/usr/bin/docker rm leader
+ExecStartPre=/usr/bin/docker pull pandapup/orca_echo_leader
 
-# Configure SkyDNS via its etcd interface.  It accepts a JSON string.
-ExecStartPre=/usr/bin/etcdctl set /skydns/config \
-    '{"domain":"orca", "nameservers": ["8.8.8.8:53"]}'
-
-# Deploy SkyDNS.  Use the "-machines" flag to point it at the etcd endpoint.
-ExecStart=/usr/bin/docker run --name skydns -p 53:53 pandapup/skydns \
-  /skydns -machines=${COREOS_PRIVATE_IPV4}:4001
+# Deploy the Leader.
+ExecStart=/usr/bin/docker run --name leader pandapup/orca_echo_leader /bin/bash -c \
+  "cd orca && \
+  git checkout coreos-echo && git pull && npm install && \
+  cd examples/echo/leader && \
+  /orca/bin/orca-leader ."
 
 [Install]
 WantedBy=multi-user.target

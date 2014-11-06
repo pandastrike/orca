@@ -26,8 +26,11 @@ RUN cd go/src/github.com/skynetservices/skydns && \
     export GOPATH=/go && go build -v
 
 
+# Move the binary executable to the top-level of the container so it is easy to call.
+RUN cp go/src/github.com/skynetservices/skydns/skydns .
+
 #============================================
 # START
 #============================================
-CMD cd go/src/github.com/skynetservices/skydns && \
-    ./skydns
+# We cannot start SkyDNS directly because we need to tell it that the etcd
+# endpoint within this Docker container is not standard for a bare CoreOS machine.

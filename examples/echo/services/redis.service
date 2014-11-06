@@ -2,24 +2,33 @@
 # Orca - Redis
 #===============================================================================
 # This unit is part of the Orca project. It spins up a server running Redis, a
-# distributed key-value store.  Using Redis's publish-submit mechanism (pub-sub),
-# Orca Drones can communicate with each other and the Leader concerning the test
-# results and the health of the swarm.  This service is started second, before
-# the Leader and Drones but after SkyDNS.
+# distributed key-value store.  Using Redis's publish-subscribe mechanism
+# (pub-sub), Orca Drones can communicate with each other and the Leader about
+# the test results and the health of the swarm.  This service is started second,
+# after SkyDNS but before the Leader and Drones.
 
 [Unit]
 Description=Spin Up Redis
-After=skydns.service
-Requires=docker.service
-Requires=skydns.service
+Before=leader.service
+
 
 [Service]
 TimeoutStartSec=0
 
-# Register Redis with Orca's DNS.
+ExecStartPre=/usr/bin/echo "========================"
+ExecStartPre=/usr/bin/echo "  New Service Starting"
+ExecStartPre=/usr/bin/echo "========================"
+
+# Display this service's public IP address.
 EnvironmentFile=/etc/environment
-ExecStartPre=/usr/bin/etcdctl set local/skydns/redis \
-    '{"host":"${COREOS_PUBLIC_IPV4}","port":6379}'
+ExecStartPre=/usr/bin/echo "Public IP Address: ${COREOS_PUBLIC_IPV4}"
+ExecStartPre=/usr/bin/echo "Private IP Address: ${COREOS_PRIVATE_IPV4}"
+
+# Register Redis with Orca's DNS.
+ExecStartPre=/usr/bin/etcdctl set /skydns/orca/redis \
+    '{"host":"${COREOS_PRIVATE_IPV4}"}'
+
+
 
 # Pull Official Redis Docker Container
 ExecStartPre=-/usr/bin/docker kill redis

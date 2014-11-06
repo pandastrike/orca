@@ -1,5 +1,18 @@
+#===============================================================================
+# Orca - Echo Example App
+#===============================================================================
+# This CSON file lets us configure the Orca Leader.  The Leader is responsible
+# for annoucing tests, gathering Drones until a quorum is reached, and then
+# collecting the results.  Communication is mediated by Redis publish-subscribe
+# mechanics.
+
+# The Leader finds the Redis service running in the CoreOS cluster.  We rely on
+# SkyDNS to provide the final IP address. Tests are built as Node modules,
+# complete with npm-maintained dependencies.  An arbitrary number of Drones may
+# be requested here, though Echo needs only one as a demo.
+
 redis:
-  host: "localhost"
+  host: "redis.orca"
   port: 6379
   options: {}
 
@@ -7,6 +20,6 @@ test:
   name: "test"
   package:
     name: "test"
-    ref: "./test"
+    ref: "../test"
 
 quorum: 1
