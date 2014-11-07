@@ -30,7 +30,6 @@ ExecStartPre=/usr/bin/docker pull pandapup/orca_echo_leader
 # Deploy the Leader.
 ExecStart=/usr/bin/docker run --name leader pandapup/orca_echo_leader /bin/bash -c \
   "source ~/.nvm/nvm.sh && nvm use 0.11 && \
-  npm install -g jashkenas/coffee-script && \
   cd orca && \
   git checkout coreos-echo && git pull && npm install && \
   cd examples/echo/leader && \
