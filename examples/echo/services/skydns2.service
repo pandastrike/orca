@@ -1,7 +1,7 @@
 #===============================================================================
 # Orca - SkyDNS
 #===============================================================================
-# This unit is part of the Orca project. It spins up a container running skyDNS, a
+# This unit is part of the Orca project. It spins up a server running skyDNS, a
 # DNS service we use to find services in our CoreOS cluster.  It's great
 # because it keeps track of all the moving parts that power Orca. This service
 # is started first so all other services can find each other.
@@ -9,7 +9,7 @@
 [Unit]
 Description=Spin Up SkyDNS
 After=docker.service
-Before=skydock.service
+Before=redis.service
 
 [Service]
 TimeoutStartSec=0
@@ -27,24 +27,18 @@ ExecStartPre=/usr/bin/echo "Private IP Address: ${COREOS_PRIVATE_IPV4}"
 # Pull Orca's SkyDNS Docker Container.
 ExecStartPre=-/usr/bin/docker kill skydns
 ExecStartPre=-/usr/bin/docker rm skydns
-ExecStartPre=/usr/bin/docker pull crosbymichael/skydns
+ExecStartPre=/usr/bin/docker pull pandapup/skydns
 
-#======================
-# Deploy SkyDNS.
-#======================
-# We use SkyDNS with the Skydock system developed by Michael Crosby.
-# This container binds its port 53 (with the UDP protocol that DNS queries use)
-# to the docker0 bridge IP Address so SkyDNS can see all the containers.  URL's that
-# need to be routed by an authoritative DNS are routed to Google's DNS.  The "fake"
-# domain we use to reference Orca services is ".orca".
+# Configure SkyDNS via its etcd interface.  It accepts a JSON string.
+ExecStartPre=/usr/bin/etcdctl set /skydns/config \
+    '{"domain":"orca", "nameservers": ["8.8.8.8:53"]}'
 
-ExecStart=/usr/bin/docker run --dns 172.17.42.1 \
-    -p 172.17.42.1:53:53/udp \
-    -p 8080:8080 \
-    --name skydns crosbymichael/skydns \
-    -nameserver 8.8.8.8:53 \
-    -domain orca
-
+# Deploy SkyDNS.  Use the "-machines" flag to point it at the etcd endpoint.
+ExecStart=/usr/bin/docker run \
+  --dns 172.17.42.1 \
+  -p 172.17.42.1:53:53 \
+  --name skydns pandapup/skydns \
+  /skydns -machines=${COREOS_PRIVATE_IPV4}:4001
 
 [Install]
 WantedBy=multi-user.target

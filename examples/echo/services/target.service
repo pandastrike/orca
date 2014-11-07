@@ -25,10 +25,6 @@ EnvironmentFile=/etc/environment
 ExecStartPre=/usr/bin/echo "Public IP Address: ${COREOS_PUBLIC_IPV4}"
 ExecStartPre=/usr/bin/echo "Private IP Address: ${COREOS_PRIVATE_IPV4}"
 
-# Register the Echo Server with Orca's DNS.
-ExecStartPre=/usr/bin/etcdctl set /skydns/orca/target \
-    '{"host":"${COREOS_PRIVATE_IPV4}"}'
-
 
 # Pull the Target Service Docker Container.
 ExecStartPre=-/usr/bin/docker kill target
@@ -36,7 +32,7 @@ ExecStartPre=-/usr/bin/docker rm target
 ExecStartPre=/usr/bin/docker pull pandapup/orca_echo_target
 
 # Deploy the Target Service
-ExecStart=/usr/bin/docker run --name target -p 1337:1337 pandapup/orca_echo_target /bin/bash -c \
+ExecStart=/usr/bin/docker run --dns 172.17.42.1 --name target -p 1337:1337 pandapup/orca_echo_target /bin/bash -c \
   "cd orca && \
   git pull && npm install && \
   cd examples/echo/target-app && \

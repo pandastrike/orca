@@ -27,13 +27,14 @@ ExecStartPre=-/usr/bin/docker kill leader
 ExecStartPre=-/usr/bin/docker rm leader
 ExecStartPre=/usr/bin/docker pull pandapup/orca_echo_leader
 
-# Deploy the Leader.
-ExecStart=/usr/bin/docker run --name leader pandapup/orca_echo_leader /bin/bash -c \
+# Deploy the Leader.  Until newer NodeJS and CoffeeScript packages are published,
+# we'll need the "source" line as a prefix to any of these commands.
+ExecStart=/usr/bin/docker run --dns 172.17.42.1 --name leader pandapup/orca_echo_leader /bin/bash -c \
   "source ~/.nvm/nvm.sh && nvm use 0.11 && \
   cd orca && \
   git checkout coreos-echo && git pull && npm install && \
   cd examples/echo/leader && \
-  /orca/bin/orca-leader ."
+  coffee --nodejs --harmony /orca/bin/orca-leader ."
 
 [Install]
 WantedBy=multi-user.target

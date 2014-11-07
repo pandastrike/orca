@@ -12,7 +12,7 @@
 # be requested here, though Echo needs only one as a demo.
 
 redis:
-  host: "redis.orca"
+  host: "redis.dev.orca"
   port: 6379
   options: {}
 
