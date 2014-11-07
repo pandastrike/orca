@@ -38,5 +38,5 @@ RUN cd orca && git checkout coreos-echo
 # Install all modules / dependencies.
 RUN cd orca && \
     source ~/.nvm/nvm.sh && nvm use 0.11 && \
-    npm install -g coffee-script && \
+    npm install -g jashkenas/coffee-script && \
     npm install
