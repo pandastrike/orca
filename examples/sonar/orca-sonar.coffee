@@ -54,7 +54,12 @@ queryETCD = (names) ->
     path: search_path
 
   console.log "Accessing etcd @ http://#{config.host}:#{config.port}#{config.path}"
-  run(httpGenerator config, resume)
+
+  # Define generator that forces synchronous behavior from the http module.
+  gen = httpGenerator()
+  # Load in the configuration of the http request using next()
+  gen.next config
+  gen.next()
 
 
 
@@ -72,17 +77,12 @@ reversePath = (array) ->
   return temp
 
 
-run = (gen) ->
-  iter = gen config, resume
-
-  resume = (callbackValue) ->
-    iter.next callbackValue
-
-  iter.next()
 
 
-httpGenerator = (config, resume) ->
+httpGenerator = ->
   # This generator lets us perform an http request with synchronus behavior.
+  # The first yield is just to accept "config" from the outside.
+  config = yield 200
   yield httpCall config, resume
 
 httpCall = (config) ->
