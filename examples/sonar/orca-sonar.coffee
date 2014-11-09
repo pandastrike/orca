@@ -22,7 +22,7 @@ module.exports =
 
     # Parse the url.
     names = parseURL url
-    console.log "The tokens from the URL are the following: #{names}"
+
     # Access etcd and retrieve the JSON object used to register services.
     queryETCD names
 
@@ -75,6 +75,6 @@ reversePath = (array) ->
   # the key-store in etcd.  'orca-sonar' is the namespace reserved by this module.
   temp = "/v2/keys/orca-sonar"
   for i in [array.length - 1 .. 0]
-    temp + array[i] + "/"
+    temp += array[i] + "/"
 
   return temp
