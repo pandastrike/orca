@@ -56,6 +56,7 @@ queryETCD = (names) ->
   console.log "Accessing etcd @ http://#{config.host}:#{config.port}#{config.path}"
   http.request config, (res) ->
     body = ''
+    console.log "Pre2 -> Got response: #{body}"
 
     res.on 'data', (chunk) ->
         body += chunk
