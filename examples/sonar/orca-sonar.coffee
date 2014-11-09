@@ -60,6 +60,7 @@ queryETCD = (names) ->
   # Load in the configuration of the http request using next()
   gen.next config
   gen.next()
+  gen.next()
 
 
 
@@ -84,6 +85,7 @@ httpGenerator = ->
   # The first yield is just to accept "config" from the outside.
   config = yield 200
   yield httpCall config
+  yield 300
 
 httpCall = (config) ->
   http.request config, (res) ->
