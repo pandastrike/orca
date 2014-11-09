@@ -55,14 +55,11 @@ queryETCD = (names) ->
 
   console.log "Accessing etcd @ http://#{config.host}:#{config.port}#{config.path}"
   http.request config, (res) ->
-    body = ''
-
     res.on 'data', (chunk) ->
-        body += chunk
+      console.log "Got response: #{chunk}"
+      etcdRecord = JSON.parse body
 
-    res.on 'end', () ->
-        etcdRecord = JSON.parse body
-        console.log "Got response: #{body}"
+
 
 
 
