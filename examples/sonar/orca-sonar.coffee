@@ -54,7 +54,8 @@ queryETCD = (names) ->
     path: search_path
 
   console.log "Accessing etcd @ http://#{config.host}:#{config.port}#{config.path}"
-  httpGenerator config
+  call = httpGenerator config
+  call.next()
 
 
 
