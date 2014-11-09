@@ -88,8 +88,7 @@ httpGenerator = ->
 httpCall = (config) ->
   http.request config, (res) ->
     body = ''
-    console.log res
-    res.setEncoding 'utf8'
+    console.log "Callback Started"
 
     res.on 'data', (chunk) ->
       body += chunk
