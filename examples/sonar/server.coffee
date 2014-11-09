@@ -1,6 +1,6 @@
 dns = require './orca-sonar.coffee'
 
-sampleURL = payload.test
+sampleURL = "payload.test"
 
 #{host, port} = dns.lookup sampleURL
 reply = dns.lookup sampleURL
