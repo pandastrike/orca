@@ -17,6 +17,7 @@ http = require 'http'
 #=========================
 module.exports =
   lookup: (url) ->
+    console.log "Receieved URL: #{url}"
     # This function is passed a human friendly URL that specifies a requested
     # service.  We need to return an IP Address.
 
@@ -55,11 +56,14 @@ queryETCD = (names) ->
 
   console.log "Accessing etcd @ http://#{config.host}:#{config.port}#{config.path}"
   http.request config, (res) ->
+    body = ''
+
     res.on 'data', (chunk) ->
-      console.log "Got response: #{chunk}"
-      etcdRecord = JSON.parse body
+        body += chunk
 
-
+    res.on 'end', () ->
+        etcdRecord = JSON.parse body
+        console.log "Got response: #{body}"
 
 
 
