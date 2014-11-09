@@ -54,20 +54,8 @@ queryETCD = (names) ->
     path: search_path
 
   console.log "Accessing etcd @ http://#{config.host}:#{config.port}#{config.path}"
-  http.request config, (res) ->
-    body = ''
-    console.log res
-    res.setEncoding 'utf8'
+  httpGenerator config
 
-    res.on 'data', (chunk) ->
-      body += chunk
-      console.log "Pre -> Got response: #{body}"
-
-    res.on 'end', () ->
-      etcdRecord = JSON.parse body
-      console.log "Got response: #{body}"
-
-  console.log "This is after the request."
 
 
 
@@ -81,3 +69,22 @@ reversePath = (array) ->
     temp += array[i] + "/"
 
   return temp
+
+
+httpGenerator = (config) ->
+  # This generator lets us perform an http request with synchronus behavior.
+  yield httpCall config
+
+httpCall = (config) ->
+  http.request config, (res) ->
+    body = ''
+    console.log res
+    res.setEncoding 'utf8'
+
+    res.on 'data', (chunk) ->
+      body += chunk
+      console.log "Pre -> Got response: #{body}"
+
+    res.on 'end', () ->
+      etcdRecord = JSON.parse body
+      console.log "Got response: #{body}"
