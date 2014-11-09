@@ -59,6 +59,7 @@ queryETCD = (names) ->
 
     res.on 'data', (chunk) ->
         body += chunk
+        console.log "Pre -> Got response: #{body}"
 
     res.on 'end', () ->
         etcdRecord = JSON.parse body
