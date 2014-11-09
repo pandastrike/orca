@@ -73,7 +73,7 @@ reversePath = (array) ->
   # This function takes an array and forges a string from its reversed elements.
   # The initial string is neccessary to access etcd values. "/v2/keys" accesses
   # the key-store in etcd.  'orca-sonar' is the namespace reserved by this module.
-  temp = "/v2/keys/orca-sonar"
+  temp = "/v2/keys/orca-sonar/"
   for i in [array.length - 1 .. 0]
     temp += array[i] + "/"
 
