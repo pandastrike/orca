@@ -83,7 +83,7 @@ httpGenerator = ->
   # This generator lets us perform an http request with synchronus behavior.
   # The first yield is just to accept "config" from the outside.
   config = yield 200
-  yield httpCall config, resume
+  yield httpCall config
 
 httpCall = (config) ->
   http.request config, (res) ->
