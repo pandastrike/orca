@@ -31,7 +31,7 @@ ExecStartPre=-/usr/bin/docker rm redis
 ExecStartPre=/usr/bin/docker pull dockerfile/redis
 
 # Deploy Redis
-ExecStart=/usr/bin/docker run --dns 172.17.42.1 --name redis -p 6379:6379 dockerfile/redis
+ExecStart=/usr/bin/docker run --name redis -p 6379:6379 dockerfile/redis
 
 [Install]
 WantedBy=multi-user.target

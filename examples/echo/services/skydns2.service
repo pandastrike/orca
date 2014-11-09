@@ -35,8 +35,7 @@ ExecStartPre=/usr/bin/etcdctl set /skydns/config \
 
 # Deploy SkyDNS.  Use the "-machines" flag to point it at the etcd endpoint.
 ExecStart=/usr/bin/docker run \
-  --dns 172.17.42.1 \
-  -p 172.17.42.1:53:53 \
+  -p 127.0.0.1:53:53/udp \
   --name skydns pandapup/skydns \
   /skydns -machines=${COREOS_PRIVATE_IPV4}:4001
 

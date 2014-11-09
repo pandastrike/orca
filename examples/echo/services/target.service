@@ -32,7 +32,7 @@ ExecStartPre=-/usr/bin/docker rm target
 ExecStartPre=/usr/bin/docker pull pandapup/orca_echo_target
 
 # Deploy the Target Service
-ExecStart=/usr/bin/docker run --dns 172.17.42.1 --name target -p 1337:1337 pandapup/orca_echo_target /bin/bash -c \
+ExecStart=/usr/bin/docker run --name target -p 1337:1337 pandapup/orca_echo_target /bin/bash -c \
   "cd orca && \
   git pull && npm install && \
   cd examples/echo/target-app && \

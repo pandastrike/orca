@@ -1,0 +1,2 @@
+a = 2
+console.log a + process.argv[2]
