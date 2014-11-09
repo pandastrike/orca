@@ -1,4 +1,4 @@
-dns = require 'orca-sonar.coffee'
+dns = require './orca-sonar.coffee'
 
 sampleURL = payload.test
 
