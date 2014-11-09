@@ -17,13 +17,12 @@ http = require 'http'
 #=========================
 module.exports =
   lookup: (url) ->
-    console.log "Receieved URL: #{url}"
     # This function is passed a human friendly URL that specifies a requested
     # service.  We need to return an IP Address.
 
     # Parse the url.
     names = parseURL url
-
+    console.log "The tokens from the URL are the following: #{names}"
     # Access etcd and retrieve the JSON object used to register services.
     queryETCD names
 
