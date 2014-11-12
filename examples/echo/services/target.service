@@ -24,7 +24,7 @@ ExecStartPre=/usr/bin/echo "========================"
 EnvironmentFile=/etc/environment
 ExecStartPre=/usr/bin/echo "Public IP Address: ${COREOS_PUBLIC_IPV4}"
 ExecStartPre=/usr/bin/echo "Private IP Address: ${COREOS_PRIVATE_IPV4}"
-ExecStartPre=/usr/bin/etcdctl set /skydns/orca/test \
+ExecStartPre=/usr/bin/etcdctl set /skydns/orca/target \
     '{"host":"${COREOS_PUBLIC_IPV4}", "port":1337}'
 
 
