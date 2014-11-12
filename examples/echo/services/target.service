@@ -20,10 +20,12 @@ ExecStartPre=/usr/bin/echo "========================"
 ExecStartPre=/usr/bin/echo "  New Service Starting"
 ExecStartPre=/usr/bin/echo "========================"
 
-# Display this service's public IP address.
+# Display this service's IP address and register it with Orca's DNS.
 EnvironmentFile=/etc/environment
 ExecStartPre=/usr/bin/echo "Public IP Address: ${COREOS_PUBLIC_IPV4}"
 ExecStartPre=/usr/bin/echo "Private IP Address: ${COREOS_PRIVATE_IPV4}"
+ExecStartPre=/usr/bin/etcdctl set /skydns/orca/test \
+    '{"host":"${COREOS_PUBLIC_IPV4}", "port":1337}'
 
 
 # Pull the Target Service Docker Container.

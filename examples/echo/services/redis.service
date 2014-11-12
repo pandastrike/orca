@@ -19,10 +19,12 @@ ExecStartPre=/usr/bin/echo "========================"
 ExecStartPre=/usr/bin/echo "  New Service Starting"
 ExecStartPre=/usr/bin/echo "========================"
 
-# Display this service's public IP address.
+# Display this service's IP address and register it with Orca's DNS.
 EnvironmentFile=/etc/environment
 ExecStartPre=/usr/bin/echo "Public IP Address: ${COREOS_PUBLIC_IPV4}"
 ExecStartPre=/usr/bin/echo "Private IP Address: ${COREOS_PRIVATE_IPV4}"
+ExecStartPre=/usr/bin/etcdctl set /skydns/orca/redis \
+    '{"host":"${COREOS_PUBLIC_IPV4}", "port":6379}'
 
 
 # Pull Official Redis Docker Container
@@ -30,7 +32,7 @@ ExecStartPre=-/usr/bin/docker kill redis
 ExecStartPre=-/usr/bin/docker rm redis
 ExecStartPre=/usr/bin/docker pull dockerfile/redis
 
-# Deploy Redis
+# Deploy Redis.  This container is linked with the SkyDNS container.
 ExecStart=/usr/bin/docker run --name redis -p 6379:6379 dockerfile/redis
 
 [Install]

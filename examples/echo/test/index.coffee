@@ -11,7 +11,7 @@ module.exports =
     promise (resolve, reject) =>
       to = "Pandas Are Awesome.";  from = ""
 
-      client = ((require "net").createConnection 1337, target.dev.orca)
+      client = ((require "net").createConnection 1337, target.orca)
 
       .on "connect", =>
         @logger.debug "Sending message: #{to}"

@@ -31,13 +31,13 @@ ExecStartPre=/usr/bin/docker pull pandapup/skydns
 
 # Configure SkyDNS via its etcd interface.  It accepts a JSON string.
 ExecStartPre=/usr/bin/etcdctl set /skydns/config \
-    '{"domain":"orca", "nameservers": ["8.8.8.8:53"]}'
+    '{"dns_addr":"0.0.0.0:53", "domain":"orca", "nameservers": ["8.8.8.8:53"]}'
 
 # Deploy SkyDNS.  Use the "-machines" flag to point it at the etcd endpoint.
 ExecStart=/usr/bin/docker run \
-  -p 127.0.0.1:53:53/udp \
+  -p 53:53 \
   --name skydns pandapup/skydns \
   /skydns -machines=${COREOS_PRIVATE_IPV4}:4001
 
-[Install]
-WantedBy=multi-user.target
+[X-Fleet]
+Global=true

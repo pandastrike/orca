@@ -12,15 +12,16 @@ MAINTAINER Dan Yoder (dan@pandastrike.com)
 # INSTALLATION
 #============================================
 
-# SkyDNS is powered by Google's Go.  Install Go.
-RUN pacman -Syu --noconfirm go
+# Update Arch pacman
+RUN pacman -Syu --noconfirm
+
+# SkyDNS is powered by Google's Go.  Install Go, its dependancies git and
+# mercurial, and utilities that are useful to have for debugging.
+RUN pacman -S --noconfirm go git mercurial dnsutils tmux net-tools socat lsof tree vim
 RUN mkdir go
 
-# Go will also need git and Mercurial to get things done.  Install these.
-RUN pacman -Syu --noconfirm git
-RUN pacman -Syu --noconfirm mercurial
 
-# Now install SkyDNS.
+# Now install SkyDNS.  This builds a binary executable.
 RUN export GOPATH=/go && go get github.com/skynetservices/skydns
 RUN cd go/src/github.com/skynetservices/skydns && \
     export GOPATH=/go && go build -v
@@ -32,5 +33,5 @@ RUN cp go/src/github.com/skynetservices/skydns/skydns .
 #============================================
 # START
 #============================================
-# We cannot start SkyDNS directly because we need to tell it that the etcd
-# endpoint within this Docker container is not standard for a bare CoreOS machine.
+# We should not start SkyDNS here directly because we need to feed in configuration
+# data at runtime inside the *.service file.

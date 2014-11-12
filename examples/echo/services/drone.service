@@ -1,13 +1,14 @@
 #===============================================================================
-# Orca - Leader -> Echo Demo
+# Orca - Drone -> Echo Demo
 #===============================================================================
-# This unit is part of the Orca project. It spins up an Orca Leader. The Leader
-# is responsible for annoucing tests, gathering Drones until a quorum is reached,
-# and then collecting the results.
-
+# This unit is part of the Orca project. It spins up an Orca Drone. Drones are
+# agents in the Orca cluster that receive istructions to download tests using
+# npm.  Once a quorum is reached, they are instructed to launch a test againt
+# a target service.  They report their results to the Leader where they are
+# aggregated.
 
 [Unit]
-Description=Spin Up Leader
+Description=Spin Up Drone
 
 [Service]
 TimeoutStartSec=0
@@ -22,12 +23,12 @@ ExecStartPre=/usr/bin/echo "Public IP Address: ${COREOS_PUBLIC_IPV4}"
 ExecStartPre=/usr/bin/echo "Private IP Address: ${COREOS_PRIVATE_IPV4}"
 
 
-# Pull Orca's Leader Docker Container.
+# Pull Orca's Drone's Docker Container.
 ExecStartPre=-/usr/bin/docker kill leader
 ExecStartPre=-/usr/bin/docker rm leader
 ExecStartPre=/usr/bin/docker pull pandapup/orca_echo_leader
 
-# Deploy the Leader.  Until newer NodeJS and CoffeeScript packages are published,
+# Deploy the Drone.  Until newer NodeJS and CoffeeScript packages are published,
 # we'll need the "source" line as a prefix to any of these commands.
 ExecStart=/usr/bin/docker run --name leader --link skydns:dns \
   pandapup/orca_echo_leader /bin/bash -c \
@@ -35,8 +36,8 @@ ExecStart=/usr/bin/docker run --name leader --link skydns:dns \
   source ~/.nvm/nvm.sh && nvm use 0.11 && \
   cd orca && \
   git checkout coreos-echo && git pull && npm install && \
-  cd examples/echo/leader && \
-  coffee --nodejs --harmony /orca/bin/orca-leader .'
+  cd examples/echo/drone && \
+  coffee --nodejs --harmony /orca/bin/orca-drone .'
 
 [Install]
 WantedBy=multi-user.target

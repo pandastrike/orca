@@ -7,6 +7,6 @@
 # provide the final IP address.
 
 redis:
-  host: "redis.dev.orca"
+  host: "redis.orca"
   port: 6379
   options: {}
