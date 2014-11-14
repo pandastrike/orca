@@ -2,8 +2,8 @@
 # Orca - Drone -> Echo Demo
 #===============================================================================
 # This unit is part of the Orca project. It spins up an Orca Drone. Drones are
-# agents in the Orca cluster that receive istructions to download tests using
-# npm.  Once a quorum is reached, they are instructed to launch a test againt
+# agents in the Orca cluster that receive instructions to download tests using
+# npm.  Once a quorum is reached, they are instructed to launch a test against
 # a target service.  They report their results to the Leader where they are
 # aggregated.
 
@@ -24,14 +24,20 @@ ExecStartPre=/usr/bin/echo "Private IP Address: ${COREOS_PRIVATE_IPV4}"
 
 
 # Pull Orca's Drone's Docker Container.
-ExecStartPre=-/usr/bin/docker kill drone
-ExecStartPre=-/usr/bin/docker rm drone
-ExecStartPre=/usr/bin/docker pull pandapup/orca_echo_leader
+ExecStartPre=-/usr/bin/docker kill drone-%i
+ExecStartPre=-/usr/bin/docker rm drone-%i
+ExecStartPre=/usr/bin/docker pull pandapup/orca_agent
 
-# Deploy the Drone.  Until newer NodeJS and CoffeeScript packages are published,
-# we'll need the "source" line as a prefix to any of these commands.
-ExecStart=/usr/bin/docker run --name drone --link skydns:dns \
-  pandapup/orca_echo_leader /bin/bash -c \
+#=====================
+# Deploy the Drone
+#=====================
+# Until newer NodeJS and CoffeeScript packages are published, we'll need the
+# "source" line as a prefix to any of these commands. We also need to overwrite
+# the container's resolv.conf file so that it uses SkyDNS instead of the cloud
+# provider's DNS.
+#=====================
+ExecStart=/usr/bin/docker run --name drone-%i --link skydns:dns \
+  pandapup/orca_agent /bin/bash -c \
   'echo "nameserver $DNS_PORT_53_TCP_ADDR" > /etc/resolv.conf &&\
   source ~/.nvm/nvm.sh && nvm use 0.11 && \
   cd orca && \

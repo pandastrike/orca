@@ -2,12 +2,13 @@
 # Orca - Leader -> Echo Demo
 #===============================================================================
 # This unit is part of the Orca project. It spins up an Orca Leader. The Leader
-# is responsible for annoucing tests, gathering Drones until a quorum is reached,
-# and then collecting the results.
+# is an agent on the cluster responsible for announcing tests, gathering Drones
+# until a quorum is reached, and then collecting the results.
 
 
 [Unit]
 Description=Spin Up Leader
+Before=drone.service
 
 [Service]
 TimeoutStartSec=0
@@ -23,14 +24,20 @@ ExecStartPre=/usr/bin/echo "Private IP Address: ${COREOS_PRIVATE_IPV4}"
 
 
 # Pull Orca's Leader Docker Container.
-ExecStartPre=-/usr/bin/docker kill leader
-ExecStartPre=-/usr/bin/docker rm leader
-ExecStartPre=/usr/bin/docker pull pandapup/orca_echo_leader
+ExecStartPre=-/usr/bin/docker kill leader-%i
+ExecStartPre=-/usr/bin/docker rm leader-%i
+ExecStartPre=/usr/bin/docker pull pandapup/orca_agent
 
-# Deploy the Leader.  Until newer NodeJS and CoffeeScript packages are published,
-# we'll need the "source" line as a prefix to any of these commands.
-ExecStart=/usr/bin/docker run --name leader --link skydns:dns \
-  pandapup/orca_echo_leader /bin/bash -c \
+#=====================
+# Deploy the Leader
+#=====================
+# Until newer NodeJS and CoffeeScript packages are published, we'll need the
+# "source" line as a prefix to any of these commands. We also need to overwrite
+# the container's resolv.conf file so that it uses SkyDNS instead of the cloud
+# provider's DNS.
+#=====================
+ExecStart=/usr/bin/docker run --name leader-%i --link skydns:dns \
+  pandapup/orca_agent /bin/bash -c \
   'echo "nameserver $DNS_PORT_53_TCP_ADDR" > /etc/resolv.conf &&\
   source ~/.nvm/nvm.sh && nvm use 0.11 && \
   cd orca && \

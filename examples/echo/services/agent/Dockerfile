@@ -1,11 +1,22 @@
 FROM base/archlinux
 MAINTAINER Dan Yoder (dan@pandastrike.com)
 #===============================================================================
-# Orca - Leader
+# Orca - Agent
 #===============================================================================
 # This Dockerfile is part of the Orca project. It specifies a container running
-# an Orca Leader.  The Leader is responsible for annoucing tests, gathering
-# Drones until a quorum is reached, and then collecting the results.
+# an agent in the Orca.  Agents are Docker containers that are responsible for
+# some function in Orca's CoreOS cluster.  They are usually either a Leader or
+# Drone, but they can also fulfill some custom service.  Since agents load the
+# entire Orca repository, we select their ultimate role at runtime, inside the
+# service file that summons this image.
+
+# The Leader is responsible for announcing tests, gathering Drones until a quorum
+# is reached, and then collecting the results.
+
+# Drones are agents in the Orca cluster that receive instructions to download
+# tests using npm.  Once a quorum is reached, they are instructed to launch the
+# test against a target service.  They report their results to the Leader where
+# they are aggregated.
 
 
 #============================================
