@@ -20,7 +20,8 @@ This diagram describes the basic layout of Orca.  A swarm of Drones launches tes
 ![Diagram Outlining the Structure and Design of Orca](doc/orca_concept.png)
 ---
 ### Orca On CoreOS
-This diagram shows how Orca is deployed on a CoreOS cluster.  CoreOS machines need Docker to run applications, represented here by Docker container rectangles (See below for greater detail on each component).  While this diagram shows one possible configuration, there are some things to keep in mind:
+This diagram shows how Orca is deployed on a CoreOS cluster.  CoreOS machines need Docker to run applications, represented here by Docker container rectangles (See below for greater detail on each component).  While this diagram shows one possible configuration, there are some things to keep in mind: 
+
 1. You can build CoreOS clusters of arbitrary size.
 2. You can deploy an arbitrary number of Drone containers.
 3. The placement of containers within the cluster is controlled by fleet and may not appear quite this segregated, but what *is* guaranteed is having one SkyDNS container on every machine.
