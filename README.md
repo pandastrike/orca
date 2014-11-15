@@ -15,44 +15,21 @@ Check the README files within each `examples` subdirectory for detailed deployme
 ## Architecture
 Orca has several pieces.  Here we describe the overall structure.  The following sections also offer a crash-course in some of the newer technologies used in CoreOS.  Use them to get yourself oriented, but please refer to their respective documentation for full details.
 
-```
-           +----------------+
-           |                |          +------> NPM
-           |     Leader     |          |
-           |                |          |
-           +----------------+          |   Drones install
-                                       |   tests...
-                   ^                   |
-                   |                   |
-                   |       +-----------+-------------------------------+
-         Redis     |       |                                           |
-       Messaging   |       |                                           |
-       Transport   |       |   +----------------+                      |
-                   |       |   |                |                      |
-                   +-----> |   |     Drone      |     ... many Drones  |
-                           |   |                |                      |
-                           |   +----------------+                      |
-                           |    Docker Container                       |
-                           |                                           |
-                           +---------+---+ CoreOS-Cluster +------------+
-    Fleet is used                    |
-    to deploy Drones                 |
-    to CoreOS cluster                |   Drones report
-                                     |   results...
-                                     |
-                                     v                    Fleet can also
-                                                          deploy any of the
-                            +-----------------+           other components
-           Kibana           |                 |
-         Dashboard +----->  |  ElasticSearch  |
-                            |                 |
-                            +-----------------+
+### Orca Concept
+This diagram describes the basic layout of Orca.  A swarm of Drones launches tests against a target web service.  Results are passed to the Leader by using Redis.  The Leader stores result data in Elasticsearch which can be visualized with Kibana.  These components are described in greater detail below.
+![Diagram Outlining the Structure and Design of Orca](doc/orca_concept.png)
+---
+### Orca On CoreOS
+This diagram shows how Orca is deployed on a CoreOS cluster.  CoreOS machines need Docker to run applications, represented here by Docker container rectangles (See below for greater detail on each component).  While this diagram shows one possible configuration, there are some things to keep in mind:
+1. You can build CoreOS clusters of arbitrary size.
+2. You can deploy an arbitrary number of Drone containers.
+3. The placement of containers within the cluster is controlled by fleet and may not appear quite this segregated, but what *is* guaranteed is having one SkyDNS container on every machine.
+![Diagram Outlining Orca on CoreOS](doc/orca_on_coreos.png)
 
-```
-Diagram for Orca
-
+---
+## Components
 ### Target Application
-In the introductory examples, the target app has been part of the Orca cluster.  This in not a requirement.  Orca only needs an IP address to target.  Placing the target in the cluster was just very convenient when writing the simplest examples.
+In the introductory examples, the target app is part of the Orca cluster.  This in not a requirement.  Orca only needs an IP address to target.  Placing the target in the cluster was just very convenient when writing the simplest examples.
 
 ### Drones
 Drones load tests and launch them against a target IP address.  There can be one Drone or many, it just depends on your needs. Multiple Drones are activated in Orca by submitting multiple template `service` files(see *Service Files* below). Each Drone is encapsulated in a Docker container as a microservice.  Their source is specified in `src/drone.coffee`.  You can see that they rely on ES6-based generators, requiring Node 0.11+, the latest master of CoffeeScript 1.8, and the `--harmony` flag.  
@@ -95,7 +72,7 @@ For the cluster, we've created the "fake" top-level domain `.orca`.  SkyDNS inte
 
 SkyDNS is encapsulated in a Docker container as a microservice.  Any Docker container that needs access to `.orca` lookups (such as the Leader and Drone containers) must be *linked* with the SkyDNS container. This is done at runtime with the `--link skydns:dns` flag.  The IP address passed into the requesting container is used to overwrite the container's `/etc/resolve.conf` file.  `resolve.conf` tells the operating system where to direct a URL request for translation into an IP address, and SkyDNS takes over that role.
 
-All requesting containers must be linked to a SkyDNS container. To avoid the messiness of multi-host Docker linking, we simply have one SkyDNS container on each machine in the cluster.  Fleet makes this easy with the `Global=` flag in the service file (see below).  We can get away with multiple SkyDNS containers because it is just a lookup tool.  It accesses the values stored in etcd, which are available cluster-wide.  
+All requesting containers must be linked to a SkyDNS container. To avoid the messiness of multi-host Docker linking, we simply have one SkyDNS container on each CoreOS machine in the cluster.  Fleet makes this easy with the `Global=` tag in the service file (see below).  We can get away with multiple SkyDNS containers because it is just a lookup tool.  It accesses the values stored in etcd, which are available cluster-wide.  
 
 SkyDNS containers only need to be setup once when the CoreOS cluster is established.  Multiple users can make use of them, so generally there should be no reason to manipulate them once created.
 
@@ -108,7 +85,7 @@ CoreOS is an operating system so lightweight that it relies on Docker to load an
 ### fleetctl
 If you examine the deployment instructions, you will see `fleetctl` (pronounced "fleet control") is called repeatedly.  `fleetctl` is a command-line tool that is part of the larger software package, fleet.  fleetctl accepts "services" defined as unit-files. These lay out exactly what the CoreOS machine needs to call to spin-up your app, similar to a shell script.  These almost always start a Docker container.
 
-fleetctl is a powerful tool.  It provides built in SSH capability via the `--tunnel <address>` flag, and can reference a job anywhere in the cluster via its `*.service` file.
+fleetctl is a powerful tool.  It provides built in SSH capability via the `--tunnel <address>` flag, and can reference a job anywhere in the cluster via its `*.service` file.  That means we don't need to care about where a job ends up on the cluster.  Fleet puts it *somewhere* and takes care of the details for us.
 
 ---
 ### Service Files
@@ -124,14 +101,47 @@ Service files are based on systemd and divided into sections.
 
 `[X-Fleet]` defines special commands unique to fleet.  The most important directive is `Global`, allowing a service to be deployed on every machine in the cluster.
 
-# Write about templates!!!!
 Service files get even more flexible.  You cannot have more than one job with the same name running in a CoreOS cluster.  But, you can specify a *template* and then provide an identifier at runtime.  For example, the file `drone@.service` is a template file describing a Drone instance.  We can run three instances of this service in the cluster by calling:
 
   ```
   fleetctl --tunnel coreos.pandastrike.com drone@{1..3}.service
   ```
 
-In Orca, we use identifiers to keep different user's services from colliding.
+The services are all based on a single file, but the services are named `drone@1.service`, `drone@2.service`, and `drone@3.service`, respectively.  The services are nearly identical, but we have the option of editing the unit-file to allow subtle differences.  In the unit-file, we can place `%i` anywhere as a placeholder for the characters between `@` and `.` in the filename.
+
+For PandaStrike's CoreOS test-cluster, we hand out "userIDs" (a double digit identifier from 00 to 99) to keep different user's services from colliding.  We use integers because it is a nifty, if somewhat cumbersome, way to allocate ports to services.  Here's an example:
+
+  // **redis@.service**
+  ```
+  ExecStartPre=/usr/bin/etcdctl set /skydns/orca/%i/redis \
+      '{"host":"${COREOS_PUBLIC_IPV4}", "port":20%i}'
+
+
+  # Pull Official Redis Docker Container
+  ExecStartPre=-/usr/bin/docker kill redis-%i
+  ExecStartPre=-/usr/bin/docker rm redis-%i
+  ExecStartPre=/usr/bin/docker pull dockerfile/redis
+
+  # Deploy Redis.  This container is linked with the SkyDNS container on this machine.
+  ExecStart=/usr/bin/docker run --name redis-%i -p 20%i:6379 dockerfile/redis
+  ```
+
+  When we run as user 02, every `%i` is replaced with `02` before it is loaded into the cluster.
+  ```
+  ExecStartPre=/usr/bin/etcdctl set /skydns/orca/%i/redis \
+      '{"host":"${COREOS_PUBLIC_IPV4}", "port":2002}'
+
+
+  # Pull Official Redis Docker Container
+  ExecStartPre=-/usr/bin/docker kill redis-02
+  ExecStartPre=-/usr/bin/docker rm redis-02
+  ExecStartPre=/usr/bin/docker pull dockerfile/redis
+
+  # Deploy Redis.  This container is linked with the SkyDNS container on this machine.
+  ExecStart=/usr/bin/docker run --name redis-02 -p 2002:6379 dockerfile/redis
+  ```
+
+So, there is some planning required.  You will have to do the work of blocking out namespaces for services in your cluster.  Also, this requires well-behaved users, but hopefully you trust people you're letting into your cluster, haha.   The point is a single template file can be used to deploy many services into the cluster while handling the details for you.
 
 
 This is just an introduction.  There are many other options in a unit-file, so please see the [documentation][2] for more.
