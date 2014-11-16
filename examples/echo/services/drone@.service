@@ -50,8 +50,12 @@ ExecStart=/usr/bin/docker run --name drone-%i --link skydns:dns \
   cd orca &&\
   git checkout coreos-echo && git pull && npm install &&\
   \
-  cd examples/echo/drone &&\
+  cd examples/echo/test &&\
   USER_ID=$(coffee /orca/bin/get-user %i) &&\
+  sed "s/user-id-goes-here/$USER_ID/g" < index.coffee > temp &&\
+  mv temp index.coffee && \
+  \
+  cd ../drone &&\
   sed "s/user-id-goes-here/$USER_ID/g" < config.cson > temp &&\
   mv temp config.cson &&\
   \

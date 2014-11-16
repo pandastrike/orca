@@ -11,11 +11,7 @@ module.exports =
     promise (resolve, reject) =>
       to = "Pandas Are Awesome.";  from = ""
 
-      config =
-        host: 'target.user-id-goes-here.orca'
-        port: 21user-id-goes-here
-
-      client = ((require "net").createConnection config)
+      client = ((require "net").createConnection(21user-id-goes-here, 'target.user-id-goes-here.orca'))
 
       .on "connect", =>
         @logger.debug "Sending message: #{to}"
