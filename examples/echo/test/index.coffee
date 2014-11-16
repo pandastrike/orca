@@ -11,15 +11,19 @@ module.exports =
     promise (resolve, reject) =>
       to = "Pandas Are Awesome.";  from = ""
 
-      client = ((require "net").createConnection(21user-id-goes-here, 'target.user-id-goes-here.orca'))
+      config =
+        host: 'target.user-id-goes-here.orca'
+        port: 21user-id-goes-here
 
-      client.on "connect", =>
+      client = ((require "net").createConnection config)
+
+      .on "connect", =>
         @logger.debug "Sending message: #{to}"
         client.write to
         client.end()
 
-      client.on "data", (buffer) => from += buffer.toString()
-
-      client.on "end", =>
+      .on "data", (buffer) => from += buffer.toString()
+      
+      .on "end", =>
         @logger.debug "Received message: #{from}"
         if to == from then resolve(from) else reject()
