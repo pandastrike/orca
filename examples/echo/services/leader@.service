@@ -1,0 +1,58 @@
+#===============================================================================
+# Orca - Leader -> Echo Demo
+#===============================================================================
+# This unit is part of the Orca project. It spins up an Orca Leader. The Leader
+# is an agent on the cluster responsible for announcing tests, gathering Drones
+# until a quorum is reached, and then collecting the results.
+
+
+[Unit]
+Description=Spin Up Leader
+Before=drone.service
+
+[Service]
+TimeoutStartSec=0
+
+ExecStartPre=/usr/bin/echo "========================"
+ExecStartPre=/usr/bin/echo "  New Service Starting"
+ExecStartPre=/usr/bin/echo "========================"
+
+# Display this service's IP addresses.
+EnvironmentFile=/etc/environment
+ExecStartPre=/usr/bin/echo "Public IP Address: ${COREOS_PUBLIC_IPV4}"
+ExecStartPre=/usr/bin/echo "Private IP Address: ${COREOS_PRIVATE_IPV4}"
+
+
+# Pull Orca's Leader Docker Container.
+ExecStartPre=-/usr/bin/docker kill leader-%i
+ExecStartPre=-/usr/bin/docker rm leader-%i
+ExecStartPre=/usr/bin/docker pull pandapup/orca_agent
+
+#=====================
+# Deploy the Leader
+#=====================
+# Runtime Command Notes:
+# 1. Until newer NodeJS and CoffeeScript packages are published, we'll need the
+#    "source" line as a prefix to any of these commands.
+# 2. We need to overwrite the container's resolv.conf file so that it uses
+#    SkyDNS instead of the cloud provider's DNS.
+# 3. We need to alter the Leader's "config.cson" and "test/index.coffee" files
+#    to reflect the proper userID of the person launching this service.
+#=====================
+ExecStart=/usr/bin/docker run --name leader-%i --link skydns:dns \
+  pandapup/orca_agent /bin/bash -c \
+  'source ~/.nvm/nvm.sh && nvm use 0.11 && \
+  \
+  echo "nameserver $DNS_PORT_53_TCP_ADDR" > /etc/resolv.conf &&\
+  \
+  cd orca && \
+  git checkout coreos-echo && git pull && npm install && \
+  \
+  cd examples/echo/leader &&\
+  sed "s/user-id-goes-here/%i/g" < config.cson > temp &&\
+  mv temp config.cson && \
+  \
+  coffee --nodejs --harmony /orca/bin/orca-leader .'
+
+[Install]
+WantedBy=multi-user.target

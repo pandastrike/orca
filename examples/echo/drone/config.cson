@@ -1,0 +1,12 @@
+#===============================================================================
+# Orca - Echo Example App
+#===============================================================================
+# This CSON file lets us configure the Orca Drones.  They are coordinated and
+# receive test instructions from the Leader.  That means Drones just need to
+# find Redis in the CoreOS cluster and wait for contact.  We rely on SkyDNS to
+# provide the final IP address.
+
+redis:
+  host: "redis.user-id-goes-here.orca"
+  port: 20user-id-goes-here
+  options: {}

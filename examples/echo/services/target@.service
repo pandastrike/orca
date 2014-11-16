@@ -1,0 +1,49 @@
+#===============================================================================
+# Orca - Target -> Echo Demo
+#===============================================================================
+# This unit is part of the Orca project Echo Demo. It is an agent on the Orca
+# cluster that spins up a simple Node Server.  The server echoes whatever
+# message it receives.
+
+# **Note** Orca targets do not need to run in Docker or be a part of the same
+# cluster running Orca.  Orca just needs to be pointed at a target service's IP
+# address, wherever that is.  It's just that using an Orca agent is really
+# convenient, so we do it here, haha.
+
+[Unit]
+Description=Spin Up Target
+Before=leader@%i.service
+
+
+[Service]
+TimeoutStartSec=0
+
+ExecStartPre=/usr/bin/echo "========================"
+ExecStartPre=/usr/bin/echo "  New Service Starting"
+ExecStartPre=/usr/bin/echo "========================"
+
+# Display this service's IP address and register it with Orca's DNS.
+EnvironmentFile=/etc/environment
+ExecStartPre=/usr/bin/echo "Public IP Address: ${COREOS_PUBLIC_IPV4}"
+ExecStartPre=/usr/bin/echo "Private IP Address: ${COREOS_PRIVATE_IPV4}"
+ExecStartPre=/usr/bin/etcdctl set /skydns/orca/%i/target \
+    '{"host":"${COREOS_PUBLIC_IPV4}", "port":21%i}'
+
+
+# Pull the Target Service Docker Container.
+ExecStartPre=-/usr/bin/docker kill target-%i
+ExecStartPre=-/usr/bin/docker rm target-%i
+ExecStartPre=/usr/bin/docker pull pandapup/orca_agent
+
+# Deploy the Target Service.  Until newer NodeJS and CoffeeScript packages are
+# published, we'll need the "source" line as a prefix to commands.
+ExecStart=/usr/bin/docker run -p 21%i:1337 --name target-%i \
+  pandapup/orca_agent /bin/bash -c \
+  "source ~/.nvm/nvm.sh && nvm use 0.11 && \
+  cd orca && \
+  git pull && npm install && \
+  cd examples/echo/target-app && \
+  coffee echo.coffee"
+
+[Install]
+WantedBy=multi-user.target

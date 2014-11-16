@@ -1,0 +1,4 @@
+#!//.nvm/v0.11.14/bin/coffee --nodejs --harmony
+
+leader = require "../src/leader.coffee"
+leader()

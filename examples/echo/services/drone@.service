@@ -1,0 +1,65 @@
+#===============================================================================
+# Orca - Drone -> Echo Demo
+#===============================================================================
+# This unit is part of the Orca project. It spins up an Orca Drone. Drones are
+# agents in the Orca cluster that receive instructions to download tests using
+# npm.  Once a quorum is reached, they are instructed to launch a test against
+# a target service.  They report their results to the Leader where they are
+# aggregated.
+
+[Unit]
+Description=Spin Up Drone
+
+[Service]
+TimeoutStartSec=0
+
+ExecStartPre=/usr/bin/echo "========================"
+ExecStartPre=/usr/bin/echo "  New Service Starting"
+ExecStartPre=/usr/bin/echo "========================"
+
+# Display this service's IP addresses.
+EnvironmentFile=/etc/environment
+ExecStartPre=/usr/bin/echo "Public IP Address: ${COREOS_PUBLIC_IPV4}"
+ExecStartPre=/usr/bin/echo "Private IP Address: ${COREOS_PRIVATE_IPV4}"
+
+
+# Pull Orca's Drone's Docker Container.
+ExecStartPre=-/usr/bin/docker kill drone-%i
+ExecStartPre=-/usr/bin/docker rm drone-%i
+ExecStartPre=/usr/bin/docker pull pandapup/orca_agent
+
+#=====================
+# Deploy the Drone
+#=====================
+# Runtime Command Notes:
+# 1. Until newer NodeJS and CoffeeScript packages are published, we'll need the
+#    "source" line as a prefix to any of these commands.
+# 2. We need to overwrite the container's resolv.conf file so that it uses
+#    SkyDNS instead of the cloud provider's DNS.
+# 3. We need to alter the Drone's "config.cson" file to reflect the proper
+#    userID of the person launching this service.  Unfortunately, to keep the
+#    Drones unique, we needed to add the DroneID to the userID.  We must first
+#    strip this away.
+#=====================
+ExecStart=/usr/bin/docker run --name drone-%i --link skydns:dns \
+  pandapup/orca_agent /bin/bash -c \
+  'source ~/.nvm/nvm.sh && nvm use 0.11 && \
+  \
+  echo "nameserver $DNS_PORT_53_TCP_ADDR" > /etc/resolv.conf &&\
+  \
+  cd orca &&\
+  git checkout coreos-echo && git pull && npm install &&\
+  \
+  cd examples/echo/test &&\
+  USER_ID=$(coffee /orca/bin/get-user %i) &&\
+  sed "s/user-id-goes-here/$USER_ID/g" < index.coffee > temp &&\
+  mv temp index.coffee && \
+  \
+  cd ../drone &&\
+  sed "s/user-id-goes-here/$USER_ID/g" < config.cson > temp &&\
+  mv temp config.cson &&\
+  \
+  coffee --nodejs --harmony /orca/bin/orca-drone .'
+
+[Install]
+WantedBy=multi-user.target

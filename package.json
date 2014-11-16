@@ -1,46 +1,38 @@
 {
   "name": "orcastrike",
-  "version": "0.4.4",
-  "description": "Distributed load testing for node.js using pirate.",
+  "version": "1.0.0-alpha-01",
+  "description": "Distributed load testing for node.js.",
   "files": [
     "bin",
     "api",
     "src",
     "web",
-    "Rakefile",
-    "tasks",
     "README.md"
   ],
+  "bin": {
+    "orca-drone": "./bin/orca-drone",
+    "orca-leader": "./bin/orca-leader"
+  },
   "dependencies": {
-    "ark": "0.3.x",
-    "ax": "0.2.x",
-    "connect": "2.3.x",
-    "cson": "git://github.com/dyoder/cson.git#0.1.0",
-    "fairmont": "0.2.x",
-    "gauss": "0.2.x",
-    "mkdirp": "0.3.x",
-    "mongodb": "1.2.0",
-    "nice": "0.1.x",
-    "node-system": "0.0.x",
-    "optimist": "0.3.5",
-    "patchboard-client": "0.2.x",
-    "patchboard-server": "0.2.x",
-    "pirate": "0.3.x"
+    "c50n": "^0.7.1",
+    "key-forge": "^0.1.3",
+    "log4js": "^0.6.21",
+    "npm": "^2.1.6",
+    "redis": "^0.12.1",
+    "when": "^3.5.0"
   },
   "devDependencies": {
-    "coffee-script": "1.5.x",
-    "testify": "0.1.x",
-    "simple-http-server": "0.1.8"
+    "amen": "0.0.1"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/dyoder/orca.git"
+    "url": "git://github.com/pandastrike/orca.git"
   },
   "keywords": [
     "load",
     "test",
     "distributed"
   ],
-  "author": "Dan Yoder <danielyoder@gmail.com>",
-  "license": "BSD"
+  "author": "Dan Yoder <dan@pandastrike.com>",
+  "license": "MIT"
 }

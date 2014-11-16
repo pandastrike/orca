@@ -1,0 +1,6 @@
+# This is a quick CoffeeScript script to get the userID from a full Drone ID in Orca.
+
+orca_id = process.argv[2]
+user_id = orca_id.slice 0, 2
+
+console.log user_id
