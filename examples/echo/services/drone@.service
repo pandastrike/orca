@@ -44,17 +44,17 @@ ExecStartPre=/usr/bin/docker pull pandapup/orca_agent
 ExecStart=/usr/bin/docker run --name drone-%i --link skydns:dns \
   pandapup/orca_agent /bin/bash -c \
   'source ~/.nvm/nvm.sh && nvm use 0.11 && \
-
+  \
   echo "nameserver $DNS_PORT_53_TCP_ADDR" > /etc/resolv.conf &&\
-
+  \
   cd orca &&\
   git checkout coreos-echo && git pull && npm install &&\
-
+  \
   cd examples/echo/drone &&\
   USER_ID=$(coffee /orca/bin/get-user %i)
-  sed "s/user-id-goes-here/$USER_ID/" < config.cson > temp &&\
+  sed "s/user-id-goes-here/$USER_ID/g" < config.cson > temp &&\
   mv temp config.cson &&\
-
+  \
   coffee --nodejs --harmony /orca/bin/orca-leader .'
 
 [Install]

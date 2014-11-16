@@ -13,7 +13,7 @@
 
 redis:
   host: "redis.user-id-goes-here.orca"
-  port: 6379
+  port: 20user-id-goes-here
   options: {}
 
 test:

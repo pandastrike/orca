@@ -42,20 +42,20 @@ ExecStartPre=/usr/bin/docker pull pandapup/orca_agent
 ExecStart=/usr/bin/docker run --name leader-%i --link skydns:dns \
   pandapup/orca_agent /bin/bash -c \
   'source ~/.nvm/nvm.sh && nvm use 0.11 && \
-
+  \
   echo "nameserver $DNS_PORT_53_TCP_ADDR" > /etc/resolv.conf &&\
-
+  \
   cd orca && \
   git checkout coreos-echo && git pull && npm install && \
-
+  \
   cd examples/echo/test &&\
-  sed "s/user-id-goes-here/%i/" < index.coffee > temp &&\
+  sed "s/user-id-goes-here/%i/g" < index.coffee > temp &&\
   mv temp index.coffee && \
-
+  \
   cd ../leader &&\
-  sed "s/user-id-goes-here/%i/" < config.cson > temp &&\
+  sed "s/user-id-goes-here/%i/g" < config.cson > temp &&\
   mv temp config.cson && \
-
+  \
   coffee --nodejs --harmony /orca/bin/orca-leader .'
 
 [Install]
