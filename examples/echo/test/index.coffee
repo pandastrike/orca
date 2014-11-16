@@ -13,12 +13,13 @@ module.exports =
 
       client = ((require "net").createConnection(21user-id-goes-here, 'target.user-id-goes-here.orca'))
 
-      .on "connect", =>
+      client.on "connect", =>
         @logger.debug "Sending message: #{to}"
         client.write to
         client.end()
 
-      .on "data", (buffer) => from += buffer.toString()
-      .on "end", =>
+      client.on "data", (buffer) => from += buffer.toString()
+
+      client.on "end", =>
         @logger.debug "Received message: #{from}"
         if to == from then resolve(from) else reject()
