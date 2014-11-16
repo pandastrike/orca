@@ -31,19 +31,31 @@ ExecStartPre=/usr/bin/docker pull pandapup/orca_agent
 #=====================
 # Deploy the Drone
 #=====================
-# Until newer NodeJS and CoffeeScript packages are published, we'll need the
-# "source" line as a prefix to any of these commands. We also need to overwrite
-# the container's resolv.conf file so that it uses SkyDNS instead of the cloud
-# provider's DNS.
+# Runtime Command Notes:
+# 1. Until newer NodeJS and CoffeeScript packages are published, we'll need the
+#    "source" line as a prefix to any of these commands.
+# 2. We need to overwrite the container's resolv.conf file so that it uses
+#    SkyDNS instead of the cloud provider's DNS.
+# 3. We need to alter the Drone's "config.cson" file to reflect the proper
+#    userID of the person launching this service.  Unfortunately, to keep the
+#    Drones unique, we needed to add the DroneID to the userID.  We must first
+#    strip this away.
 #=====================
 ExecStart=/usr/bin/docker run --name drone-%i --link skydns:dns \
   pandapup/orca_agent /bin/bash -c \
-  'echo "nameserver $DNS_PORT_53_TCP_ADDR" > /etc/resolv.conf &&\
-  source ~/.nvm/nvm.sh && nvm use 0.11 && \
-  cd orca && \
-  git checkout coreos-echo && git pull && npm install && \
-  cd examples/echo/drone && \
-  coffee --nodejs --harmony /orca/bin/orca-drone .'
+  'source ~/.nvm/nvm.sh && nvm use 0.11 && \
+
+  echo "nameserver $DNS_PORT_53_TCP_ADDR" > /etc/resolv.conf &&\
+
+  cd orca &&\
+  git checkout coreos-echo && git pull && npm install &&\
+
+  cd examples/echo/drone &&\
+  USER_ID=$(coffee /orca/bin/get-user %i)
+  sed "s/user-id-goes-here/$USER_ID/" < config.cson > temp &&\
+  mv temp config.cson &&\
+
+  coffee --nodejs --harmony /orca/bin/orca-leader .'
 
 [Install]
 WantedBy=multi-user.target

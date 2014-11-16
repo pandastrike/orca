@@ -12,7 +12,7 @@ module.exports =
       to = "Pandas Are Awesome.";  from = ""
 
       config =
-        host: 'target.orca'
+        host: 'target.user-id-goes-here.orca'
         port: 1337
 
       client = ((require "net").createConnection config)
