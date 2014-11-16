@@ -46,7 +46,7 @@ ExecStart=/usr/bin/docker run --name leader-%i --link skydns:dns \
   echo "nameserver $DNS_PORT_53_TCP_ADDR" > /etc/resolv.conf &&\
   \
   cd orca && \
-  git checkout coreos-echo && git pull && npm install && \
+  git pull && npm install && \
   \
   cd examples/echo/leader &&\
   sed "s/user-id-goes-here/%i/g" < config.cson > temp &&\

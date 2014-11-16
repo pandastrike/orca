@@ -47,9 +47,6 @@ RUN source ~/.nvm/nvm.sh && nvm use 0.11 && \
 # Pull the Orca repo from GitHub.
 RUN git clone https://github.com/pandastrike/orca.git
 
-# NOTE: Switching to this branch is only needed until we merge into Master.
-RUN cd orca && git checkout coreos-echo
-
 # Install all other modules / dependencies.
 RUN cd orca && \
     source ~/.nvm/nvm.sh && nvm use 0.11 && \
