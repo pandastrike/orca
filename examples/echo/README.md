@@ -51,7 +51,7 @@ Ubuntu users can use:
   cd orca/examples/echo
   ```
 
-3. Now, we will use fleetctl's `start` command. CoreOS relies on `*.service` files to specify jobs for the cluster (See *Background* for more information). `reflector@.service` is a *template* service file, so you'll need to add your userID to the filename (only within the command).  For the rest of this tutorial, user `02` will be shown.
+3. Now, we will use fleetctl's `start` command. CoreOS relies on `*.service` files to specify jobs for the cluster (See *CoreOS* in the main README for more information). `reflector@.service` is a *template* service file, so you'll need to add your userID to the filename (only within the command).  For the rest of this tutorial, user `02` will be shown.
 
   To access the cluster from your local machine, we need to use fleetctl's `--tunnel <address>` flag, which will make use of SSH for you.  With this flag, you only need to type the specific fleetctl command and the service it applies to.  Let's begin with Redis.
 
@@ -66,7 +66,7 @@ Ubuntu users can use:
   ```
   Ignore `Error response from daemon: No such container` if it appears in your log.  This is an optional command used to clear away any old container that shares a name with one you're about to start.
 
-  It might take a moment, and there will be several debugging and informational messages, but eventually you will see a message indicating Redis is ready.
+  It might take a moment, and there will be several debugging and informational messages, but eventually you will see a message indicating Redis is ready.  You can stop the CoreOS journaling with `ctrl+C`.
 
   ```
   Starting CoreOS Reflector Demo...
@@ -101,19 +101,21 @@ Ubuntu users can use:
   [1] 12 Nov 09:58:38.559 # Server started, Redis version 2.8.17
   ```
 
-5. The various components of Orca are explained in detail in *Architecture*.  Here we will simply proceed with their deployment here and only provide a brief description.
+5. The various components of Orca are explained in detail in the main README.  Here we will simply proceed with their deployment here and only provide a brief description.
 
   ```
-  fleetctl --tunnel coreos.pandastrike.com start target@02.service leader@02.service drone@02.service
+  fleetctl --tunnel coreos.pandastrike.com start target@02.service leader@02.service drone@0200.service
   ```
-  target = The echo server.  This is the service Orca will test against.
-  leader = The Orca Leader.  The Leader announces tests indefinitely, waiting for a reply.
-  drone = The Orca Drone.  The Drone conducts the test against the target and returns a result to the leader.
+  - target = The echo server.  This is the service Orca will test against.
+  - leader = The Orca Leader.  The Leader announces tests indefinitely, waiting for a reply.
+  - drone = The Orca Drone.  The Drone conducts the test against the target and returns a result to the leader.
 
-6. Review the logs from `leader.service`.
+  **Note:** The Drone service file has the identifier `0200`.  Because you will usually launch more than one Drone, your userID is not enough to provide unique names in the cluster.  Please add an additional ID for the Drone, 00 to 99 (or 000 to 999, etc).  The service file will recognize the userID of `02` for IP lookups, and Docker containers will bear the full `02**` ID.
+
+6. Review the logs from `leader@02.service`.
 
   ```
-  fleetctl --tunnel coreos.pandastrike.com journal -f --lines=30 redis@02.service
+  fleetctl --tunnel coreos.pandastrike.com journal -f --lines=30 leader@02.service
   ```
 
   If everything works out, it should look something like this:
@@ -150,9 +152,10 @@ You can stop the CoreOS journaling with `ctrl+C`.
   **Note: This command is also important if we edit our `*.service` file locally and want to give the cluster the new version.  We must destroy the old version first.**
 
 ## Architecture
+The following covers some specifics for this example, but please see the main README for more context.
 
 ### The Target
-Orca is designed to load test an app or service through its web interface. So to use Orca, you need to be able to point it at something.  And it doesn't need to be on the same machine or cluster as the rest of Orca...  all you need is the IP address of the interface, and Orca takes care of the rest.  To keep things simple here, the target is a one-line Node server that echoes whatever text it receives.
+Orca is designed to load test an app or service through its web interface. The target doesn't need to be on the same machine or cluster as the rest of Orca...  all you need is the IP address of the interface, and Orca takes care of the rest.  To keep things simple here, the target is a one-line Node server that echoes whatever text it receives.
 
 ### The Test
 For this example, to keep things simple, the test is a single http call that transmits a hard-coded string, "Pandas Are Awesome." (*Because it's true!!*)
@@ -167,9 +170,4 @@ For this example, we only needed one Drone, so it was a quorum of 1.
 
 The Leader communicates with Drones by using Redis's publish-submit mechanism.  Using Redis means the Leader doesn't need to know the location of each Drone, everyone just needs to be able to locate Redis.  
 
-We use the `config.cson` files to tell:
-- The Leader which tests to announce.
-- The Leader and Drones the location of Redis.
-
-Address Schema
-<service>.<userID>.<domain>
+We use the `config.cson` files to tell the Leader and Drones the location of Redis.
