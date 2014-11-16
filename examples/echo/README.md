@@ -48,7 +48,7 @@ Ubuntu users can use:
 
   ```
   git clone https://github.com/pandastrike/orca.git
-  cd orca/examples/echo
+  cd orca/examples/echo/services
   ```
 
 3. Now, we will use fleetctl's `start` command. CoreOS relies on `*.service` files to specify jobs for the cluster (See *CoreOS* in the main README for more information). `reflector@.service` is a *template* service file, so you'll need to add your userID to the filename (only within the command).  For the rest of this tutorial, user `02` will be shown.
