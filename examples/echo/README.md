@@ -101,7 +101,7 @@ Ubuntu users can use:
   [1] 12 Nov 09:58:38.559 # Server started, Redis version 2.8.17
   ```
 
-5. The various components of Orca are explained in detail in the main README.  Here we will simply proceed with their deployment here and only provide a brief description.
+5. The various components of Orca are explained in detail in the main README.  We will simply proceed with their deployment here and only provide a brief description.
 
   ```
   fleetctl --tunnel coreos.pandastrike.com start target@02.service leader@02.service drone@0200.service
