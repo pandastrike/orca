@@ -10,19 +10,21 @@ You will need the following on your local machine to run this demo.
 2. [Redis](http://redis.io/)
 3. Node v0.11  This version of Node contains the powerful concurrency technology, generators.  Orca's components are built from these to make the code simpler and shorter.
 
-    i. If if it is not already present, install nvm from source and source the shell script we download.  If you already have nvm, skip to step *ii.*
-    ```
-    git clone https://github.com/creationix/nvm.git ~/.nvm && \
-      cd ~/.nvm && \
-      git checkout `git describe --abbrev=0 --tags`
+i. If if it is not already present, install nvm from source and source the shell script we download.  If you already have nvm, skip to step *ii.*
 
-    source ~/.nvm/nvm.sh &&
-    ```
+```
+git clone https://github.com/creationix/nvm.git ~/.nvm && \
+cd ~/.nvm && \
+git checkout `git describe --abbrev=0 --tags`
 
-    ii. Install v0.11
-    ```
-    nvm install 0.11
-    ```
+source ~/.nvm/nvm.sh &&
+```
+
+ii. Install v0.11
+
+```
+nvm install 0.11
+```
 
 4. The correct version of CoffeeScript.  While it has not been placed into the official npm package, the `master` branch of the primary CoffeeScript repo has what we need.  It can accept the `--harmony` flag and use ES6 based generators in Node.
 
