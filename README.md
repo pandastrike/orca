@@ -9,7 +9,7 @@ The answer is load-testing, and that's what Orca is all about.  Orca uses Drones
 Tests are loaded into Orca via npm, giving the platform incredible flexibility.   We kept Orca un-opinonated so that you can focus on writing tests for your product.  Then just sit back while Orca fetches and deploys them automatically.
 
 ## Examples
-Check the README files within each `examples` subdirectory for detailed deployment examples.  The following sections aim to provide background and context for how Orca works.
+Check the README files within each subdirectory of [Examples](https://github.com/pandastrike/orca/tree/master/examples) for detailed deployment examples.  The following sections aim to provide background and context for how Orca works.
 
 
 ## Architecture
