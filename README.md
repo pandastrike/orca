@@ -30,7 +30,7 @@ This diagram shows how Orca is deployed on a CoreOS cluster.  CoreOS machines ne
 ---
 ## Components
 ### Target Application
-In the introductory examples, the target app is part of the Orca cluster.  This in not a requirement.  Orca only needs an IP address to target.  Placing the target in the cluster was just very convenient when writing the simplest examples.
+In the introductory examples, the target app is part of the Orca cluster.  This is not a requirement.  Orca only needs an IP address to target.  Placing the target in the cluster was just very convenient when writing the simplest examples.
 
 ### Drones
 Drones load tests and launch them against a target IP address.  There can be one Drone or many, it just depends on your needs. Multiple Drones are activated in Orca by submitting multiple template `service` files(see *Service Files* below). Each Drone is encapsulated in a Docker container as a microservice.  Their source is specified in `src/drone.coffee`.  You can see that they rely on ES6-based generators, requiring Node 0.11+, the latest master of CoffeeScript 1.8, and the `--harmony` flag.  
