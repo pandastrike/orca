@@ -53,10 +53,10 @@ Ubuntu users can use:
 
 3. Now, we will use fleetctl's `start` command. CoreOS relies on `*.service` files to specify jobs for the cluster (See *CoreOS* in the main README for more information). `reflector@.service` is a *template* service file, so you'll need to add your userID to the filename (only within the command).  For the rest of this tutorial, user `02` will be shown.
 
-  To access the cluster from your local machine, we need to use fleetctl's `--tunnel <address>` flag, which will make use of SSH for you.  With this flag, you only need to type the specific fleetctl command and the service it applies to.  Let's begin with Redis.
+  To access the cluster from your local machine, we need to use fleetctl's `--tunnel <address>` flag, which will make use of SSH for you.  With this flag, you only need to type the specific fleetctl command and the service it applies to.  Let's begin with Redis and the target server.
 
   ```
-  fleetctl --tunnel coreos.pandastrike.com start redis@02.service
+  fleetctl --tunnel coreos.pandastrike.com start redis@02.service target@02.service
   ```
 
 4. Now we are going to monitor what you just deployed with fleetctl's `journal` command.  Your job has been deployed on the CoreOS cluster, but where is it? Even though it could be on any one of several machines, you can always reference this and any other job through its `*.service` file.
@@ -104,9 +104,8 @@ Ubuntu users can use:
 5. The various components of Orca are explained in detail in the main README.  We will simply proceed with their deployment here and only provide a brief description.
 
   ```
-  fleetctl --tunnel coreos.pandastrike.com start target@02.service leader@02.service drone@0200.service
+  fleetctl --tunnel coreos.pandastrike.com start leader@02.service drone@0200.service
   ```
-  - target = The echo server.  This is the service Orca will test against.
   - leader = The Orca Leader.  The Leader announces tests indefinitely, waiting for a reply.
   - drone = The Orca Drone.  The Drone conducts the test against the target and returns a result to the leader.
 

@@ -33,10 +33,13 @@ ExecStartPre=/usr/bin/etcdctl set /skydns/config \
     '{"dns_addr":"0.0.0.0:53", "domain":"orca", "nameservers": ["8.8.8.8:53"]}'
 
 # Deploy SkyDNS.  Use the "-machines" flag to point it at the etcd endpoint.
+# For now, to avoid a discovered bug, we must wait a couple seconds to ensure the
+# etcd endpoint is established.  The connection is refused, otherwise.
 ExecStart=/usr/bin/docker run \
   -p 53:53 \
-  --name skydns pandapup/skydns \
-  /skydns -machines=${COREOS_PRIVATE_IPV4}:4001
+  --name skydns pandapup/skydns /bin/bash -c \
+  "sleep 5 &&\
+  /skydns -machines=172.17.42.1:4001"
 
 [X-Fleet]
 Global=true
