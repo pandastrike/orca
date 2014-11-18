@@ -20,7 +20,7 @@ This diagram describes the basic layout of Orca.  A swarm of Drones launches tes
 ![Diagram Outlining the Structure and Design of Orca](doc/orca_concept.png)
 ---
 ### Orca On CoreOS
-This diagram shows how Orca is deployed on a CoreOS cluster.  CoreOS machines need Docker to run applications, represented here by Docker container rectangles (See below for greater detail on each component).  While this diagram shows one possible configuration, there are some things to keep in mind: 
+This diagram shows how Orca is deployed on a CoreOS cluster.  CoreOS machines need Docker to run applications, represented here by Docker container rectangles (See below for greater detail on each component).  While this diagram shows one possible configuration, there are some things to keep in mind:
 
 1. You can build CoreOS clusters of arbitrary size.
 2. You can deploy an arbitrary number of Drone containers.
@@ -150,6 +150,23 @@ This is just an introduction.  There are many other options in a unit-file, so p
 ---
 ### Dockerfile
 Docker containers are lightweight virtual machines.  You can load a wide variety of operating systems and software inside.  Because of this, CoreOS is almost completely dependent on them to load applications beyond it's limited set.  Orca uses the containers to encapsulate apps as micro-services (ex. SkyDNS and Redis are both inside their own containers.)  Unit-files script the launch of containers in CoreOS.
+
+### Getting Access
+To grant access to the CoreOS cluster, your public SSH key is placed into `authorized_keys`.  In a running cluster, keys are added via the command:
+
+  ```
+  update-ssh-keys -a [identifying name] << EOF
+  public_key_1
+  public_key_2
+  public_key_3
+  .
+  .
+  EOF
+  ```
+  The flag `-a` allows you to add public keys with an identifying name.  The name is not important, but you can use it find keys in the future.  After the first `EOF`, you can list as many public keys as you'd like, each on their own line.  On the last line, place an `EOF`.  Any unique keys will be added to `authorized_keys`.
+
+**NOTE**:  As of this writing there is no single command to add a key to every machine in a running cluster.  The system only accepts cluster-wide keys as parameters in the `cloud-config` file when the cluster is created.
+
 
 [0]:https://coreos.com/
 [1]:https://docker.com/
