@@ -5,4 +5,5 @@ This file stores the IDs that have already been claimed on PandaStrike's CoreOS 
 - 02 - Example User
 - 03 - Robb Wagoner
 - 04 - David Harper
+- 05 - Peter Nguyen
 - 06 - Lance Lakey
